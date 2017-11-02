@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OurMemories</string>
+    <string name="server_domain">117.17.158.10</string>
 </resources>
