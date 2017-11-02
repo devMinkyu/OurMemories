@@ -37,7 +37,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     // recyclerview library
     compile 'com.android.support:recyclerview-v7:25.3.1'
-    // toolbar, tabbar design
+    // toolbar, tab desing
     compile 'com.android.support:design:25.3.1'
     // gson
     compile 'com.google.code.gson:gson:2.8.2'
@@ -47,6 +47,9 @@ dependencies {
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     // facebook
     compile 'com.facebook.android:facebook-android-sdk:4.27.0'
+    // picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 }
 repositories {
     mavenCentral()

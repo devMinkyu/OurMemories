@@ -1,6 +1,5 @@
 package com.kotlin.ourmemories.view.splash.presenter
 
-import android.content.Context
 import android.os.Handler
 import com.kotlin.ourmemories.view.splash.SplashActivity
 

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.app.AlertDialog
-import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.PManager
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.login.LoginActivity
@@ -29,7 +28,7 @@ class SplashPresenter: SplashContract.Presenter {
                 activity.runOnUiThread(Runnable {
                     val alertDialog = AlertDialog.Builder(activity)
                     alertDialog.setTitle("Login")
-                            .setMessage("요청에러 (네트워크 상태를 점검해주세요")
+                            .setMessage("요청에러 (네트워크 상태를 점검해주세요)")
                             .setCancelable(false)
                             .setPositiveButton("확인", object: DialogInterface.OnClickListener{
                                 override fun onClick(dialog: DialogInterface?, which: Int) {}
@@ -65,6 +64,7 @@ class SplashPresenter: SplashContract.Presenter {
         when(userId){
             // 유저가 현재공유저장소에 값이 있는지를 비교
             ""->{
+                //getProfile(userId)
                 var intent = Intent(activity, LoginActivity::class.java)
                 activity.startActivity(intent)
 
@@ -86,7 +86,8 @@ class SplashPresenter: SplashContract.Presenter {
         var builder = HttpUrl.Builder()
 
         builder.scheme("http")
-        builder.host(activity.resources.getString(R.string.server_domain))
+        //builder.host(activity.resources.getString(R.string.server_domain))
+        builder.host("127.0.0.1")
         builder.port(8000)
 
 
@@ -96,7 +97,11 @@ class SplashPresenter: SplashContract.Presenter {
         // RequestBody 설정(파일 설정 시 Multipart로 설정)
         val body: RequestBody = formBuilder.build()
 
-        val request:Request = Request.Builder().url(builder.build()).post(body).tag(activity).build()
+        val request:Request = Request.Builder()
+                .url(builder.build())
+                .post(body)
+                .tag(activity)
+                .build()
 
         client!!.newCall(request).enqueue(requestProfileCallBack)
     }

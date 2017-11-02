@@ -4,7 +4,9 @@ import com.franmontiel.persistentcookiejar.ClearableCookieJar
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
+import com.jakewharton.picasso.OkHttp3Downloader
 import com.kotlin.ourmemories.manager.MyApplication
+import com.squareup.picasso.Picasso
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.io.File
@@ -27,6 +29,7 @@ object NManager{
 
 class NetworkManager {
     var client:OkHttpClient
+    lateinit var picasso:Picasso
 
     init {
         val builder = OkHttpClient.Builder()
@@ -50,6 +53,11 @@ class NetworkManager {
         builder.writeTimeout(10, TimeUnit.SECONDS)
 
         client = builder.build()
+
+        //피카소를 okhttp3에 맞추어서 다시 다운로더 작성(이미지 처리 HTTPS issue해결)
+        picasso = Picasso.Builder(context)
+                .downloader(OkHttp3Downloader(client))
+                .build()
     }
 
 }
