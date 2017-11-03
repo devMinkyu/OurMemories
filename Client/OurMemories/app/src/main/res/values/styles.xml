@@ -18,8 +18,12 @@
         <item name="android:windowBackground">@drawable/ll_face_logo</item>
     </style>
 
-    <style name="Button" parent="Theme.AppCompat">
-        <item name="colorControlHighlight">@color/indigo_500</item>
-        <item name="colorButtonNormal">@color/pink_200</item>
+    <style name="FacebookButton" parent="Theme.AppCompat">
+        <item name="colorControlHighlight">#0000FF</item>
+        <item name="colorButtonNormal">#3b5998</item>
+    </style>
+    <style name="KakaoButton" parent="Theme.AppCompat">
+        <item name="colorControlHighlight">#FFBB00</item>
+        <item name="colorButtonNormal">#FDED07</item>
     </style>
 </resources>

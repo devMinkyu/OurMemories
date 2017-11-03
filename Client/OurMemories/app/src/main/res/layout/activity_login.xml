@@ -41,23 +41,32 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse"
                 android:textSize="20sp"
                 tools:alpha="1"/>
-            <ImageButton
+
+            <Button
                 android:id="@+id/btn_facebook"
                 android:layout_width="250dp"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:src="@drawable/fb_btn"
+                android:drawableLeft="@drawable/fb_icon"
+                android:text="페이스북 로그인"
+                android:textSize="20dp"
+                android:textStyle="bold"
                 android:scaleX="0"
                 android:scaleY="0"
-                android:theme="@style/Button"/>
-            <ImageButton
+                android:theme="@style/FacebookButton"/>
+            <Button
                 android:id="@+id/btn_kakao"
                 android:layout_width="250dp"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:src="@drawable/kakao_btn"
+                android:text="카카오톡 로그인"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/kakao_icon"
                 android:scaleX="0"
-                android:scaleY="0"/>
+                android:scaleY="0"
+                android:theme="@style/KakaoButton"/>
         </LinearLayout>
     </ScrollView>
 
