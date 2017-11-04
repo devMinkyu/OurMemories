@@ -23,7 +23,6 @@ import com.kotlin.ourmemories.view.MainActivity
  */
 class LoginActivity : AppCompatActivity(){
     private lateinit var presenter:LoginContract.Presenter
-    private lateinit var mDialog: ProgressDialog
 
     companion object {
 
@@ -40,9 +39,6 @@ class LoginActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mDialog = ProgressDialog(this)
-        mDialog.setMessage("Please wait...")
-        mDialog.setCancelable(false)
 
         // presenter 연결부분
         presenter = LoginPresenter().apply {
@@ -92,13 +88,11 @@ class LoginActivity : AppCompatActivity(){
     }
 
    fun showpDialog() {
-        if (!mDialog.isShowing())
-            mDialog.show()
+        animation_view.visibility = View.VISIBLE
     }
 
     fun hidepDialog() {
-        if (mDialog.isShowing())
-            mDialog.dismiss()
+        animation_view.visibility = View.INVISIBLE
     }
 }
 

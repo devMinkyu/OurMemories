@@ -47,10 +47,13 @@ dependencies {
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     // facebook
     compile 'com.facebook.android:facebook-android-sdk:4.27.0'
-    // picasso
+    // picasso library
     implementation 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    // lottie library
+    compile 'com.airbnb.android:lottie:2.1.0'
 }
 repositories {
     mavenCentral()
+    google()
 }
