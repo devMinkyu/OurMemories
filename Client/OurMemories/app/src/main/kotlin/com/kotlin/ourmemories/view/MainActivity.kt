@@ -1,8 +1,8 @@
-package com.kotlin.ourmemories
+package com.kotlin.ourmemories.view
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
+import com.kotlin.ourmemories.R
 
 class MainActivity : AppCompatActivity() {
 

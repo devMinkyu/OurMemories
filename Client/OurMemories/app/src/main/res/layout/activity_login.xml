@@ -43,7 +43,7 @@
                 tools:alpha="1"/>
 
             <Button
-                android:id="@+id/btn_facebook"
+                android:id="@+id/facebook_login_button"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
@@ -55,7 +55,7 @@
                 android:scaleY="0"
                 android:theme="@style/FacebookButton"/>
             <Button
-                android:id="@+id/btn_kakao"
+                android:id="@+id/kakao_login_button"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
