@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.kotlin.ourmemories.R
 
+
+
 /**
  * Created by kimmingyu on 2017. 11. 5..
  */
-class StateListFragment : Fragment() {
+class PlaceListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_state_list, container, false)
+            inflater?.inflate(R.layout.fragment_place_list, container, false)
+
 
 }

@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.kotlin.ourmemories.view.AlarmListFragment
 import com.kotlin.ourmemories.view.HomeMainFragment
-import com.kotlin.ourmemories.view.StateListFragment
+import com.kotlin.ourmemories.view.PlaceListFragment
 
 /**
  * Created by kimmingyu on 2017. 11. 5..
@@ -16,7 +16,7 @@ class pagerAdapter(fm: android.support.v4.app.FragmentManager): FragmentStatePag
         when(position){
             0-> fragment = AlarmListFragment()
             1-> fragment = HomeMainFragment()
-            2-> fragment = StateListFragment()
+            2-> fragment = PlaceListFragment()
         }
         return fragment
     }

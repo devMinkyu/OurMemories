@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="home_main"/>
+    <android.support.v7.widget.Toolbar
+    android:id="@+id/toolBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/actionBarSize"
+    android:background="#1A000000"
+    android:layout_marginTop="30dp"
+    android:layout_marginLeft = "10dp"
+    android:layout_marginRight = "10dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:elevation="1dp">
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            android:textColor="@android:color/black"
+            android:text="메인화면"
+        />
+    </android.support.v7.widget.Toolbar>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
