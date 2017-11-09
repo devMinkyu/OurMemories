@@ -35,27 +35,29 @@ bbs = collection.BBS()
 bbs = db.bbs # collection 선택
 
 # DB내용 가져올 수 있는지 test
-@app.route('/')
-def index():
-
-    todos = bbs.find()
-
-    return render_template('bbsList.html', todos = todos)
-
 # @app.route('/')
 # def index():
 #
-#     return render_template('bbs.html')
-
-# # 게시판 글쓰기
-# @app.route('/write', methods=['POST'])
-# def write():
-#     bbs.title = request.form['title']
-#     bbs.content = request.form['content']
-#     bbs.save()
-#
 #     todos = bbs.find()
+#
 #     return render_template('bbsList.html', todos = todos)
+
+@app.route('/')
+def index():
+
+    return render_template('bbs.html')
+
+# 게시판 글쓰기
+@app.route('/write', methods=['POST'])
+def write():
+    bbs.title = request.form['title']
+    bbs.content = request.form['content']
+
+    bbs.insert({'title' : request.form['title'], 'content' : request.form['content']})
+    # bbs.save()
+
+    todos = bbs.find()
+    return render_template('bbsList.html', todos = todos)
 
 
 # class CreateForm(FlaskForm):
