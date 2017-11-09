@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, jsonify, Response, session, r
 from mongokit import Connection, Document, Collection
 from bson.objectid import ObjectId # For ObjectId to work
 
-from project.models import *
+# from project.models import *
 
 from project import *
 
