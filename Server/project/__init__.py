@@ -3,11 +3,12 @@ __version__ = '0.1'
 from flask import Flask
 from flask_debugtoolbar import DebugToolbarExtension
 from mongokit import Connection, Document, Collection
+from bson.objectid import ObjectId # For ObjectId to work
 
 # app = Flask('project')
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'random'
+app.config['SECRET_KEY'] = 'mysecret'
 app.debug = True
 
 # configuration
@@ -22,9 +23,6 @@ app.config.from_object(__name__)
 # connection to the database
 connection = Connection(app.config['MONGODB_HOST'],
                         app.config['MONGODB_PORT'])
-
-# jade 사용
-# app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 
 toolbar = DebugToolbarExtension(app)
 
