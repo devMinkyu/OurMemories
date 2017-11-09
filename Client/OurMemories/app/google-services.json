@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "9297301365",
+    "project_id": "firebase-ourmemories"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9297301365:android:a51106fd1bb8dca2",
+        "android_client_info": {
+          "package_name": "com.kotlin.ourmemories"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9297301365-rd1a6onhijhlarik6omfjtgi0i2emkba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAE248MSaieVEDYAOKwbEHQc6OtqfI9_w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

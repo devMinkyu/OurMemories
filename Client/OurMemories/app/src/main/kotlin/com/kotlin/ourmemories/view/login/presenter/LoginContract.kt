@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.view.login.presenter
 
+import android.content.BroadcastReceiver
 import com.facebook.CallbackManager
 import com.facebook.login.LoginManager
 import com.kotlin.ourmemories.data.source.login.LoginRepository
@@ -13,10 +14,14 @@ interface LoginContract {
         var activity:LoginActivity
         var mLoginManager: LoginManager
         var callbackManager: CallbackManager
+        var mRegistrationBroadcastReceiver:BroadcastReceiver
         var loginData: LoginRepository
 
         fun animation()
         fun facebookLogin()
+        fun getInstanceIdToken()
+        fun registBroadcastReceiver()
+        fun checkPlayServices(): Boolean
         fun isLogin(): Boolean
     }
 }

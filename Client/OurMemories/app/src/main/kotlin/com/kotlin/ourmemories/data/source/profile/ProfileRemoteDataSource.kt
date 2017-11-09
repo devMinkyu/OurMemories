@@ -21,8 +21,8 @@ object ProfileRemoteDataSource:ProfileSource {
 
         builder.scheme("http")
         builder.host(activity.resources.getString(R.string.server_domain))
-        builder.port(8000)
-        builder.addPathSegment("autoLogin")
+        builder.port(8888)
+        builder.addPathSegment("profile")
 
 
         // Body 설정

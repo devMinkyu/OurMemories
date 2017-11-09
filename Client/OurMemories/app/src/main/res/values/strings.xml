@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">OurMemories</string>
-    <string name="server_domain">117.17.158.10</string>
+    <string name="server_domain">13.124.79.162</string>
     <!--페이스북 키-->
     <string name="facebook_app_id">147688489311870</string>
     <string name="fb_login_protocol_scheme">fb147688489311870</string>
+
+    <!--FCM Key-->
+    <string name="server_api_key">AIzaSyDncJCwVCIbJ1hSo37HvZrFx58Dc2E5hD4</string>
+    <string name="sender_id">9297301365</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.kotlin.ourmemories.view.login.presenter
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -19,10 +21,14 @@ import com.facebook.login.DefaultAudience
 import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.gson.Gson
 import com.kotlin.ourmemories.data.jsondata.UserLogin
 import com.kotlin.ourmemories.data.source.login.LoginRepository
 import com.kotlin.ourmemories.manager.PManager
+import com.kotlin.ourmemories.service.fcm.QuickstartPreferences
+import com.kotlin.ourmemories.service.fcm.RegistrationIntentService
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -38,15 +44,17 @@ import java.util.*
 
 class LoginPresenter: LoginContract.Presenter{
     lateinit override var activity: LoginActivity
-
     lateinit override var mLoginManager: LoginManager
+    lateinit override var mRegistrationBroadcastReceiver: BroadcastReceiver
     lateinit override var callbackManager: CallbackManager
     lateinit override var loginData: LoginRepository
+
     lateinit var accessToken:String
+    lateinit var registerId:String
     init {
         PManager.init()
     }
-
+    // 네트워크 콜백받는 부분
     private var requestloginCallback:Callback = object :Callback{
         override fun onFailure(call: Call?, e: IOException?) {
             // 네트워크 에러
@@ -119,6 +127,50 @@ class LoginPresenter: LoginContract.Presenter{
 
     }
 
+    override fun getInstanceIdToken() {
+        if(checkPlayServices())
+            activity.startService(Intent(activity, RegistrationIntentService::class.java))
+    }
+
+    override fun registBroadcastReceiver() {
+        mRegistrationBroadcastReceiver = object :BroadcastReceiver(){
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val action = intent?.action
+
+                when(action){
+                    QuickstartPreferences.REGISTRATION_READY->{ } // 액션이 READY  경우
+                    QuickstartPreferences.REGISTRATION_GENERATING->{} // 액션이 GENERATING 일 경우
+                    QuickstartPreferences.REGISTRATION_COMPLETE->{
+                        // 액션이 COMPLETE 일 경우
+                        val token = intent.getStringExtra("token")
+                        registerId = token
+
+                        //토큰을 받은 이 후 로그인을 진행한다.//
+                        //토큰을 받지 못하면 로그인 과정을 진행하지 않는다.//
+                        facebookLogin()
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Google Play Service를 사용할 수 있는 환경이지를 체크한다.
+     */
+    override fun checkPlayServices():Boolean {
+        val resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity)
+        if(resultCode != ConnectionResult.SUCCESS){
+            if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)){
+                GooglePlayServicesUtil.getErrorDialog(resultCode, activity, LoginActivity.PLAY_SERVICES_RESOLUTION_REQUEST).show()
+            }else{
+                activity.finish()
+            }
+            return false
+        }
+        return true
+    }
+
+    // 페이스북 로그인
     override fun facebookLogin() {
         mLoginManager.defaultAudience = DefaultAudience.FRIENDS
         mLoginManager.loginBehavior = LoginBehavior.NATIVE_WITH_FALLBACK
@@ -130,7 +182,7 @@ class LoginPresenter: LoginContract.Presenter{
 
                 accessToken = facebookAccessToken.token
 
-                Log.d("hoho", "token: ${accessToken}")
+                Log.d("LoginToken", "facebook token: ${accessToken}")
 
                 loginData.loginServer(accessToken,requestloginCallback,activity)
 
@@ -148,10 +200,9 @@ class LoginPresenter: LoginContract.Presenter{
         mLoginManager.logInWithReadPermissions(activity, Arrays.asList("email"))
     }
 
+    // 로그인 되어있는지 검사
     override fun isLogin():Boolean{
         val token:AccessToken? = AccessToken.getCurrentAccessToken()
-
-
         return token != null
     }
 

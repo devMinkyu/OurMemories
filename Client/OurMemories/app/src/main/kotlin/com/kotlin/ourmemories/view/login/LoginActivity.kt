@@ -14,7 +14,10 @@ import com.kotlin.ourmemories.view.login.presenter.LoginContract
 import com.kotlin.ourmemories.view.login.presenter.LoginPresenter
 import kotlinx.android.synthetic.main.activity_login.*
 import android.app.ProgressDialog
+import android.content.IntentFilter
+import android.support.v4.content.LocalBroadcastManager
 import com.kotlin.ourmemories.data.source.login.LoginRepository
+import com.kotlin.ourmemories.service.fcm.QuickstartPreferences
 import com.kotlin.ourmemories.view.MainActivity
 
 
@@ -29,14 +32,15 @@ class LoginActivity : AppCompatActivity(){
         val START_DELAY = 300
         val ANIM_ITME_DURATION = 1000
         val ITEM_DELAY = 300
+        val PLAY_SERVICES_RESOLUTION_REQUEST = 9000
     }
-    var animationStarted:Boolean = false
+    private var animationStarted:Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
         FacebookSdk.sdkInitialize(getApplicationContext())
         AppEventsLogger.activateApp(this)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
 
@@ -47,6 +51,8 @@ class LoginActivity : AppCompatActivity(){
             callbackManager = CallbackManager.Factory.create()
             loginData = LoginRepository()
         }
+        presenter.registBroadcastReceiver()
+
         presenter.mLoginManager.logOut()
 
         // 페이스북 로그인 버튼 눌렀을 때
@@ -57,24 +63,33 @@ class LoginActivity : AppCompatActivity(){
                 finish()
             }else{
                 showpDialog()
-                presenter.facebookLogin()
+                presenter.getInstanceIdToken()
             }
         }
 
         // 카카오톡 로그인 버튼 눌렀을 때(우선 메인 액티비티로 가는 버튼
         kakao_login_button.setOnClickListener{
-            val intent:Intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
 
     }
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_READY))
+        LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_GENERATING))
+        LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE))
+    }
+    /**
+     * 앱이 화면에서 사라지면 등록된 LocalBoardcast를 모두 삭제한다.
+     */
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(presenter.mRegistrationBroadcastReceiver)
+        super.onPause()
+    }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
-        if(!hasFocus or animationStarted){
-            return
-        }
+        if(!hasFocus or animationStarted){return}
         presenter.animation()
         super.onWindowFocusChanged(hasFocus)
     }
@@ -87,13 +102,8 @@ class LoginActivity : AppCompatActivity(){
         presenter.callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
-   fun showpDialog() {
-        animation_view.visibility = View.VISIBLE
-    }
-
-    fun hidepDialog() {
-        animation_view.visibility = View.INVISIBLE
-    }
+    fun showpDialog() { animation_view.visibility = View.VISIBLE }
+    fun hidepDialog() { animation_view.visibility = View.INVISIBLE }
 }
 
 
