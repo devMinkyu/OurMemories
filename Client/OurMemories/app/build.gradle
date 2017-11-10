@@ -55,6 +55,8 @@ dependencies {
     compile 'com.airbnb.android:lottie:2.1.0'
     //FCM
     implementation 'com.google.android.gms:play-services:11.4.2'
+    // GuillotineMenu(Memory 부분)
+    implementation 'com.github.Yalantis:GuillotineMenu-Android:1.2'
 }
 repositories {
     mavenCentral()

@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="카카오톡 로그인"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:drawableLeft="@drawable/kakao_icon"
