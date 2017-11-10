@@ -209,7 +209,7 @@ class LoginPresenter: LoginContract.Presenter{
 
     // 애니메이션
     override fun animation() {
-        ViewCompat.animate(activity.img_logo).translationY((-250).toFloat()).setStartDelay((LoginActivity.START_DELAY).toLong()).setDuration((LoginActivity.ANIM_ITME_DURATION).toLong()).setInterpolator (
+        ViewCompat.animate(activity.img_logo).translationY((-250).toFloat()).setStartDelay((LoginActivity.START_DELAY).toLong()).setDuration((LoginActivity.ANIM_TIME_DURATION).toLong()).setInterpolator (
                 DecelerateInterpolator(1.2f)).start()
 
         for(i in 0..activity.container.childCount){

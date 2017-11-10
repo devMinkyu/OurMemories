@@ -1,4 +1,4 @@
-package com.kotlin.ourmemories.view
+package com.kotlin.ourmemories.view.memory
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,8 +10,8 @@ import com.kotlin.ourmemories.R
 /**
  * Created by kimmingyu on 2017. 11. 5..
  */
-class ReorderFragment : Fragment() {
+class MemoryFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_reorder, container, false)
+            inflater?.inflate(R.layout.fragment_memory, container, false)
 
 }

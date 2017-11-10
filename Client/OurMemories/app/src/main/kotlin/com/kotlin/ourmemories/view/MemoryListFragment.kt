@@ -10,8 +10,8 @@ import com.kotlin.ourmemories.R
 /**
  * Created by kimmingyu on 2017. 11. 5..
  */
-class GiftFragment : Fragment() {
+class MemoryListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_gift, container, false)
+            inflater?.inflate(R.layout.fragment_memorylist, container, false)
 
 }

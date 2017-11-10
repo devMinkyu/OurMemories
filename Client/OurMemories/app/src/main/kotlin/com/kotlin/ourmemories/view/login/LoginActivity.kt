@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity(){
     companion object {
 
         val START_DELAY = 300
-        val ANIM_ITME_DURATION = 1000
+        val ANIM_TIME_DURATION = 1000
         val ITEM_DELAY = 300
         val PLAY_SERVICES_RESOLUTION_REQUEST = 9000
     }
@@ -74,6 +74,9 @@ class LoginActivity : AppCompatActivity(){
         }
 
     }
+    /**
+     * 앱이 화면에서 나타나면 LocalBoardcast를 모두 등록한다.
+     */
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_READY))

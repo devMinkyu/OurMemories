@@ -3,6 +3,7 @@ package com.kotlin.ourmemories.view
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.view.memory.MemoryFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,11 +18,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.actionHome->{
                     supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commit()
                 }
-                R.id.actionGift->{
-                    supportFragmentManager.beginTransaction().replace(R.id.container, GiftFragment()).commit()
+                R.id.actionMemory->{
+                    supportFragmentManager.beginTransaction().replace(R.id.container, MemoryFragment()).commit()
                 }
-                R.id.actionReorder-> {
-                    supportFragmentManager.beginTransaction().replace(R.id.container, ReorderFragment()).commit()
+                R.id.actionMemoryList-> {
+                    supportFragmentManager.beginTransaction().replace(R.id.container, MemoryListFragment()).commit()
                 }
                 R.id.actionSetting-> {
                     supportFragmentManager.beginTransaction().replace(R.id.container, SettingFragment()).commit()
