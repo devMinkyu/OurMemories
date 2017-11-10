@@ -27,10 +27,11 @@
             android:minHeight="?attr/actionBarSize"
             app:contentInsetStart="0dp">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/contentHamburger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/transparent"
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/ic_menu_90" />
 

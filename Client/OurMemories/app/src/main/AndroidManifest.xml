@@ -5,9 +5,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--gcm Receive를 받는 권한-->
+    <!-- gcm Receive를 받는 권한 -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <!--화면이 꺼져있어도 알림이나 진동이나 기타 이벤트 처-->
+    <!-- 화면이 꺼져있어도 알림이나 진동이나 기타 이벤트 처 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
@@ -27,12 +27,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".view.MainActivity" />
         <!-- 화면 회전을 해도 activity가 다시 시작하는 것을 막는다 -->
         <activity
             android:name=".view.login.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.CenterAnimation" />
+        <activity android:name=".view.timecapsule.TimeCapsuleActivity" />
+        <activity android:name=".view.review.ReviewActivity"/>
+
 
         <!-- facebook Login -->
         <meta-data
@@ -59,9 +63,10 @@
         </receiver>
         <!-- [END gcm_receiver] -->
 
+
         <!-- [START gcm_listener_service] -->
         <service
-            android:name="com.kotlin.ourmemories.service.fcm.MyGcmListenerService"
+            android:name=".service.fcm.MyGcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -69,9 +74,10 @@
         </service>
         <!-- [END gcm_listener_service] -->
 
+
         <!-- [START instanceId_listener_service] -->
         <service
-            android:name="com.kotlin.ourmemories.service.fcm.MyInstanceIDListenerService"
+            android:name=".service.fcm.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
@@ -79,10 +85,11 @@
         </service>
         <!-- [END instanceId_listener_service] -->
 
+
         <!-- [START gcm_registration_service] -->
         <service
-            android:name="com.kotlin.ourmemories.service.fcm.RegistrationIntentService"
-            android:exported="false"></service>
+            android:name=".service.fcm.RegistrationIntentService"
+            android:exported="false" />
         <!-- [END gcm_registration_service] -->
     </application>
 

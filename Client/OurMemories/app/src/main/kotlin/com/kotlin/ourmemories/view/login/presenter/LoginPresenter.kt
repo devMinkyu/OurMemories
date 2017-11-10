@@ -61,7 +61,7 @@ class LoginPresenter: LoginContract.Presenter{
             Log.d("hoho", "error message: ${e?.message}")
 
             activity.runOnUiThread {
-                activity.hidepDialog()
+                activity.hideDialog()
 
                 val alertDialog = AlertDialog.Builder(activity)
                 alertDialog.setTitle("Login")
@@ -79,7 +79,7 @@ class LoginPresenter: LoginContract.Presenter{
 
             val isSuccess = loginRequest.IsSuccess
 
-            activity.hidepDialog()
+            activity.hideDialog()
             when(isSuccess){
                 "true/insert"->{
                     activity.runOnUiThread {

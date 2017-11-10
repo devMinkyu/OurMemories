@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.memory.MemoryFragment
+import com.kotlin.ourmemories.view.setting.SettingFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
+    companion object {
+        val CANARO_EXTRA_BOLD_PATH = "fonts/canaro_extra_bold.otf"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

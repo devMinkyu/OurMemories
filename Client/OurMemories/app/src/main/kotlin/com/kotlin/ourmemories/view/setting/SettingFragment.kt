@@ -1,4 +1,4 @@
-package com.kotlin.ourmemories.view
+package com.kotlin.ourmemories.view.setting
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,8 +10,8 @@ import com.kotlin.ourmemories.R
 /**
  * Created by kimmingyu on 2017. 11. 5..
  */
-class AlarmListFragment : Fragment() {
+class SettingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_alarm_list, container, false)
+            inflater?.inflate(R.layout.fragment_setting, container, false)
 
 }
