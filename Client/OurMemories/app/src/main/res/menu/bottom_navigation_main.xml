@@ -14,6 +14,12 @@
         android:title="Memory"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/actionMemoryPin"
+        android:enabled="true"
+        android:icon="@drawable/ic_memory_pin_white_24dp"
+        android:title="MemoryPin"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/actionMemoryList"
         android:enabled="true"
         android:icon="@drawable/ic_reorder_white_24dp"
