@@ -7,16 +7,5 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="reorder"
-        android:id="@+id/textView" />
-
-    <Button
-        android:id="@+id/btn_to_memoryList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView"
-        android:layout_marginBottom="110dp"
-        android:layout_marginEnd="33dp"
-        android:layout_toStartOf="@+id/textView"
-        android:text="go_to_list" />
+        android:text="reorder"/>
 </RelativeLayout>
