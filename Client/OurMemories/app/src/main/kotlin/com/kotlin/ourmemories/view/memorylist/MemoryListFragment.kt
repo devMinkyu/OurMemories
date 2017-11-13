@@ -1,4 +1,4 @@
-package com.kotlin.ourmemories.view
+package com.kotlin.ourmemories.view.memorylist
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
