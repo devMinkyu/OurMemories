@@ -42,22 +42,39 @@ bbs = db.bbs # collection 선택
 #
 #     return render_template('bbsList.html', todos = todos)
 
+# facebook Login
 @app.route('/')
 def index():
 
-    return render_template('bbs.html')
+    token = 1
+    return render_template('facebookLogin.html', token = token)
 
-# 게시판 글쓰기
-@app.route('/write', methods=['POST'])
-def write():
-    bbs.title = request.form['title']
-    bbs.content = request.form['content']
+# Get facebook token to Login
+@app.route('/facebookLogin', methods = ['POST'])
+def getToken():
 
-    bbs.insert({'title' : request.form['title'], 'content' : request.form['content']})
-    # bbs.save()
+    token = request.form['accessToken']
 
-    todos = bbs.find()
-    return render_template('bbsList.html', todos = todos)
+    return render_template('facebookLogin.html', token = token)
+
+
+# # 게시판
+# @app.route('/')
+# def index():
+#
+#     return render_template('bbs.html')
+#
+# # 게시판 글쓰기
+# @app.route('/write', methods=['POST'])
+# def write():
+#     bbs.title = request.form['title']
+#     bbs.content = request.form['content']
+#
+#     bbs.insert({'title' : request.form['title'], 'content' : request.form['content']})
+#     # bbs.save()
+#
+#     todos = bbs.find()
+#     return render_template('bbsList.html', todos = todos)
 
 
 # class CreateForm(FlaskForm):

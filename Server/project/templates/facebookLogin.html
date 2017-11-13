@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <mata charset="UTF-8">
+    <mata http-equiv="X-UA-Compatible", content="ie=edge">
+
+    <title>Facebook sample</title>
+  </head>
+  <body>
+    <div>
+      <h1>Facebok Login</h1>
+      <button onclick="_handleFacebookLogin()">페이스북으로 로그인하기</button>
+    </div>
+
+    <script>
+
+      function _handleFacebookLogin() {
+        FB.getLoginStatus(function(response) {
+          console.log(response)
+          if(response.status === 'unknown') {
+            as = "df"
+            console.log(as)
+            accessToken = {{ token }}
+            console.log(accessToken)
+            FB.api(`/${response.authResponse.userID}?access_token=${accessToken}&fields=name, email`, function(data) {
+              console.log(data);
+            })
+          }
+          FB.login(function(response) {
+            if(response.status === 'connected') {
+              console.log(response.authResponse.accessToken);
+              token = response.authResponse.accessToken; // 안드로이드에서 온 토큰 받기
+              FB.api(`/${response.authResponse.userID}?access_token=${response.authResponse.accessToken}&fields=name, email`, function(data) {
+                console.log(data);
+                // console.log(data.name)
+                // console.log(data.email)
+                // document.getElementById('name').innerHTML = data.name + ' 환영';
+                // document.getElementById('email').innerHTML = '이메일: ' + data.email;
+              })
+
+              // FB.api(`/${response.authResponse.userID}/picture?type=large`, function(data) {
+              //   var img = document.getElementById('profile_p');
+              //   // console.log(data);
+              //   // console.log(data.profile_p)
+              //   img.src = data.data.url;
+              //   img.style.display = 'block';
+              // })
+            }
+          }, {scope: 'public_profile, email'})
+        })
+      }
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '287880025048105',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v2.10'
+        });
+
+        FB.AppEvents.logPageView();
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+  </body>
+</html>
