@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Review"
-                android:textSize="40dp" />
+                android:textSize="30dp" />
         </android.support.v7.widget.Toolbar>
     </LinearLayout>
 
