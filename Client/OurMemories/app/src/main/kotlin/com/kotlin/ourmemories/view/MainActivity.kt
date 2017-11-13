@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.memory.MemoryFragment
+import com.kotlin.ourmemories.view.memorypin.MemoryPinFragment
 import com.kotlin.ourmemories.view.setting.SettingFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.actionMemory->{
                     supportFragmentManager.beginTransaction().replace(R.id.container, MemoryFragment()).commit()
+                }
+                R.id.actionMemoryPin-> {
+                    supportFragmentManager.beginTransaction().replace(R.id.container, MemoryPinFragment()).commit()
                 }
                 R.id.actionMemoryList-> {
                     supportFragmentManager.beginTransaction().replace(R.id.container, MemoryListFragment()).commit()

@@ -78,7 +78,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:background="@android:color/transparent"
         android:visibility="gone"
         app:lottie_autoPlay="true"
         app:lottie_fileName="loading_animation.json"
