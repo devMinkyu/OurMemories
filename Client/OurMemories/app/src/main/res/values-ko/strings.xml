@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_title">Our Memories</string>
+    <string name="app_subtitle">Make beautiful memories</string>
+
+    <string name="bottom_home">홈</string>
+    <string name="bottom_memory">추억</string>
+    <string name="bottom_memory_pin">추억장소</string>
+    <string name="bottom_memory_list">추억목록</string>
+    <string name="bottom_setting">설정</string>
+
+    <string name="memory_timecapsule">TimeCapsule</string>
+    <string name="memory_title">제목</string>
+    <string name="memory_date">날짜</string>
+    <string name="memory_from_time">오전 12:00</string>
+    <string name="memory_to_time">오후 12:00</string>
+    <string name="memory_location">위치</string>
+    <string name="memory_alarm">알람</string>
+    <string name="memory_all_time">ALL</string>
+    <string name="memory_text">텍스트</string>
+    <string name="memory_photo">사진</string>
+    <string name="memory_video">동영상</string>
+    <string name="memory_camera">카메라</string>
+    <string name="memory_address">주소</string>
+
+    <string name="facebook_login">페이스북 로그인</string>
+    <string name="kakao_login">카카오톡 로그인</string>
+
+    <string name="date_format" formatted="false">%d년 %d월 %d일</string>
+</resources>

@@ -5,30 +5,30 @@
         android:id="@+id/actionHome"
         android:enabled="true"
         android:icon="@drawable/ic_home_white_24dp"
-        android:title="Home"
+        android:title="@string/bottom_home"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/actionMemory"
         android:enabled="true"
         android:icon="@drawable/ic_card_gift_white_24dp"
-        android:title="Memory"
+        android:title="@string/bottom_memory"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/actionMemoryPin"
         android:enabled="true"
         android:icon="@drawable/ic_memory_pin_white_24dp"
-        android:title="MemoryPin"
+        android:title="@string/bottom_memory_pin"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/actionMemoryList"
         android:enabled="true"
         android:icon="@drawable/ic_reorder_white_24dp"
-        android:title="MemoryList"
+        android:title="@string/bottom_memory_list"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/actionSetting"
         android:enabled="true"
         android:icon="@drawable/ic_settings_white_24dp"
-        android:title="Setting"
+        android:title="@string/bottom_setting"
         app:showAsAction="ifRoom" />
 </menu>
