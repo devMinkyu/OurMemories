@@ -1,5 +1,9 @@
 package com.kotlin.ourmemories.view.timecapsule.presenter
 
+import android.content.Intent
+import com.kotlin.ourmemories.view.timecapsule.TimeCapsuleActivity
+import java.io.File
+
 /**
  * Created by kimmingyu on 2017. 11. 14..
  */
@@ -8,9 +12,11 @@ interface TimeCapsuleContract {
         fun updateDateView(year:Int, monthOfYear:Int, dayOfMonth:Int)
         fun updateFromTimeView(hourOfDay:Int , minute:Int)
         fun updateToTimeView(hourOfDay:Int , minute:Int)
+        fun updatePhotoTimeView(uploadFile: File)
     }
     interface Presenter{
         var mView: View
+        var activity:TimeCapsuleActivity
 
         fun dateTimeCapsule()
 
@@ -22,7 +28,9 @@ interface TimeCapsuleContract {
 
         fun photoTimeCapsule()
         fun videoTimeCapsule()
-        fun textTimeCapsule()
         fun cameraCapsule()
+
+        fun getImage(requestCode: Int, resultCode: Int, data: Intent?)
+
     }
 }

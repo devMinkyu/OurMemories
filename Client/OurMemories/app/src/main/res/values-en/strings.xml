@@ -22,6 +22,7 @@
     <string name="memory_video">Video</string>
     <string name="memory_camera">Camera</string>
     <string name="memory_address">Address</string>
+    <string name="memory_add">ADD</string>
 
     <string name="facebook_login">Facebook Login</string>
     <string name="kakao_login">Kakao Login</string>
@@ -34,5 +35,7 @@
     <string name="day_error_message">The selected day must not be later than the current day.</string>
     <string name="same_day_error_message">Please choose another day instead of today.</string>
     <string name="time_error_message">The selected time must not be later than the start time.</string>
-
+    <string name="permission_setting">Set permissions</string>
+    <string name="permission_message">To create an image, you need to have permission to save. If you do not approve, you will not be able to set the image.</string>
+    <string name="permission_button">Go to Settings</string>
 </resources>

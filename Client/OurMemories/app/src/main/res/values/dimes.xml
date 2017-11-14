@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="memory_5size">5dp</dimen>
+    <dimen name="memory_15size">15dp</dimen>
+    <dimen name="memory_20size">20dp</dimen>
+    <dimen name="memory_30size">30dp</dimen>
+    <dimen name="memory_35size">35dp</dimen>
+
+    <dimen name="memory_right_chevron">40dp</dimen>
+
+    <dimen name="memory_editText_width">120dp</dimen>
+
+    <dimen name="memory_contents_width">85dp</dimen>
+    <dimen name="memory_contents_height">60dp</dimen>
+    <dimen name="font_title_size">30sp</dimen>
+</resources>

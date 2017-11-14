@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Memory"
-                android:textSize="30dp" />
+                android:textSize="@dimen/font_title_size" />
         </android.support.v7.widget.Toolbar>
     </LinearLayout>
 

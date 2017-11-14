@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/memoryRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,12 +8,12 @@
         android:id="@+id/top"
         android:layout_gravity="top"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="@dimen/memory_35size"
         android:background="@color/colorPrimary"
         />
 
     <LinearLayout
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="@dimen/memory_35size"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -24,8 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:contentInsetStart="0dp">
+            android:minHeight="?attr/actionBarSize">
 
             <ImageButton
                 android:id="@+id/timeCapsuleBack"
@@ -39,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/memory_timecapsule"
-                android:textSize="30sp" />
+                android:textSize="@dimen/font_title_size" />
         </android.support.v7.widget.Toolbar>
     </LinearLayout>
     <ScrollView
@@ -54,9 +52,9 @@
                 android:id="@+id/timeCapsuleTitleEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginTop="@dimen/memory_15size"
+                android:layout_marginLeft="@dimen/memory_15size"
+                android:layout_marginRight="@dimen/memory_15size"
                 android:hint="@string/memory_title"/>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -68,28 +66,28 @@
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/timeCapsuleDateText"
-                        android:layout_width="120dp"
+                        android:layout_width="@dimen/memory_editText_width"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="@dimen/memory_15size"
+                        android:layout_marginStart="@dimen/memory_20size"
                         android:hint="@string/memory_date"/>
                     <EditText
                         android:id="@+id/timeCapsuleFromTime"
-                        android:layout_width="120dp"
+                        android:layout_width="@dimen/memory_editText_width"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="@dimen/memory_15size"
                         android:hint="@string/memory_from_time"/>
                 </LinearLayout>
                 <ImageView
                     android:id="@+id/FromTo"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="35dp"
+                    android:layout_width="@dimen/memory_right_chevron"
+                    android:layout_height="@dimen/memory_right_chevron"
+                    android:layout_marginTop="@dimen/memory_35size"
                     android:layout_toEndOf="@+id/timeCapsuleFromTimeView"
                     android:src="@drawable/ic_chevron_right_black_24dp" />
                 <EditText
                     android:id="@+id/timeCapsuleToTime"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/memory_editText_width"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="33dp"
                     android:layout_toEndOf="@+id/FromTo"
@@ -98,7 +96,7 @@
                     android:id="@+id/timeCapsuleAllTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="@dimen/memory_30size"
                     android:layout_toEndOf="@+id/timeCapsuleToTime"
                     android:text="@string/memory_all_time" />
             </RelativeLayout>
@@ -109,18 +107,18 @@
                     android:id="@+id/timeCapsuleLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="@dimen/memory_15size"
+                    android:layout_marginLeft="@dimen/memory_15size"
+                    android:layout_marginRight="@dimen/memory_15size"
                     android:hint="@string/memory_location"/>
                 <ImageButton
                     android:id="@+id/timeCapsuleAddress"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/memory_30size"
+                    android:layout_height="@dimen/memory_30size"
                     android:background="@color/transparent"
-                    android:layout_marginEnd="15dp"
+                    android:layout_marginEnd="@dimen/memory_15size"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/memory_20size"
                     android:src="@drawable/ic_room_black_24dp"
                     android:contentDescription="@string/memory_address"/>
             </RelativeLayout>
@@ -131,59 +129,64 @@
                     android:id="@+id/timeCapsuleAlarm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="@dimen/memory_15size"
+                    android:layout_marginLeft="@dimen/memory_15size"
+                    android:layout_marginRight="@dimen/memory_15size"
                     android:hint="@string/memory_alarm"/>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_width="@dimen/memory_30size"
+                    android:layout_height="@dimen/memory_30size"
+                    android:layout_marginEnd="@dimen/memory_15size"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/memory_20size"
                     android:src="@drawable/ic_alarm_black_24dp"
                     android:contentDescription="@string/memory_alarm"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginTop="@dimen/memory_15size"
+                android:layout_marginLeft="@dimen/memory_20size"
+                android:layout_marginRight="@dimen/memory_20size">
                 <ImageButton
                     android:id="@+id/timeCapsuleText"
-                    android:layout_width="85dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/memory_contents_width"
+                    android:layout_height="@dimen/memory_contents_height"
                     android:src="@drawable/ic_text_black_24dp"
                     android:contentDescription="@string/memory_text"/>
-
                 <ImageButton
                     android:id="@+id/timeCapsulePhoto"
-                    android:layout_width="85dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/memory_contents_width"
+                    android:layout_height="@dimen/memory_contents_height"
                     android:layout_toEndOf="@+id/timeCapsuleText"
                     android:src="@drawable/ic_photo_black_24dp"
                     android:contentDescription="@string/memory_photo" />
                 <ImageButton
                     android:id="@+id/timeCapsuleVideo"
-                    android:layout_width="85dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/memory_contents_width"
+                    android:layout_height="@dimen/memory_contents_height"
                     android:layout_toEndOf="@+id/timeCapsuleCamera"
                     android:src="@drawable/ic_video_black_24dp"
                     android:contentDescription="@string/memory_video" />
                 <ImageButton
                     android:id="@+id/timeCapsuleCamera"
-                    android:layout_width="85dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/memory_contents_width"
+                    android:layout_height="@dimen/memory_contents_height"
                     android:layout_toEndOf="@+id/timeCapsulePhoto"
                     android:src="@drawable/ic_camera_alt_black_24dp"
                     android:contentDescription="@string/memory_camera" />
-
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/contents"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/memory_15size"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/Button"
+                android:layout_margin="@dimen/memory_15size"
+                android:text="@string/memory_add"/>
         </LinearLayout>
     </ScrollView>
 
