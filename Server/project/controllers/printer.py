@@ -51,12 +51,12 @@ def index():
 
 # Get facebook token to Login
 @app.route('/facebookLogin', methods = ['POST'])
-def getToken():
+def facebookLogin():
 
     token = request.form['accessToken']
+    print(token)
 
     return render_template('facebookLogin.html', token = token)
-
 
 # # 게시판
 # @app.route('/')
