@@ -34,8 +34,10 @@
             android:name=".view.login.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.CenterAnimation" />
-        <activity android:name=".view.timecapsule.TimeCapsuleActivity" />
-        <activity android:name=".view.review.ReviewActivity"/>
+        <activity android:name=".view.timecapsule.TimeCapsuleActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".view.review.ReviewActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
 
 
         <!-- facebook Login -->

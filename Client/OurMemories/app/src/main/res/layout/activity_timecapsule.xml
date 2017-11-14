@@ -106,6 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:id="@+id/timeCapsuleLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -113,6 +114,7 @@
                     android:layout_marginRight="15dp"
                     android:hint="@string/memory_location"/>
                 <ImageButton
+                    android:id="@+id/timeCapsuleAddress"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@color/transparent"
@@ -126,16 +128,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:id="@+id/timeCapsuleAlarm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:hint="@string/memory_alarm"/>
-                <ImageButton
+                <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@color/transparent"
                     android:layout_marginEnd="15dp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="20dp"

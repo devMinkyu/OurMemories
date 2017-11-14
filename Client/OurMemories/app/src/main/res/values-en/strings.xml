@@ -9,10 +9,11 @@
     <string name="bottom_setting">Setting</string>
 
     <string name="memory_timecapsule">TimeCapsule</string>
+    <string name="memory_review">Review</string>
     <string name="memory_title">Title</string>
     <string name="memory_date">Date</string>
-    <string name="memory_from_time">AM 12:00</string>
-    <string name="memory_to_time">PM 12:00</string>
+    <string name="memory_from_time">AM12:00</string>
+    <string name="memory_to_time">PM12:00</string>
     <string name="memory_location">Location</string>
     <string name="memory_alarm">Alarm</string>
     <string name="memory_all_time">ALL</string>
@@ -26,4 +27,12 @@
     <string name="kakao_login">Kakao Login</string>
 
     <string name="date_format" formatted="false">%d/%d/%d</string>
+    <string name="time_format" formatted="false">%d:%d</string>
+
+    <string name="year_error_message">The selected year must not be later than the current year.</string>
+    <string name="month_error_message">The selected month must not be later than the current month.</string>
+    <string name="day_error_message">The selected day must not be later than the current day.</string>
+    <string name="same_day_error_message">Please choose another day instead of today.</string>
+    <string name="time_error_message">The selected time must not be later than the start time.</string>
+
 </resources>

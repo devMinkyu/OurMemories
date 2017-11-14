@@ -9,6 +9,7 @@
     <string name="bottom_setting">설정</string>
 
     <string name="memory_timecapsule">TimeCapsule</string>
+    <string name="memory_review">Review</string>
     <string name="memory_title">제목</string>
     <string name="memory_date">날짜</string>
     <string name="memory_from_time">오전 12:00</string>
@@ -26,4 +27,12 @@
     <string name="kakao_login">카카오톡 로그인</string>
 
     <string name="date_format" formatted="false">%d년 %d월 %d일</string>
+    <string name="time_format" formatted="false">  %d:%d</string>
+
+    <string name="year_error_message">선태한 년도가 현재 년도보다 늦으면 안됩니다.</string>
+    <string name="month_error_message">선태한 월이 현재 월보다 늦으면 안됩니다.</string>
+    <string name="day_error_message">선태한 일이 현재 일보다 늦으면 안됩니다.</string>
+    <string name="same_day_error_message">오늘말고 다른 날을 선택해주세요.</string>
+    <string name="time_error_message">선태한 시간이 시작 시간보다 늦거나 같으면 안됩니다.</string>
+
 </resources>
