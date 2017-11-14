@@ -9,11 +9,11 @@
   <body>
     <div>
       <h1>Facebok Login</h1>
-      <form action='/facebookLogin', method='POST'>
+      <!-- <form action='/facebookLogin', method='POST'>
           <input type="text" name="accessToken" value="{{accessToken}}">
         <input type="submit" vlaue="전송">
         accessToken = {{ token }}
-      </form>
+      </form> -->
       <button onclick="_handleFacebookLogin()">페이스북으로 로그인하기</button>
     </div>
 
@@ -27,9 +27,9 @@
             console.log(as)
             accessToken = {{ token }}
             console.log(accessToken)
-            FB.api(`/${response.authResponse.userID}?access_token=${accessToken}&fields=name, email`, function(data) {
-              console.log(data);
-            })
+            // FB.api(`/${response.authResponse.userID}?access_token=${accessToken}&fields=name, email`, function(data) {
+            //   console.log(data);
+            // })
           }
           FB.login(function(response) {
             if(response.status === 'connected') {

@@ -46,8 +46,7 @@ bbs = db.bbs # collection 선택
 @app.route('/')
 def index():
 
-    token = 1
-    return render_template('facebookLogin.html', token = token)
+    return render_template('facebookLogin.html')
 
 # Get facebook token to Login
 @app.route('/facebookLogin', methods = ['POST'])
