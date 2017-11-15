@@ -13,4 +13,6 @@
     <dimen name="memory_contents_width">85dp</dimen>
     <dimen name="memory_contents_height">60dp</dimen>
     <dimen name="font_title_size">30sp</dimen>
+
+    <dimen name="video_height">300dp</dimen>
 </resources>

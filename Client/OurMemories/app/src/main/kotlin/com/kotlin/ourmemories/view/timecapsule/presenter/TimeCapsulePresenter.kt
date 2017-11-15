@@ -22,6 +22,7 @@ import java.util.*
 class TimeCapsulePresenter(context: Context):TimeCapsuleContract.Presenter {
     companion object {
         val PICK_IMAGE : Int = 1010
+        val PICK_VIDEO : Int = 1011
         val REQ_PERMISSON = 1011
     }
     lateinit var path:String
@@ -32,8 +33,8 @@ class TimeCapsulePresenter(context: Context):TimeCapsuleContract.Presenter {
     private var mYear = 0
     private var mMonth = 0
     private var mDay = 0
-    private var mHour = 0
-    private var mMinute = 0
+    private var mHour = 24
+    private var mMinute = 24
 
     // 날짜 처리하는 함수
     override fun dateTimeCapsule() {
@@ -109,35 +110,51 @@ class TimeCapsulePresenter(context: Context):TimeCapsuleContract.Presenter {
             ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSON)
         } else{
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            intent.setType("image/*")
+            intent.type = "image/*"
             activity.startActivityForResult(intent, PICK_IMAGE)
         }
     }
 
     override fun videoTimeCapsule() {
+        val check = ActivityCompat.checkSelfPermission(mContext,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if(check != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSON)
+        } else{
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+            intent.type = "video/*"
+            activity.startActivityForResult(intent, PICK_VIDEO)
+        }
     }
     override fun cameraCapsule() {
     }
 
-    override fun getImage(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode){
-            PICK_IMAGE->{
-                val uri =data?.data
-                uri?:return
+    override fun getImage(data: Intent?) {
+        val uri =data?.data
+        uri?:return
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = activity.contentResolver.query(uri, projection,null,null,null)
+        if(cursor.moveToNext()){
+            path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+            Log.d("hoho", path)
 
-                val projection = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor = activity.contentResolver.query(uri, projection,null,null,null)
-                if(cursor.moveToNext()){
-                    path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
-                    Log.d("hoho", path)
+            uploadFile = File(path)
 
-                    uploadFile = File(path)
-                    NManager.init()
+            mView.updatePhotoTimeView(uploadFile)
 
-                    mView.updatePhotoTimeView(uploadFile)
+        }
+    }
+    override fun getVideo(data: Intent?) {
+        val uri =data?.data
+        uri?:return
+        val projection = arrayOf(MediaStore.Video.Media.DATA)
+        val cursor = activity.contentResolver.query(uri, projection,null,null,null)
+        if(cursor.moveToNext()){
+            path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA))
+            Log.d("hoho", path)
 
-                }
-            }
+            uploadFile = File(path)
+
+            mView.updateVideoTimeView(uploadFile)
         }
     }
 

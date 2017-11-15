@@ -2,7 +2,6 @@ package com.kotlin.ourmemories.view.timecapsule
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
@@ -11,21 +10,15 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.text.InputType
-import android.util.Log
 import android.view.Gravity
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.*
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsuleContract
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter.Companion.REQ_PERMISSON
-import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
-import jp.wasabeef.picasso.transformations.CropTransformation
 import kotlinx.android.synthetic.main.activity_timecapsule.*
 import java.io.File
 
@@ -78,8 +71,15 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             presenter.photoTimeCapsule()
         }
         // 비디오 버튼 눌렀을 때
+        timeCapsuleVideo.setOnClickListener {
+            contents.removeAllViews()
+            presenter.videoTimeCapsule()
+        }
         // 카메라 버튼 눌렀을 때
     }
+
+
+
     // 날짜 선택 뷰
     override fun updateDateView(year:Int, monthOfYear:Int, dayOfMonth:Int) {
         val dataFormat = this.resources.getString(R.string.date_format)
@@ -109,6 +109,18 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
                 .transform(CropSquareTransformation())
                 .into(timeCapsulePhoto)
         contents.addView(timeCapsulePhoto)
+    }
+    // 동영상을 받아서 contents 에 동영상 추가
+    override fun updateVideoTimeView(uploadFile: File) {
+        val timeCapsuleVideo = VideoView(this)
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,this.resources.getDimension(R.dimen.video_height).toInt())
+        timeCapsuleVideo.layoutParams = params
+        val controller = MediaController(this)
+        timeCapsuleVideo.setMediaController(controller)
+
+        timeCapsuleVideo.setVideoPath(uploadFile.toString())
+        timeCapsuleVideo.requestFocus()
+        contents.addView(timeCapsuleVideo)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -145,7 +157,11 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        presenter.getImage(requestCode, resultCode, data)
+        when(requestCode){
+            TimeCapsulePresenter.PICK_IMAGE ->{ presenter.getImage(data) }
+            TimeCapsulePresenter.PICK_VIDEO ->{ presenter.getVideo(data)}
+        }
+
     }
 
 

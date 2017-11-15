@@ -13,6 +13,7 @@ interface TimeCapsuleContract {
         fun updateFromTimeView(hourOfDay:Int , minute:Int)
         fun updateToTimeView(hourOfDay:Int , minute:Int)
         fun updatePhotoTimeView(uploadFile: File)
+        fun updateVideoTimeView(uploadFile: File)
     }
     interface Presenter{
         var mView: View
@@ -30,7 +31,8 @@ interface TimeCapsuleContract {
         fun videoTimeCapsule()
         fun cameraCapsule()
 
-        fun getImage(requestCode: Int, resultCode: Int, data: Intent?)
+        fun getImage(data: Intent?)
+        fun getVideo(data: Intent?)
 
     }
 }

@@ -13,4 +13,8 @@ import com.kotlin.ourmemories.R
 class MemoryPinFragment: Fragment(){
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fragment_memorypin, container, false)
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+
+    }
 }
