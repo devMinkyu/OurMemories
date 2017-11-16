@@ -29,7 +29,8 @@ interface TimeCapsuleContract {
 
         fun photoTimeCapsule()
         fun videoTimeCapsule()
-        fun cameraCapsule()
+        fun cameraPhotoTimeCapsule()
+        fun cameraVideoTimeCapsule()
 
         fun getImage(data: Intent?)
         fun getVideo(data: Intent?)

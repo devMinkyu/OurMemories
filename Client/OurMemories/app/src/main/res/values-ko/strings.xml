@@ -28,7 +28,8 @@
     <string name="kakao_login">카카오톡 로그인</string>
 
     <string name="date_format" formatted="false">%d년 %d월 %d일</string>
-    <string name="time_format" formatted="false">  %d:%d</string>
+    <string name="am_time_format" formatted="false">오전 %d:%d</string>
+    <string name="pm_time_format" formatted="false">오후 %d:%d</string>
 
     <string name="year_error_message">선태한 년도가 현재 년도보다 늦으면 안됩니다.</string>
     <string name="month_error_message">선태한 월이 현재 월보다 늦으면 안됩니다.</string>

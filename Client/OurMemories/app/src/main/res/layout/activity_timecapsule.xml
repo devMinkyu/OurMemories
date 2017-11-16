@@ -169,11 +169,18 @@
                     android:src="@drawable/ic_video_black_24dp"
                     android:contentDescription="@string/memory_video" />
                 <ImageButton
-                    android:id="@+id/timeCapsuleCamera"
+                    android:id="@+id/timeCapsuleCameraPhoto"
                     android:layout_width="@dimen/memory_contents_width"
                     android:layout_height="@dimen/memory_contents_height"
                     android:layout_toEndOf="@+id/timeCapsuleVideo"
                     android:src="@drawable/ic_camera_alt_black_24dp"
+                    android:contentDescription="@string/memory_camera" />
+                <ImageButton
+                    android:id="@+id/timeCapsuleCameraVideo"
+                    android:layout_width="@dimen/memory_contents_width"
+                    android:layout_height="@dimen/memory_contents_height"
+                    android:layout_toEndOf="@+id/timeCapsuleCameraPhoto"
+                    android:src="@drawable/ic_video_call_black_24dp"
                     android:contentDescription="@string/memory_camera" />
             </RelativeLayout>
 
@@ -186,6 +193,7 @@
             </RelativeLayout>
 
             <Button
+                android:id="@+id/timeCapsuleSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/Button"

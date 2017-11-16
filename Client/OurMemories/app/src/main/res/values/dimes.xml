@@ -10,7 +10,7 @@
 
     <dimen name="memory_editText_width">120dp</dimen>
 
-    <dimen name="memory_contents_width">85dp</dimen>
+    <dimen name="memory_contents_width">65dp</dimen>
     <dimen name="memory_contents_height">60dp</dimen>
     <dimen name="font_title_size">30sp</dimen>
 

@@ -48,9 +48,16 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         timeCapsuleLocation.inputType = InputType.TYPE_NULL
         timeCapsuleAlarm.inputType = InputType.TYPE_NULL
 
+        // 날짜 버튼 눌렀을 때
         timeCapsuleDateText.setOnClickListener { presenter.dateTimeCapsule() }
+        // 시간 버튼 눌렀을 때
         timeCapsuleFromTime.setOnClickListener {presenter.fromTimeTimeCapsule()}
         timeCapsuleToTime.setOnClickListener {presenter.toTimeTimeCapsule()}
+        timeCapsuleAllTime.setOnClickListener {
+            updateFromTimeView(0,0)
+            updateToTimeView(23,59)
+        }
+
         // 텍스트 버튼 눌렀을 때 EditText 생성
         timeCapsuleText.setOnClickListener{
             contents.removeAllViews()
@@ -75,7 +82,18 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             contents.removeAllViews()
             presenter.videoTimeCapsule()
         }
-        // 카메라 버튼 눌렀을 때
+        // 카메라로 사진을 찍을려고 할 때
+        timeCapsuleCameraPhoto.setOnClickListener {
+            contents.removeAllViews()
+            presenter.cameraPhotoTimeCapsule()
+        }
+        // 카메라로 동영상을 찍을려고 할 때
+        timeCapsuleCameraVideo.setOnClickListener {
+            contents.removeAllViews()
+            presenter.cameraVideoTimeCapsule()
+        }
+
+        timeCapsuleSave.setOnClickListener {  }
     }
 
 
@@ -87,12 +105,24 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
     }
     // 시간 선택 뷰들
     override fun updateFromTimeView(hourOfDay:Int , minute:Int) {
-        val timeFormat = this.resources.getString(R.string.time_format)
-        timeCapsuleFromTime.setText(String.format(timeFormat, hourOfDay, minute))
+        val amTimeFormat = this.resources.getString(R.string.am_time_format)
+        val pmTimeFormat = this.resources.getString(R.string.pm_time_format)
+        when{
+            hourOfDay>12->{ timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay-12, minute)) }
+            hourOfDay == 12->{ timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay, minute)) }
+            hourOfDay == 24->{ timeCapsuleFromTime.setText(String.format(pmTimeFormat, 23, 59)) }
+            hourOfDay<12->{ timeCapsuleFromTime.setText(String.format(amTimeFormat, hourOfDay, minute)) }
+        }
     }
     override fun updateToTimeView(hourOfDay:Int , minute:Int) {
-        val timeFormat = this.resources.getString(R.string.time_format)
-        timeCapsuleToTime.setText(String.format(timeFormat, hourOfDay, minute))
+        val amTimeFormat = this.resources.getString(R.string.am_time_format)
+        val pmTimeFormat = this.resources.getString(R.string.pm_time_format)
+        when{
+            hourOfDay>12->{ timeCapsuleToTime.setText(String.format(pmTimeFormat, hourOfDay-12, minute)) }
+            hourOfDay == 12->{ timeCapsuleToTime.setText(String.format(pmTimeFormat, hourOfDay, minute)) }
+            hourOfDay == 24->{ timeCapsuleToTime.setText(String.format(pmTimeFormat, 23, 59)) }
+            hourOfDay<12->{ timeCapsuleToTime.setText(String.format(amTimeFormat, hourOfDay, minute)) }
+        }
     }
 
     // 사진을 받아서 contents 에 사진을 추가

@@ -28,7 +28,8 @@
     <string name="kakao_login">Kakao Login</string>
 
     <string name="date_format" formatted="false">%d/%d/%d</string>
-    <string name="time_format" formatted="false">%d:%d</string>
+    <string name="am_time_format" formatted="false">AM %d:%d</string>
+    <string name="pm_time_format" formatted="false">PM %d:%d</string>
 
     <string name="year_error_message">The selected year must not be later than the current year.</string>
     <string name="month_error_message">The selected month must not be later than the current month.</string>

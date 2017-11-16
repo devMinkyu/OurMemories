@@ -125,8 +125,16 @@ class TimeCapsulePresenter(context: Context):TimeCapsuleContract.Presenter {
             activity.startActivityForResult(intent, PICK_VIDEO)
         }
     }
-    override fun cameraCapsule() {
+    override fun cameraPhotoTimeCapsule() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        activity.startActivityForResult(intent, PICK_IMAGE)
     }
+
+    override fun cameraVideoTimeCapsule() {
+        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        activity.startActivityForResult(intent, PICK_VIDEO)
+    }
+
 
     override fun getImage(data: Intent?) {
         val uri =data?.data
