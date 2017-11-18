@@ -22,7 +22,7 @@ class MyGcmListenerService:GcmListenerService() {
     companion object {
         val TAG = "MyGcmListenerService"
     }
-    var badgeCount:Int = 0
+    private var badgeCount:Int = 0
     init {
         PManager.init()
     }

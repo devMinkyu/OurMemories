@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_timecapsule.*
 import java.io.File
 
 class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
-    private lateinit var presenter:TimeCapsuleContract.Presenter
+    private lateinit var presenter: TimeCapsuleContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,26 +51,30 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         // 날짜 버튼 눌렀을 때
         timeCapsuleDateText.setOnClickListener { presenter.dateTimeCapsule() }
         // 시간 버튼 눌렀을 때
-        timeCapsuleFromTime.setOnClickListener {presenter.fromTimeTimeCapsule()}
-        timeCapsuleToTime.setOnClickListener {presenter.toTimeTimeCapsule()}
+        timeCapsuleFromTime.setOnClickListener { presenter.fromTimeTimeCapsule() }
+        timeCapsuleToTime.setOnClickListener { presenter.toTimeTimeCapsule() }
         timeCapsuleAllTime.setOnClickListener {
-            updateFromTimeView(0,0)
-            updateToTimeView(23,59)
+            updateFromTimeView(0, 0)
+            updateToTimeView(23, 59)
+
         }
 
         // 텍스트 버튼 눌렀을 때 EditText 생성
-        timeCapsuleText.setOnClickListener{
+        timeCapsuleText.setOnClickListener {
             contents.removeAllViews()
-            val paddingSize:Int = this.resources.getDimension(R.dimen.memory_5size).toInt()
+            val paddingSize: Int = this.resources.getDimension(R.dimen.memory_5size).toInt()
             val timeCapsuleText = EditText(this)
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             timeCapsuleText.layoutParams = params
             timeCapsuleText.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
             timeCapsuleText.gravity = Gravity.TOP and Gravity.START
             timeCapsuleText.setLines(6)
             timeCapsuleText.background = this.resources.getDrawable(R.drawable.border)
-            timeCapsuleText.setPadding(paddingSize,paddingSize,paddingSize,paddingSize)
+            timeCapsuleText.setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
             contents.addView(timeCapsuleText)
+        }
+        timeCapsuleAlarm.setOnClickListener {
+            presenter.alarmTimeCapsule()
         }
         // 사진 버튼 눌렀을 때
         timeCapsulePhoto.setOnClickListener {
@@ -93,42 +97,62 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             presenter.cameraVideoTimeCapsule()
         }
 
-        timeCapsuleSave.setOnClickListener {  }
+        timeCapsuleSave.setOnClickListener { }
     }
-
 
 
     // 날짜 선택 뷰
-    override fun updateDateView(year:Int, monthOfYear:Int, dayOfMonth:Int) {
+    override fun updateDateView(year: Int, monthOfYear: Int, dayOfMonth: Int) {
         val dataFormat = this.resources.getString(R.string.date_format)
-        timeCapsuleDateText.text = String.format(dataFormat,year,monthOfYear,dayOfMonth)
+        timeCapsuleDateText.text = String.format(dataFormat, year, monthOfYear, dayOfMonth)
     }
+
     // 시간 선택 뷰들
-    override fun updateFromTimeView(hourOfDay:Int , minute:Int) {
+    override fun updateFromTimeView(hourOfDay: Int, minute: Int) {
         val amTimeFormat = this.resources.getString(R.string.am_time_format)
         val pmTimeFormat = this.resources.getString(R.string.pm_time_format)
-        when{
-            hourOfDay>12->{ timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay-12, minute)) }
-            hourOfDay == 12->{ timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay, minute)) }
-            hourOfDay == 24->{ timeCapsuleFromTime.setText(String.format(pmTimeFormat, 23, 59)) }
-            hourOfDay<12->{ timeCapsuleFromTime.setText(String.format(amTimeFormat, hourOfDay, minute)) }
-        }
-    }
-    override fun updateToTimeView(hourOfDay:Int , minute:Int) {
-        val amTimeFormat = this.resources.getString(R.string.am_time_format)
-        val pmTimeFormat = this.resources.getString(R.string.pm_time_format)
-        when{
-            hourOfDay>12->{ timeCapsuleToTime.setText(String.format(pmTimeFormat, hourOfDay-12, minute)) }
-            hourOfDay == 12->{ timeCapsuleToTime.setText(String.format(pmTimeFormat, hourOfDay, minute)) }
-            hourOfDay == 24->{ timeCapsuleToTime.setText(String.format(pmTimeFormat, 23, 59)) }
-            hourOfDay<12->{ timeCapsuleToTime.setText(String.format(amTimeFormat, hourOfDay, minute)) }
+        when {
+            hourOfDay > 12 -> {
+                timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay - 12, minute))
+            }
+            hourOfDay == 12 -> {
+                timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay, minute))
+            }
+            hourOfDay == 24 -> {
+                timeCapsuleFromTime.setText(String.format(pmTimeFormat, 23, 59))
+            }
+            hourOfDay < 12 -> {
+                timeCapsuleFromTime.setText(String.format(amTimeFormat, hourOfDay, minute))
+            }
         }
     }
 
+    override fun updateToTimeView(hourOfDay: Int, minute: Int) {
+        val amTimeFormat = this.resources.getString(R.string.am_time_format)
+        val pmTimeFormat = this.resources.getString(R.string.pm_time_format)
+        when {
+            hourOfDay > 12 -> {
+                timeCapsuleToTime.setText(String.format(pmTimeFormat, hourOfDay - 12, minute))
+            }
+            hourOfDay == 12 -> {
+                timeCapsuleToTime.setText(String.format(pmTimeFormat, hourOfDay, minute))
+            }
+            hourOfDay == 24 -> {
+                timeCapsuleToTime.setText(String.format(pmTimeFormat, 23, 59))
+            }
+            hourOfDay < 12 -> {
+                timeCapsuleToTime.setText(String.format(amTimeFormat, hourOfDay, minute))
+            }
+        }
+    }
+
+    override fun updateAlarmView(alarmMessage:String) {
+        timeCapsuleAlarm.setText(alarmMessage)
+    }
     // 사진을 받아서 contents 에 사진을 추가
-    override fun updatePhotoTimeView(uploadFile: File) {
+    override fun updatePhotoView(uploadFile: File) {
         val timeCapsulePhoto = ImageView(this)
-        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         timeCapsulePhoto.layoutParams = params
         timeCapsulePhoto.scaleType = ImageView.ScaleType.FIT_START
         timeCapsulePhoto.adjustViewBounds = true
@@ -140,10 +164,11 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
                 .into(timeCapsulePhoto)
         contents.addView(timeCapsulePhoto)
     }
+
     // 동영상을 받아서 contents 에 동영상 추가
-    override fun updateVideoTimeView(uploadFile: File) {
+    override fun updateVideoView(uploadFile: File) {
         val timeCapsuleVideo = VideoView(this)
-        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,this.resources.getDimension(R.dimen.video_height).toInt())
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, this.resources.getDimension(R.dimen.video_height).toInt())
         timeCapsuleVideo.layoutParams = params
         val controller = MediaController(this)
         timeCapsuleVideo.setMediaController(controller)
@@ -153,43 +178,49 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         contents.addView(timeCapsuleVideo)
     }
 
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         val notGranted = kotlin.arrayOfNulls<String>(permissions.size)
-        when(requestCode){
-            REQ_PERMISSON->{
+        when (requestCode) {
+            REQ_PERMISSON -> {
                 var index = 0
-                for(i in 0 until permissions.size){
-                    if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
-                        val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this,permissions[i])
-                        if(!rationale){
+                for (i in 0 until permissions.size) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
+                        if (!rationale) {
                             val dialogBuild = AlertDialog.Builder(this).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
-                                    .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)){
-                                dialog, whichButton -> showSetting()
+                                    .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
+                                showSetting()
                             }
                             dialogBuild.create().show()
                             return
-                        }
-                        else{
+                        } else {
                             notGranted[index++] = permissions[i]
                         }
                     }
                 }
-                if(notGranted.isNotEmpty()){
-                    ActivityCompat.requestPermissions(this,notGranted,REQ_PERMISSON)
+                if (notGranted.isNotEmpty()) {
+                    ActivityCompat.requestPermissions(this, notGranted, REQ_PERMISSON)
                 }
             }
         }
     }
-    private fun showSetting(){
-        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName,null)).apply {
+
+    private fun showSetting() {
+        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null)).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         })
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode){
-            TimeCapsulePresenter.PICK_IMAGE ->{ presenter.getImage(data) }
-            TimeCapsulePresenter.PICK_VIDEO ->{ presenter.getVideo(data)}
+        when (requestCode) {
+            TimeCapsulePresenter.PICK_IMAGE -> {
+                presenter.getImage(data)
+            }
+            TimeCapsulePresenter.PICK_VIDEO -> {
+                presenter.getVideo(data)
+            }
         }
 
     }

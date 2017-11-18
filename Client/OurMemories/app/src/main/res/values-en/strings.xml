@@ -31,6 +31,11 @@
     <string name="am_time_format" formatted="false">AM %d:%d</string>
     <string name="pm_time_format" formatted="false">PM %d:%d</string>
 
+    <string name="alarm_day_ago">A day ago</string>
+    <string name="alarm_half_ago">12 hours ago</string>
+    <string name="alarm_half_half_ago">6 hours ago</string>
+    <string name="alarm_hour_ago">A hour ago</string>
+
     <string name="year_error_message">The selected year must not be later than the current year.</string>
     <string name="month_error_message">The selected month must not be later than the current month.</string>
     <string name="day_error_message">The selected day must not be later than the current day.</string>

@@ -30,6 +30,11 @@
     <string name="date_format" formatted="false">%d년 %d월 %d일</string>
     <string name="am_time_format" formatted="false">오전 %d:%d</string>
     <string name="pm_time_format" formatted="false">오후 %d:%d</string>
+    
+    <string name="alarm_day_ago">하루 전</string>
+    <string name="alarm_half_ago">12시간 전</string>
+    <string name="alarm_half_half_ago">6시간 전</string>
+    <string name="alarm_hour_ago">1시간 전</string>
 
     <string name="year_error_message">선태한 년도가 현재 년도보다 늦으면 안됩니다.</string>
     <string name="month_error_message">선태한 월이 현재 월보다 늦으면 안됩니다.</string>
