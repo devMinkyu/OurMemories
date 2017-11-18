@@ -69,7 +69,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             }
         }
         mYear = year
-        mMonth = month + 1
+        mMonth = month
         mDay = dayOfMonth
         mView.updateDateView(year, month + 1, dayOfMonth)
     }
@@ -123,7 +123,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     if (mDay == 1) {
                         // 나중에
                     } else {
-                        alarmSetting(calendar, mYear, mMonth, mDay - 1, mHour, mMinute)
+                        calendar.set(mYear, mMonth, mDay - 1, mHour, mMinute,0)
                     }
                     mView.updateAlarmView(items[0])
                 }
@@ -131,7 +131,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     if (mHour < 12) {
                         // 나중에
                     } else {
-                        alarmSetting(calendar, mYear, mMonth, mDay, mHour - 12, mMinute)
+                        calendar.set(mYear, mMonth, mDay, mHour - 12, mMinute,0)
                     }
                     mView.updateAlarmView(items[1])
                 }
@@ -139,7 +139,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     if (mHour < 6) {
                         // 나중에
                     } else {
-                        alarmSetting(calendar, mYear, mMonth, mDay, mHour - 6, mMinute)
+                        calendar.set(mYear, mMonth, mDay, mHour - 6, mMinute,0)
                     }
                     mView.updateAlarmView(items[2])
                 }
@@ -147,15 +147,16 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     if (mHour < 1) {
                         // 나중에
                     } else {
-                        alarmSetting(calendar, mYear, mMonth, mDay, mHour - 1, mMinute)
+                        calendar.set(mYear, mMonth, mDay, mHour - 1, mMinute,0)
                     }
                     mView.updateAlarmView(items[3])
                 }
             }
         }
         // 테스트 용
-//        Log.d("hoho", calendar.get(Calendar.MONTH).toString())
-//        alarmSetting(calendar, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 10, 22)
+//        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 13, 58,0)
+//        Log.d("hoho", calendar.get(Calendar.MINUTE).toString())
+
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
 
@@ -168,15 +169,6 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                 calendar.timeInMillis,
                 pendingIntent
         )
-    }
-
-    private fun alarmSetting(calendar: Calendar, year: Int, month: Int, day: Int, hour: Int, minute: Int) {
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.MONTH, month)
-        calendar.set(Calendar.DAY_OF_MONTH, day - 1)
-        calendar.set(Calendar.HOUR_OF_DAY, hour)
-        calendar.set(Calendar.MINUTE, minute)
-        calendar.set(Calendar.SECOND, 0)
     }
 
 
