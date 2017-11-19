@@ -54,7 +54,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         if (mYear > year) {
             print(mContext.resources.getString(R.string.year_error_message))
             return@OnDateSetListener
-        } else {
+        } else if(mYear == year) {
             if (mMonth > month) {
                 print(mContext.resources.getString(R.string.month_error_message))
                 return@OnDateSetListener
@@ -116,50 +116,95 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         val items = arrayOf(mContext.resources.getString(R.string.alarm_day_ago), mContext.resources.getString(R.string.alarm_half_ago),
                 mContext.resources.getString(R.string.alarm_half_half_ago), mContext.resources.getString(R.string.alarm_hour_ago))
         val alertDialogBuilder = AlertDialog.Builder(mContext)
-        var calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance()
         alertDialogBuilder.setItems(items) { dialog, id ->
             when (id) {
                 0 -> {
-                    if (mDay == 1) {
-                        // 나중에
-                    } else {
-                        calendar.set(mYear, mMonth, mDay - 1, mHour, mMinute,0)
+                    when{
+                        (mDay == 1) and (mMonth == 0)->{
+                            calendar.set(Calendar.YEAR, mYear-1)
+                            calendar.set(Calendar.MONTH,11)
+                            calendar.set(mYear-1,11,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),mHour,mMinute,0)
+                        }
+                        (mDay == 1) and (mMonth != 0)->{
+                            calendar.set(Calendar.YEAR, mYear)
+                            calendar.set(Calendar.MONTH,mMonth-1)
+                            calendar.set(mYear,mMonth-1,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),mHour,mMinute,0)
+                        }
+                        (mDay != 1)->{
+                            calendar.set(mYear, mMonth, mDay - 1, mHour, mMinute,0)
+                        }
                     }
                     mView.updateAlarmView(items[0])
                 }
                 1 -> {
-                    if (mHour < 12) {
-                        // 나중에
-                    } else {
-                        calendar.set(mYear, mMonth, mDay, mHour - 12, mMinute,0)
+                    when{
+                        (mHour < 12) and (mMonth == 0)->{
+                            calendar.set(Calendar.YEAR, mYear-1)
+                            calendar.set(Calendar.MONTH,11)
+                            calendar.set(mYear-1,11,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-12,mMinute,0)
+                        }
+                        (mHour < 12) and (mMonth != 0)->{
+                            calendar.set(Calendar.YEAR, mYear)
+                            calendar.set(Calendar.MONTH,mMonth-1)
+                            calendar.set(mYear,mMonth-1,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-12,mMinute,0)
+                        }
+                        (mHour >= 12)->{
+                            calendar.set(mYear, mMonth, mDay, mHour - 12, mMinute,0)
+                        }
                     }
                     mView.updateAlarmView(items[1])
                 }
                 2 -> {
-                    if (mHour < 6) {
-                        // 나중에
-                    } else {
-                        calendar.set(mYear, mMonth, mDay, mHour - 6, mMinute,0)
+                    when{
+                        (mHour < 6) and (mMonth == 0)->{
+                            calendar.set(Calendar.YEAR, mYear-1)
+                            calendar.set(Calendar.MONTH,11)
+                            calendar.set(mYear-1,11,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-6,mMinute,0)
+                        }
+                        (mHour < 6) and (mMonth != 0)->{
+                            calendar.set(Calendar.YEAR, mYear)
+                            calendar.set(Calendar.MONTH,mMonth-1)
+                            calendar.set(mYear,mMonth-1,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-6,mMinute,0)
+                        }
+                        (mHour >= 6)->{
+                            calendar.set(mYear, mMonth, mDay, mHour - 6, mMinute,0)
+                        }
                     }
                     mView.updateAlarmView(items[2])
                 }
                 3 -> {
-                    if (mHour < 1) {
-                        // 나중에
-                    } else {
-                        calendar.set(mYear, mMonth, mDay, mHour - 1, mMinute,0)
+                    when{
+                        (mHour < 1) and (mMonth == 0)->{
+                            calendar.set(Calendar.YEAR, mYear-1)
+                            calendar.set(Calendar.MONTH,11)
+                            calendar.set(mYear-1,11,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-1,mMinute,0)
+                        }
+                        (mHour < 1) and (mMonth != 0)->{
+                            calendar.set(Calendar.YEAR, mYear)
+                            calendar.set(Calendar.MONTH,mMonth-1)
+                            calendar.set(mYear,mMonth-1,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-1,mMinute,0)
+                        }
+                        (mHour >= 1)->{
+                            calendar.set(mYear, mMonth, mDay, mHour - 1, mMinute,0)
+                        }
                     }
                     mView.updateAlarmView(items[3])
                 }
             }
+
         }
         // 테스트 용
+//        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
+//        calendar.set(Calendar.MONTH,calendar.get(Calendar.MONTH)-1)
+//        Log.d("hoho", calendar.getActualMaximum(Calendar.DAY_OF_MONTH).toString())
+//        calendar.set(mYear,mMonth-1,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),mHour,mMinute,0)
 //        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 13, 58,0)
-//        Log.d("hoho", calendar.get(Calendar.MINUTE).toString())
 
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
 
+        // 저장하기 버튼 눌렀을 때 만드는 함수로 간다
         val intent = Intent("com.kotlin.ourmemories.ALARM_START")
         val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 

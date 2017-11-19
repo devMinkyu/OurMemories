@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/memory_timecapsule"
-                android:textSize="@dimen/font_title_size" />
+                android:textSize="@dimen/font_title_Large_ize" />
         </android.support.v7.widget.Toolbar>
     </LinearLayout>
 
@@ -138,6 +138,13 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/timeCapsuleMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/memory_15size"
+                android:layout_marginRight="@dimen/memory_15size"/>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -208,12 +215,11 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/contents"
+                android:id="@+id/timeCapsuleContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/memory_15size">
+                android:layout_margin="@dimen/memory_15size"/>
 
-            </RelativeLayout>
 
             <Button
                 android:id="@+id/timeCapsuleSave"

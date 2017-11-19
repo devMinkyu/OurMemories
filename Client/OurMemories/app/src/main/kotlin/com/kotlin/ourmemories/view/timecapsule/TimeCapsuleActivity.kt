@@ -43,10 +43,12 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             this.finish()
         }
 
+        // editText 를 눌러도 키보드가 안나오게 하기 위함
         timeCapsuleFromTime.inputType = InputType.TYPE_NULL
         timeCapsuleToTime.inputType = InputType.TYPE_NULL
         timeCapsuleLocation.inputType = InputType.TYPE_NULL
         timeCapsuleAlarm.inputType = InputType.TYPE_NULL
+        timeCapsuleLocation.inputType = InputType.TYPE_NULL
 
         // 날짜 버튼 눌렀을 때
         timeCapsuleDateText.setOnClickListener { presenter.dateTimeCapsule() }
@@ -61,7 +63,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
 
         // 텍스트 버튼 눌렀을 때 EditText 생성
         timeCapsuleText.setOnClickListener {
-            contents.removeAllViews()
+            timeCapsuleContents.removeAllViews()
             val paddingSize: Int = this.resources.getDimension(R.dimen.memory_5size).toInt()
             val timeCapsuleText = EditText(this)
             val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -71,29 +73,29 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             timeCapsuleText.setLines(6)
             timeCapsuleText.background = this.resources.getDrawable(R.drawable.border)
             timeCapsuleText.setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
-            contents.addView(timeCapsuleText)
+            timeCapsuleContents.addView(timeCapsuleText)
         }
         timeCapsuleAlarm.setOnClickListener {
             presenter.alarmTimeCapsule()
         }
         // 사진 버튼 눌렀을 때
         timeCapsulePhoto.setOnClickListener {
-            contents.removeAllViews()
+            timeCapsuleContents.removeAllViews()
             presenter.photoTimeCapsule()
         }
         // 비디오 버튼 눌렀을 때
         timeCapsuleVideo.setOnClickListener {
-            contents.removeAllViews()
+            timeCapsuleContents.removeAllViews()
             presenter.videoTimeCapsule()
         }
         // 카메라로 사진을 찍을려고 할 때
         timeCapsuleCameraPhoto.setOnClickListener {
-            contents.removeAllViews()
+            timeCapsuleContents.removeAllViews()
             presenter.cameraPhotoTimeCapsule()
         }
         // 카메라로 동영상을 찍을려고 할 때
         timeCapsuleCameraVideo.setOnClickListener {
-            contents.removeAllViews()
+            timeCapsuleContents.removeAllViews()
             presenter.cameraVideoTimeCapsule()
         }
 
@@ -162,7 +164,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         picasso!!.load(uploadFile)
                 .transform(CropSquareTransformation())
                 .into(timeCapsulePhoto)
-        contents.addView(timeCapsulePhoto)
+        timeCapsuleContents.addView(timeCapsulePhoto)
     }
 
     // 동영상을 받아서 contents 에 동영상 추가
@@ -175,7 +177,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
 
         timeCapsuleVideo.setVideoPath(uploadFile.toString())
         timeCapsuleVideo.requestFocus()
-        contents.addView(timeCapsuleVideo)
+        timeCapsuleContents.addView(timeCapsuleVideo)
     }
 
 

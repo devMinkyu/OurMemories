@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/memory_review"
-                android:textSize="@dimen/font_title_size" />
+                android:textSize="@dimen/font_title_Large_ize" />
         </android.support.v7.widget.Toolbar>
     </LinearLayout>
 
@@ -56,19 +56,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/reviewDateText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/reviewDateText"
-                        android:layout_width="@dimen/memory_editText_width"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/memory_20size"
-                        android:layout_marginTop="@dimen/memory_15size"
-                        android:hint="@string/memory_date" />
-                </LinearLayout>
+                    android:layout_marginStart="@dimen/memory_20size"
+                    android:layout_marginTop="@dimen/memory_15size"
+                    android:textSize="@dimen/font_title_Large_ize"
+                    android:hint="@string/memory_date" />
             </RelativeLayout>
 
             <EditText
@@ -105,6 +100,11 @@
                     android:contentDescription="@string/memory_address"
                     android:src="@drawable/ic_room_black_24dp" />
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/reviewMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/memory_15size"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -154,12 +154,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/contents"
+                android:id="@+id/reviewContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/memory_15size">
-
-            </RelativeLayout>
+                android:layout_margin="@dimen/memory_15size"/>
 
             <Button
                 android:id="@+id/reviewSave"

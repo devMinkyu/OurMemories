@@ -1,7 +1,5 @@
 package com.kotlin.ourmemories.view.splash.presenter
 
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.app.AlertDialog
@@ -13,6 +11,7 @@ import com.kotlin.ourmemories.manager.PManager
 import com.kotlin.ourmemories.view.login.LoginActivity
 import com.kotlin.ourmemories.view.splash.SplashActivity
 import okhttp3.*
+import org.jetbrains.anko.startActivity
 import java.io.IOException
 
 /**
@@ -68,7 +67,7 @@ class SplashPresenter: SplashContract.Presenter {
                         PManager.setUserEmail(profileRequest.userProfileResult.userEmail)
                         PManager.setUserId(profileRequest.userProfileResult.userId)
 
-                        activity.startActivity(Intent(activity,MainActivity::class.java))
+                        activity.startActivity<MainActivity>()
                         activity.finish()
                     } else if(loginAuth == "0") // 로그아웃한 경우
                     {
@@ -105,7 +104,7 @@ class SplashPresenter: SplashContract.Presenter {
     }
 
     fun loginPageIntent(){
-        activity.startActivity(Intent(activity,LoginActivity::class.java))
+        activity.startActivity<LoginActivity>()
         activity.finish()
     }
 

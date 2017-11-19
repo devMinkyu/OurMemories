@@ -2,7 +2,6 @@ package com.kotlin.ourmemories.view.login.presenter
 
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
@@ -35,6 +34,8 @@ import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.startService
 import java.io.IOException
 import java.util.*
 
@@ -97,7 +98,7 @@ class LoginPresenter: LoginContract.Presenter{
                         PManager.setUserFacebookId(accessToken)
                         PManager.setUserProfileImageUrl(loginRequest.userLoginResult.userProfileImageUrl)
 
-                        activity.startActivity(Intent(activity,MainActivity::class.java))
+                        activity.startActivity<MainActivity>()
                         activity.finish()
                     }
                 }
@@ -106,7 +107,7 @@ class LoginPresenter: LoginContract.Presenter{
                         //(이미 정보 존재 시 수정만 해준다.)공유저장소에 등록될 수정될 내용은 토큰값만 바꾸어 준다.
                         PManager.setUserFacebookId(accessToken)
 
-                        activity.startActivity(Intent(activity,MainActivity::class.java))
+                        activity.startActivity<MainActivity>()
                         activity.finish()
                     }
                 }
@@ -129,7 +130,7 @@ class LoginPresenter: LoginContract.Presenter{
 
     override fun getInstanceIdToken() {
         if(checkPlayServices())
-            activity.startService(Intent(activity, RegistrationIntentService::class.java))
+            activity.startService<RegistrationIntentService>()
     }
 
     override fun registBroadcastReceiver() {
