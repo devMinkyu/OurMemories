@@ -7,6 +7,8 @@ from flask import Flask, render_template, request, jsonify, Response, session, r
 # from flask_restful import Resource, Api
 from mongokit import Connection, Document, Collection
 from bson.objectid import ObjectId # For ObjectId to work
+from flask_oauth import OAuth, OAuthException
+from flask_session import Session
 
 # from project.models import *
 
@@ -34,6 +36,58 @@ collection = connection['airbnb'].bbs
 bbs = collection.BBS()
 bbs = db.bbs # collection 선택
 
+# oauth = OAuth()
+#
+# facebook = oauth.remote_app(
+#     'facebook',
+#     consumer_key=FACEBOOK_APP_ID,
+#     consumer_secret=FACEBOOK_APP_SECRET,
+#     request_token_params={'scope': 'email'},
+#     base_url='https://graph.facebook.com',
+#     request_token_url=None,
+#     access_token_url='/oauth/access_token',
+#     # access_token_method='GET',
+#     authorize_url='https://www.facebook.com/dialog/oauth'
+# )
+
+# http://localhost:8888/auth/facebook/callback
+
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
+
+
+@app.route('/login')
+def login():
+    callback = url_for(
+        'facebook_authorized',
+        next=request.args.get('next') or request.referrer or None,
+        _external=True
+    )
+    return facebook.authorize(callback=callback)
+
+
+@app.route('/login/authorized')
+@facebook.authorized_handler
+def facebook_authorized(resp):
+    if resp is None:
+        return 'Access denied: reason=%s error=%s' % (
+            request.args['error_reason'],
+            request.args['error_description']
+        )
+    if isinstance(resp, OAuthException):
+        return 'Access denied: %s' % resp.message
+
+    session['oauth_token'] = (resp['access_token'], '')
+    me = facebook.get('/me')
+    return 'Logged in as id=%s name=%s redirect=%s' % \
+        (me.data['id'], me.data['name'], request.args.get('next'))
+
+
+@facebook.tokengetter
+def get_facebook_oauth_token():
+    return session.get('oauth_token')
+
 # DB내용 가져올 수 있는지 test
 # @app.route('/')
 # def index():
@@ -43,19 +97,20 @@ bbs = db.bbs # collection 선택
 #     return render_template('bbsList.html', todos = todos)
 
 # facebook Login
-@app.route('/')
-def index():
-
-    return render_template('facebookLogin.html')
+# @app.route('/')
+# def index():
+#
+#     accessToken = 1
+#     return render_template('facebookLogin.html', token = accessToken)
 
 # Get facebook token to Login
-@app.route('/facebookLogin', methods = ['POST'])
-def facebookLogin():
-
-    token = request.form['accessToken']
-    print(token)
-
-    return render_template('facebookLogin.html', token = token)
+# @app.route('/facebookLogin', methods = ['POST'])
+# def facebookLogin():
+#
+#     token = request.form['accessToken']
+#     print(token)
+#
+#     return render_template('facebookLogin.html', token = token)
 
 # # 게시판
 # @app.route('/')

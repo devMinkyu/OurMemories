@@ -4,3 +4,5 @@ Jinja2
 Flask-DebugToolbar
 Mongokit
 flask_wtf
+flask_oauth
+flask_session
