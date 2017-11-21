@@ -42,13 +42,14 @@ def index():
     return redirect(url_for('login'))
 
 
-@app.route('/login')
+@app.route('/facebookLogin')
 def login():
     callback = url_for(
         'facebook_authorized',
         next=request.args.get('next') or request.referrer or None,
         _external=True
     )
+    print(callback)
     return facebook.authorize(callback=callback)
 
 
@@ -91,6 +92,10 @@ def facebook_authorized(resp):
     rest_json.append({'email' : email})
     rest_json.append({'picture' : picture})
     print(rest_json)
+
+    # is_success
+    # result_object = []
+    # result_object.append({'is_success', '' + is_success})
 
     # return jsonify(me.data)
 
