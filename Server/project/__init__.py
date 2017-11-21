@@ -44,6 +44,6 @@ app.config.from_object(__name__)
 connection = Connection(app.config['MONGODB_HOST'],
                         app.config['MONGODB_PORT'])
 
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 from project.controllers import *

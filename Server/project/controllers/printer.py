@@ -63,17 +63,43 @@ def facebook_authorized(resp):
     if isinstance(resp, OAuthException):
         return 'Access denied: %s' % resp.message
 
+    # 안드로이드에서 토큰받는 테스트 코드
+    # accessToken = request.form['accessToken']
+    # print(accessToken)
+    # session['oauth_token'] = (accessToken, '')
+
     session['oauth_token'] = (resp['access_token'], '')
     # print(resp['access_token'])
     me = facebook.get('/me?fields=id,name,email,picture')
-
     print(me.data)
 
-    # pic = facebook.get('/me/picture?redirect=false').data
-    # print 'picture:', pic['data']["url"]
+    # Json 파싱을 통해 값을 가져온다
+    # 키 값으로 가져온다
+    user_id = jsonify(me.data['id'])
+    name = jsonify(me.data['name'])
+    email = jsonify(me.data['email'])
+    picture = jsonify(me.data['picture'])
+    print(user_id)
+    print(name)
+    print(email)
+    print(picture)
 
-    return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
-        (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
+    # 각각의 Json 데이터를 만들어준다.
+    rest_json = []
+    rest_json.append({'user_id': user_id})
+    rest_json.append({'name' : name})
+    rest_json.append({'email' : email})
+    rest_json.append({'picture' : picture})
+    print(rest_json)
+
+    # return jsonify(me.data)
+
+    # return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
+    #     (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
+
+    # 데이터를 json형태로
+    test = dict(zip(('isSuccess', 'data'), ( ('true/insert','true/update', 'flask'), me.data)))
+    return jsonify(test)
 
 
 @facebook.tokengetter
