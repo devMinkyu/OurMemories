@@ -23,7 +23,7 @@ facebook = oauth.remote_app(
     'facebook',
     consumer_key=FACEBOOK_APP_ID,
     consumer_secret=FACEBOOK_APP_SECRET,
-    request_token_params={'scope': 'email'},
+    request_token_params={'scope': 'email, public_profile'},
     base_url='https://graph.facebook.com',
     request_token_url=None,
     access_token_url='/oauth/access_token',

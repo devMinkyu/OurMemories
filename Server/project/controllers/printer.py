@@ -64,15 +64,16 @@ def facebook_authorized(resp):
         return 'Access denied: %s' % resp.message
 
     session['oauth_token'] = (resp['access_token'], '')
-    me = facebook.get('/me?fields=id,name,email')
-    print(me)
+    # print(resp['access_token'])
+    me = facebook.get('/me?fields=id,name,email,picture')
+
     print(me.data)
 
     # pic = facebook.get('/me/picture?redirect=false').data
     # print 'picture:', pic['data']["url"]
 
-    return 'Logged in as id=%s name=%s email=%s redirect=%s' % \
-        (me.data['id'], me.data['name'], me.data['email'], request.args.get('next'))
+    return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
+        (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
 
 
 @facebook.tokengetter
