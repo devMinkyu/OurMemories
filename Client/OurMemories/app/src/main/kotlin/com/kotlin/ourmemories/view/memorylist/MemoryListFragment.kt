@@ -3,8 +3,6 @@ package com.kotlin.ourmemories.view.memorylist
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,17 +22,14 @@ class MemoryListFragment : Fragment() , View.OnClickListener {
             val intent = Intent(context, MemoryListActivity::class.java)
             startActivity(intent)
         }
-        var adapter = NationAdapter(context, listOf(
-                NationData(1,"대한민국"),
-                NationData(2,"미국"),
-                NationData(3,"영국"),
-                NationData(4,"일본"),
-                NationData(5,"러시아")
-        ))
-        var recycleListView = view.findViewById(R.id.nation_list) as RecyclerView
 
-        recycleListView.layoutManager = LinearLayoutManager(context)
-        recycleListView.adapter = adapter
+//        DBManagerNation.init(context)
+//        DBManagerNation.defaultAddNation()
+//        var adapter = NationAdapter(context, DBManagerNation.getNationAllWithCursor())
+//
+//        var recycleListView = view.findViewById(R.id.nation_list) as RecyclerView
+//        recycleListView.layoutManager = LinearLayoutManager(context)
+//        recycleListView.adapter = adapter
 
     }
 
