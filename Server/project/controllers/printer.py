@@ -103,8 +103,10 @@ def facebook_authorized(resp):
     #     (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
 
     # 데이터를 json형태로
-    test = dict(zip(('isSuccess', 'data'), ( ('true/insert','true/update', 'flask'), me.data)))
-    return jsonify(test)
+    # test = dict(zip(('isSuccess', 'data'), ( ('true/insert','true/update', 'flask'), me.data)))
+    # return jsonify(test)
+
+    return 'dfdf'
 
 
 @facebook.tokengetter
