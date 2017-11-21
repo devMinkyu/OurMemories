@@ -8,18 +8,22 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.text.InputType
 import android.view.Gravity
+import android.view.View
 import android.widget.*
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.MainActivity
+import com.kotlin.ourmemories.view.memorylist.MemoryMapFragment
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsuleContract
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter.Companion.REQ_PERMISSON
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_timecapsule.*
+import org.jetbrains.anko.toast
 import java.io.File
 
 class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
@@ -75,6 +79,9 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             timeCapsuleText.setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
             timeCapsuleContents.addView(timeCapsuleText)
         }
+        timeCapsuleLocation.setOnClickListener {
+            presenter.currentAddress()
+        }
         timeCapsuleAlarm.setOnClickListener {
             presenter.alarmTimeCapsule()
         }
@@ -102,12 +109,12 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         timeCapsuleSave.setOnClickListener { }
     }
 
-
     // 날짜 선택 뷰
     override fun updateDateView(year: Int, monthOfYear: Int, dayOfMonth: Int) {
         val dataFormat = this.resources.getString(R.string.date_format)
         timeCapsuleDateText.text = String.format(dataFormat, year, monthOfYear, dayOfMonth)
     }
+
 
     // 시간 선택 뷰들
     override fun updateFromTimeView(hourOfDay: Int, minute: Int) {
@@ -146,6 +153,12 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
                 timeCapsuleToTime.setText(String.format(amTimeFormat, hourOfDay, minute))
             }
         }
+    }
+
+    override fun updateAddressView(lat: Double, lon: Double) {
+        timeCapsuleMapRoot.visibility = View.VISIBLE
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.timeCapsuleMap) as MemoryMapFragment
+        mapFragment.getMapAsync(mapFragment)
     }
 
     override fun updateAlarmView(alarmMessage:String) {

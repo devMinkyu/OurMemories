@@ -1,6 +1,7 @@
 package com.kotlin.ourmemories.view.timecapsule.presenter
 
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.DatePickerDialog
 import android.app.PendingIntent
@@ -9,6 +10,10 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
@@ -17,13 +22,14 @@ import android.widget.Toast
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.timecapsule.TimeCapsuleActivity
+import org.jetbrains.anko.toast
 import java.io.File
 import java.util.*
 
 /**
  * Created by kimmingyu on 2017. 11. 14..
  */
-class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
+class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
     companion object {
         val PICK_IMAGE: Int = 1010
         val PICK_VIDEO: Int = 1011
@@ -40,6 +46,8 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     private var mDay = 0
     private var mHour = 24
     private var mMinute = 24
+    private var lat:Double = 0.0
+    private var lon:Double = 0.0
 
     // 날짜 처리하는 함수
     override fun dateTimeCapsule() {
@@ -107,9 +115,21 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
 
     }
 
-
+    // GPS 부분
+    @SuppressLint("MissingPermission")
     override fun currentAddress() {
+        val check = ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (check != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQ_PERMISSON)
+        } else {
+            val locationManager:LocationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            lat = location.latitude
+            lon = location.longitude
+            mView.updateAddressView(lat,lon)
+        }
     }
+
 
     // 알람 설정 하는 부분
     override fun alarmTimeCapsule() {
@@ -240,13 +260,23 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     }
 
     override fun cameraPhotoTimeCapsule() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        activity.startActivityForResult(intent, PICK_IMAGE)
+        val check = ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.CAMERA)
+        if (check != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.CAMERA), REQ_PERMISSON)
+        } else {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            activity.startActivityForResult(intent, PICK_IMAGE)
+        }
     }
 
     override fun cameraVideoTimeCapsule() {
-        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-        activity.startActivityForResult(intent, PICK_VIDEO)
+        val check = ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.CAMERA)
+        if (check != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.CAMERA), REQ_PERMISSON)
+        } else {
+            val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            activity.startActivityForResult(intent, PICK_VIDEO)
+        }
     }
 
 

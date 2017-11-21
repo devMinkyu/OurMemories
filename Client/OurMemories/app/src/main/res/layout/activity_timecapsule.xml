@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/memoryRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -138,11 +139,20 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/timeCapsuleMap"
+                android:id="@+id/timeCapsuleMapRoot"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/video_height"
                 android:layout_marginLeft="@dimen/memory_15size"
-                android:layout_marginRight="@dimen/memory_15size"/>
+                android:layout_marginRight="@dimen/memory_15size"
+                android:visibility="gone">
+                <fragment
+                    android:id="@+id/timeCapsuleMap"
+                    android:name="com.kotlin.ourmemories.view.memorylist.MemoryMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    tools:context=".view.timecapsule.TimeCapsuleActivity" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

@@ -78,7 +78,7 @@ class LoginPresenter: LoginContract.Presenter{
             val responseData = response?.body()!!.string()
             val loginRequest:UserLogin = Gson().fromJson(responseData, UserLogin::class.java)
 
-            val isSuccess = loginRequest.IsSuccess
+            val isSuccess = loginRequest.isSuccess
 
             activity.hideDialog()
             when(isSuccess){
