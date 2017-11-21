@@ -12,6 +12,13 @@
     <!-- 화면이 꺼져있어도 알림이나 진동이나 기타 이벤트 처 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name=".manager.MyApplication"
         android:allowBackup="true"
@@ -29,15 +36,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity
             android:name=".view.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+=======
+        <activity android:name=".view.MainActivity" />
+>>>>>>> feature/memorylist
         <!-- 화면 회전을 해도 activity가 다시 시작하는 것을 막는다 -->
         <activity
             android:name=".view.login.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.CenterAnimation" />
+<<<<<<< HEAD
         <activity
             android:name=".view.timecapsule.TimeCapsuleActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -46,6 +58,10 @@
             android:name=".view.review.ReviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+=======
+        <activity android:name=".view.timecapsule.TimeCapsuleActivity" />
+        <activity android:name=".view.review.ReviewActivity" />
+>>>>>>> feature/memorylist
 
         <!-- facebook Login -->
         <meta-data
@@ -100,6 +116,7 @@
             android:name=".service.fcm.RegistrationIntentService"
             android:exported="false" />
         <!-- [END gcm_registration_service] -->
+<<<<<<< HEAD
 
 
         <!-- Alarm receiver -->
@@ -116,6 +133,25 @@
             android:name=".service.alarm.AlarmSoundService"
             android:enabled="true"
             android:exported="true"></service>
+=======
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
+
+        <activity android:name=".view.memorylist.MemoryListActivity"></activity>
+>>>>>>> feature/memorylist
     </application>
 
 </manifest>
