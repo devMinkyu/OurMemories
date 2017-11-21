@@ -60,6 +60,7 @@ dependencies {
     implementation 'jp.wasabeef:picasso-transformations:2.1.0'
     implementation 'org.jetbrains.anko:anko:0.10.1'
     implementation 'org.jetbrains.anko:anko-commons:0.10.1'
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
 }
 repositories {
     mavenCentral()

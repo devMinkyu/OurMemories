@@ -8,6 +8,7 @@ import com.kotlin.ourmemories.view.memory.MemoryFragment
  * Created by kimmingyu on 2017. 11. 10..
  */
 class MemoryPresenter:MemoryContract.Presenter {
+    lateinit override var mView: MemoryContract.View
     lateinit override var fragment: MemoryFragment
 
     override fun intentActivity(activity: AppCompatActivity) {

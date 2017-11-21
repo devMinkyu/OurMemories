@@ -43,6 +43,17 @@
                 android:text="Memory"
                 android:textSize="@dimen/font_title_Large_ize" />
         </android.support.v7.widget.Toolbar>
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_selectionColor="#a9dbf0cb"
+            app:mcv_showOtherDates="defaults"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dayMemoryList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
 </FrameLayout>
