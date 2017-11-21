@@ -36,21 +36,6 @@ collection = connection['airbnb'].bbs
 bbs = collection.BBS()
 bbs = db.bbs # collection 선택
 
-# oauth = OAuth()
-#
-# facebook = oauth.remote_app(
-#     'facebook',
-#     consumer_key=FACEBOOK_APP_ID,
-#     consumer_secret=FACEBOOK_APP_SECRET,
-#     request_token_params={'scope': 'email'},
-#     base_url='https://graph.facebook.com',
-#     request_token_url=None,
-#     access_token_url='/oauth/access_token',
-#     # access_token_method='GET',
-#     authorize_url='https://www.facebook.com/dialog/oauth'
-# )
-
-# http://localhost:8888/auth/facebook/callback
 
 @app.route('/')
 def index():
@@ -79,9 +64,15 @@ def facebook_authorized(resp):
         return 'Access denied: %s' % resp.message
 
     session['oauth_token'] = (resp['access_token'], '')
-    me = facebook.get('/me')
-    return 'Logged in as id=%s name=%s redirect=%s' % \
-        (me.data['id'], me.data['name'], request.args.get('next'))
+    me = facebook.get('/me?fields=id,name,email')
+    print(me)
+    print(me.data)
+
+    # pic = facebook.get('/me/picture?redirect=false').data
+    # print 'picture:', pic['data']["url"]
+
+    return 'Logged in as id=%s name=%s email=%s redirect=%s' % \
+        (me.data['id'], me.data['name'], me.data['email'], request.args.get('next'))
 
 
 @facebook.tokengetter
