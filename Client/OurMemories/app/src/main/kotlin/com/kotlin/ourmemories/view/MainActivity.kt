@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.memory.MemoryFragment
-<<<<<<< HEAD
 import com.kotlin.ourmemories.view.memorypin.MemoryPinFragment
-=======
 import com.kotlin.ourmemories.view.memorylist.MemoryListFragment
->>>>>>> feature/memorylist
 import com.kotlin.ourmemories.view.setting.SettingFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
