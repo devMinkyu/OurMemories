@@ -65,33 +65,33 @@ def facebook_authorized(resp):
         return 'Access denied: %s' % resp.message
 
     # 안드로이드에서 토큰받는 테스트 코드
-    # accessToken = request.form['accessToken']
-    # print(accessToken)
-    # session['oauth_token'] = (accessToken, '')
+    accessToken = request.form['accessToken']
+    print(accessToken)
+    session['oauth_token'] = (accessToken, '')
 
-    session['oauth_token'] = (resp['access_token'], '')
+    # session['oauth_token'] = (resp['access_token'], '')
     # print(resp['access_token'])
     me = facebook.get('/me?fields=id,name,email,picture')
     print(me.data)
 
     # Json 파싱을 통해 값을 가져온다
     # 키 값으로 가져온다
-    user_id = jsonify(me.data['id'])
-    name = jsonify(me.data['name'])
-    email = jsonify(me.data['email'])
-    picture = jsonify(me.data['picture'])
-    print(user_id)
-    print(name)
-    print(email)
-    print(picture)
+    # user_id = jsonify(me.data['id'])
+    # name = jsonify(me.data['name'])
+    # email = jsonify(me.data['email'])
+    # picture = jsonify(me.data['picture'])
+    # print(user_id)
+    # print(name)
+    # print(email)
+    # print(picture)
 
     # 각각의 Json 데이터를 만들어준다.
-    rest_json = []
-    rest_json.append({'user_id': user_id})
-    rest_json.append({'name' : name})
-    rest_json.append({'email' : email})
-    rest_json.append({'picture' : picture})
-    print(rest_json)
+    # rest_json = []
+    # rest_json.append({'user_id': user_id})
+    # rest_json.append({'name' : name})
+    # rest_json.append({'email' : email})
+    # rest_json.append({'picture' : picture})
+    # print(rest_json)
 
     # is_success
     # result_object = []
