@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.kotlin.ourmemories.DB.MemoryData.MemoryTable.TABLE_NAME
 import org.jetbrains.anko.db.*
 
 /**
@@ -21,13 +20,13 @@ object DBManagerMemory {
             mDBHandler = DBHandlerMemory(context)
         }
     }
-    val SQL_DELETE_TIMECAPSULE_ENTRIES = "drop table if exists " + TABLE_NAME
+    val SQL_DELETE_TIMECAPSULE_ENTRIES = "drop table if exists " + MemoryData.MemoryTable.TABLE_NAME
     fun deleteTable(db: SQLiteDatabase) {
         db.execSQL(SQL_DELETE_TIMECAPSULE_ENTRIES)
     }
 
     fun getMemoryAllWithCursor(): Cursor =
-            mDBHandler?.readableDatabase!!.query(TABLE_NAME,
+            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
                     arrayOf(MemoryData.MemoryTable._ID,
                             MemoryData.MemoryTable.TITLE,
                             MemoryData.MemoryTable.LATITUDE,
@@ -47,7 +46,7 @@ object DBManagerMemory {
         cv.put(MemoryData.MemoryTable.TO_DATE, memoryData.to_date)
         cv.put(MemoryData.MemoryTable.CLASSIFICATION, memoryData.classification)
         mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
+            mDBHandler?.writableDatabase?.insert(MemoryData.MemoryTable.TABLE_NAME, null, cv)
         }
     }
     // 추억 삭제
@@ -62,95 +61,15 @@ object DBManagerMemory {
 
     // 테스트용
     fun defaultAddTimeCapesule() {
-        val cv = ContentValues()
-        cv.put("title", "추억1")
-        cv.put("latitude", 33.11)
-        cv.put("longitude", 22.54)
-        cv.put("nation_name", "나라1")
-        cv.put("from_date", 11)
-        cv.put("to_date", 11)
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-
-        cv.put("title", "추억2")
-        cv.put("latitude", 13.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라2")
-        cv.put("from_date", 11)
-        cv.put("to_date", 11)
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-
-        cv.put("title", "추억3")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", 11)
-        cv.put("to_date", 11)
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-
-        cv.put("title", "추억4")
-        cv.put("latitude", 33.11)
-        cv.put("longitude", 22.54)
-        cv.put("nation_name", "나라1")
-        cv.put("from_date", 11)
-        cv.put("to_date", 11)
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-
-        cv.put("title", "추억5")
-        cv.put("latitude", 13.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라2")
-        cv.put("from_date", 11)
-        cv.put("to_date", 11)
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-
-        cv.put("title", "추억6")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", 11)
-        cv.put("to_date", 11)
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-
-        cv.put("title", "추억7")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", 11)
-        cv.put("to_date", 11)
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-
-        cv.put("title", "추억8")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", 11)
-        cv.put("to_date", 11)
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-
-        cv.put("title", "추억9")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", 11)
-        cv.put("to_date", 11)
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
+        for(i in 1..20){
+            var memoryData = MemoryData(0, "제목"+i,33.22,22.22,"나라"+i, 0,0,0)
+        }
 
     }
 }
 
 class DBHandlerMemory(context:Context) : SQLiteOpenHelper(context, MemoryData.DB_NAME, null, MemoryData.DB_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
-
         db?.createTable(MemoryData.MemoryTable.TABLE_NAME,true,
                 Pair(MemoryData.MemoryTable._ID, INTEGER + PRIMARY_KEY),
                 Pair(MemoryData.MemoryTable.TITLE, TEXT),
@@ -162,10 +81,15 @@ class DBHandlerMemory(context:Context) : SQLiteOpenHelper(context, MemoryData.DB
                 Pair(MemoryData.MemoryTable.CLASSIFICATION, INTEGER))
     }
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onOpen(db: SQLiteDatabase?) {
-        super.onOpen(db)
+        db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
+        db?.createTable(MemoryData.MemoryTable.TABLE_NAME,true,
+                Pair(MemoryData.MemoryTable._ID, INTEGER + PRIMARY_KEY),
+                Pair(MemoryData.MemoryTable.TITLE, TEXT),
+                Pair(MemoryData.MemoryTable.LATITUDE, REAL),
+                Pair(MemoryData.MemoryTable.LONGITUDE, REAL),
+                Pair(MemoryData.MemoryTable.NATION_NAME, TEXT),
+                Pair(MemoryData.MemoryTable.FROM_DATE, INTEGER),
+                Pair(MemoryData.MemoryTable.TO_DATE, INTEGER),
+                Pair(MemoryData.MemoryTable.CLASSIFICATION, INTEGER))
     }
 }
