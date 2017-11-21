@@ -15,7 +15,6 @@ data class MemoryData(val id:Long = 0,
         val DB_NAME = "OurMemory.db"
         val DB_VERSION = 1
     }
-
     //메모리 테이블 테스트
     object MemoryTable{
         val TABLE_NAME = "timecapsule"

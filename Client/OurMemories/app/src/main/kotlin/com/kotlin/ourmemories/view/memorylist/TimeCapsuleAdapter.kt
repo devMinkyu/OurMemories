@@ -13,28 +13,15 @@ import com.kotlin.phonebook.adapter.CursorRecyclerViewAdapter
 /**
  * Created by nyoun_000 on 2017-11-11.
  */
-data class TimeCapsuleData(
-        var id:Int,
-        var title:String,
-        var latitude:Double,
-        var longitude:Double,
-        var nationName:String,
-        var classification:Int
-//        타임캡슐 테이블 내용
-//        val  _ID = "_id"
-//        val TITLE = "title"
-//        val LATITUDE = "latitude" //x좌표
-//        val LONGITUDE = "longitude" //y좌표
-//        val NATION_NAME = "nation_name"
-//        val FROM_DATE = "from_date"
-//        val TO_DATE = "to_date"
-//        val CLASSIFICATION = "classification" //타임캡슐 0, 후기 1
-)
-//class ViewHolder(view:View) : RecyclerView.ViewHolder(view){
-//    val tv_location : TextView = view.findViewById(R.id.tv_location) as TextView
-//    val tv_content : TextView = view.findViewById(R.id.tv_content) as TextView
-//    val tv_tag : TextView = view.findViewById(R.id.tv_tag) as TextView
-//}
+//data class TimeCapsuleData(
+//        var id:Int,
+//        var title:String,
+//        var latitude:Double,
+//        var longitude:Double,
+//        var nationName:String,
+//        var classification:Int
+//)
+
 
 class TimeCapsuleAdapter (context:Context, cursor:Cursor) : CursorRecyclerViewAdapter<TimeCapsuleAdapter.ViewHolder>(context,cursor){
     private val mInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -58,7 +45,7 @@ class TimeCapsuleAdapter (context:Context, cursor:Cursor) : CursorRecyclerViewAd
         holder.tv_tag.text = cursor.toString()
     }
 
-    //override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = cursor.columnCount
 
     fun setOnItemClickListener(l:View.OnClickListener)
     {
