@@ -48,41 +48,7 @@ def login():
     print(accessToken) # 토큰을 받았는지 test
 
     session['oauth_token'] = (accessToken, '')
-    
-    me = facebook.get('/me?fields=id,name,email,picture')
-    print(me.data)
 
-# @app.route('/facebookLogin', methods=['GET', 'POST'])
-# def login():
-#     accessToken = request.form['accessToken']
-#     print(accessToken)
-#     callback = url_for(
-#         'facebook_authorized',
-#         next=request.args.get('next') or request.referrer or None,
-#         _external=True
-#     )
-#     print(callback)
-#     return facebook.authorize(callback=callback)
-
-
-@app.route('/login/authorized')
-@facebook.authorized_handler
-def facebook_authorized(resp):
-    if resp is None:
-        return 'Access denied: reason=%s error=%s' % (
-            request.args['error_reason'],
-            request.args['error_description']
-        )
-    if isinstance(resp, OAuthException):
-        return 'Access denied: %s' % resp.message
-
-    # 안드로이드에서 토큰받는 테스트 코드
-    # accessToken = request.form['accessToken']
-    # print(accessToken)
-    # session['oauth_token'] = (accessToken, '')
-
-    session['oauth_token'] = (resp['access_token'], '')
-    print(resp['access_token'])
     me = facebook.get('/me?fields=id,name,email,picture')
     print(me.data)
 
@@ -112,10 +78,64 @@ def facebook_authorized(resp):
     result_object.append(dict(zip(('isSuccess'), ('true/insert','true/update', 'false') )))
     print(result_object)
 
+# 웹에서 페이스북 로그인을 위한
+# @app.route('/facebookLogin')
+# def login():
+#     callback = url_for(
+#         'facebook_authorized',
+#         next=request.args.get('next') or request.referrer or None,
+#         _external=True
+#     )
+#     print(callback)
+#     return facebook.authorize(callback=callback)
+
+
+@app.route('/login/authorized')
+@facebook.authorized_handler
+def facebook_authorized(resp):
+    if resp is None:
+        return 'Access denied: reason=%s error=%s' % (
+            request.args['error_reason'],
+            request.args['error_description']
+        )
+    if isinstance(resp, OAuthException):
+        return 'Access denied: %s' % resp.message
+
+    session['oauth_token'] = (resp['access_token'], '')
+    print(resp['access_token'])
+    me = facebook.get('/me?fields=id,name,email,picture')
+    print(me.data)
+
+    # Json 파싱을 통해 값을 가져온다
+    # 키 값으로 가져온다
+    user_id = jsonify(me.data['id'])
+    name = jsonify(me.data['name'])
+    email = jsonify(me.data['email'])
+    picture = jsonify(me.data['picture'])
+    print(user_id)
+    print(name)
+    print(email)
+    print(picture)
+
+    # 각각의 Json 데이터를 만들어준다.
+    user_object = []
+    user_object.append({'userId': user_id})
+    user_object.append({'userName' : name})
+    user_object.append({'userEmail' : email})
+    user_object.append({'userProfileImageUrl' : picture})
+    print(user_object)
+
+    # isSuccess
+    result_object = []
+    # dict(zip(('isSuccess'), ('true/insert','true/update', 'false') ))
+    # isSuccess = ('true/insert','true/update', 'false')
+    # result_object.append(dict(zip(('isSuccess'), ('true/insert','true/update', 'false') )))
+    # print(result_object)
+
     # return jsonify(me.data)
 
-    # return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
-    #     (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
+    return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
+        (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
 
     # 데이터를 json형태로
     # test = dict(zip(('isSuccess', 'data'), ( ('true/insert','true/update', 'false'), me.data)))
