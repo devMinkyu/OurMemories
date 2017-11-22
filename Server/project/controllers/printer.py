@@ -53,10 +53,10 @@ def login():
 
     # Json 파싱을 통해 값을 가져온다
     # 키 값으로 가져온다
-    user_id = jsonify(me.data['id'])
-    name = jsonify(me.data['name'])
-    email = jsonify(me.data['email'])
-    picture = jsonify(me.data['picture']['data']['url'])
+    user_id = (me.data['id'])
+    name = (me.data['name'])
+    email = (me.data['email'])
+    picture = (me.data['picture']['data']['url'])
 
     # 각각의 Json 데이터를 만들어준다.
     user_object = []
