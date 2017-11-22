@@ -59,19 +59,19 @@ def login():
     picture = (me.data['picture']['data']['url'])
 
     # 각각의 Json 데이터를 만들어준다.
-    user_object = []
-    user_object.append({'userId': user_id})
-    user_object.append({'userName' : name})
-    user_object.append({'userEmail' : email})
-    user_object.append({'userProfileImageUrl' : picture})
+    # user_object = []
+    # user_object.append({'userId': user_id})
+    # user_object.append({'userName' : name})
+    # user_object.append({'userEmail' : email})
+    # user_object.append({'userProfileImageUrl' : picture})
 
     # isSuccess
-    result_object = []
+    # result_object = []
     isSuccess = 'true/insert'
-    result_object.append({'userLoginResult':user_object})
-    result_object.append({'isSuccess':isSuccess})
+    # result_object.append({'userLoginResult':user_object})
+    # result_object.append({'isSuccess':isSuccess})
     # print(result_object)
-
+    user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
     sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
     print(sendToAndroid)
 
@@ -115,22 +115,28 @@ def facebook_authorized(resp):
     # print(email)
     # print(picture)
 
-    # 각각의 Json 데이터를 만들어준다.
-    user_object = []
-    user_object.append({'userId': user_id})
-    user_object.append({'userName' : name})
-    user_object.append({'userEmail' : email})
-    user_object.append({'userProfileImageUrl' : picture})
-    # print(user_object)
+    # # 각각의 Json 데이터를 만들어준다.
+    # user_object = []
+    # user_object.append({'userId': user_id})
+    # user_object.append({'userName' : name})
+    # user_object.append({'userEmail' : email})
+    # user_object.append({'userProfileImageUrl' : picture})
+    # # print(user_object)
+    #
+    # # isSuccess
+    # result_object = []
+    # isSuccess = 'true/insert'
+    # result_object.append({'userLoginResult':user_object})
+    # result_object.append({'isSuccess':isSuccess})
+    # # print(result_object)
 
-    # isSuccess
-    result_object = []
     isSuccess = 'true/insert'
-    result_object.append({'userLoginResult':user_object})
-    result_object.append({'isSuccess':isSuccess})
+    # result_object.append({'userLoginResult':user_object})
+    # result_object.append({'isSuccess':isSuccess})
     # print(result_object)
-
+    user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
     sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+
     print(sendToAndroid)
 
     return jsonify(sendToAndroid)
