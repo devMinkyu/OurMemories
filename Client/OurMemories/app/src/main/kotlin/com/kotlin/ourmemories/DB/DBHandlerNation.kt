@@ -55,16 +55,19 @@ object DBManagerNation{
     }
 
     fun defaultAddNation(){
-        for (i in 1..15){
-            var nation  = NationData(0, "나라"+i,33.33, 22.22)
-            addNation(nation)
-        }
+        var nation  = NationData(0, "대한민국",37.551836, 126.990684)
+        addNation(nation)
+        nation  = NationData(0, "일본",35.846806,  137.980230)
+        addNation(nation)
+        nation  = NationData(0, "미국",39.829794, -101.340035)
+        addNation(nation)
     }
 
 }
 
 class DBHandlerNation(context: Context) : SQLiteOpenHelper(context, NationData.DB_NAME, null, NationData.DB_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
+        //db?.dropTable(NationData.NationTable.TABLE_NAME, true)
         db?.createTable(NationData.NationTable.TABLE_NAME, true,
                 Pair(NationData.NationTable._ID, INTEGER + PRIMARY_KEY),
                 Pair(NationData.NationTable.NAME, TEXT),
@@ -74,11 +77,6 @@ class DBHandlerNation(context: Context) : SQLiteOpenHelper(context, NationData.D
     }
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.dropTable(NationData.NationTable.TABLE_NAME, true)
-        db?.createTable(NationData.NationTable.TABLE_NAME, true,
-                Pair(NationData.NationTable._ID, INTEGER + PRIMARY_KEY),
-                Pair(NationData.NationTable.NAME, TEXT),
-                Pair(NationData.NationTable.LATITUDE, REAL),
-                Pair(NationData.NationTable.LONGITUDE, REAL)
-        )
+
     }
 }

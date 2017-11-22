@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 import org.jetbrains.anko.db.*
 
 /**
@@ -35,6 +34,7 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.CLASSIFICATION),
             null, null, null, null, MemoryData.MemoryTable._ID)
 
+
     // 추억 추가
     fun addMemory(memoryData: MemoryData){
         val cv = ContentValues()
@@ -61,15 +61,39 @@ object DBManagerMemory {
 
     // 테스트용
     fun defaultAddTimeCapesule() {
-        for(i in 1..20){
-            var memoryData = MemoryData(0, "제목"+i,33.22,22.22,"나라"+i, 0,0,0)
-        }
 
+        var memoryData = MemoryData(0, "남산에서 타임캡슐",37.553902,126.980732,"대한민국", 0,0,0)
+        addMemory(memoryData)
+        memoryData = MemoryData(0, "이태원에서 타임캡슐",37.533924,126.993662,"대한민국", 0,0,0)
+        addMemory(memoryData)
+        memoryData = MemoryData(0, "부산 첫만남 장소 타임캡슐",35.153012,129.118680,"대한민국", 0,0,0)
+        addMemory(memoryData)
+        memoryData = MemoryData(0, "전주 타임캡슐",35.814836,127.153150,"대한민국", 0,0,0)
+        addMemory(memoryData)
+        memoryData = MemoryData(0, "속초 타임캡슐",38.190457,128.603384,"대한민국", 0,0,0)
+        addMemory(memoryData)
+        memoryData = MemoryData(0, "여의나루 데이트",37.528145,126.934022,"대한민국", 0,0,1)
+        addMemory(memoryData)
     }
+
 }
 
-class DBHandlerMemory(context:Context) : SQLiteOpenHelper(context, MemoryData.DB_NAME, null, MemoryData.DB_VERSION){
+class DBHandlerMemory(context:Context) : ManagedSQLiteOpenHelper(context, MemoryData.DB_NAME, null, MemoryData.DB_VERSION){
+//    companion object {
+//        private var instance: DBHandlerMemory? = null
+//
+//        @Synchronized
+//        fun getInstance(context: Context):DBHandlerMemory{
+//            if (instance == null){
+//                instance = DBHandlerMemory(context.applicationContext)
+//            }
+//            return instance!!
+//        }
+//    }
+
     override fun onCreate(db: SQLiteDatabase?) {
+        //db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
+
         db?.createTable(MemoryData.MemoryTable.TABLE_NAME,true,
                 Pair(MemoryData.MemoryTable._ID, INTEGER + PRIMARY_KEY),
                 Pair(MemoryData.MemoryTable.TITLE, TEXT),
@@ -82,14 +106,8 @@ class DBHandlerMemory(context:Context) : SQLiteOpenHelper(context, MemoryData.DB
     }
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
-        db?.createTable(MemoryData.MemoryTable.TABLE_NAME,true,
-                Pair(MemoryData.MemoryTable._ID, INTEGER + PRIMARY_KEY),
-                Pair(MemoryData.MemoryTable.TITLE, TEXT),
-                Pair(MemoryData.MemoryTable.LATITUDE, REAL),
-                Pair(MemoryData.MemoryTable.LONGITUDE, REAL),
-                Pair(MemoryData.MemoryTable.NATION_NAME, TEXT),
-                Pair(MemoryData.MemoryTable.FROM_DATE, INTEGER),
-                Pair(MemoryData.MemoryTable.TO_DATE, INTEGER),
-                Pair(MemoryData.MemoryTable.CLASSIFICATION, INTEGER))
+
     }
+//    val Context.database : DBHandlerMemory
+//        get() = DBHandlerMemory.getInstance(applicationContext)
 }

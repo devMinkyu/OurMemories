@@ -18,15 +18,20 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 //        //데이터베이스 오픈
 //        DBManagerMemory.init(this)
 //        DBManagerMemory.defaultAddTimeCapesule()
-
 //        //getMemoryAllWithCursor를 통해 모든 데이터를 cursor에 담아서 어댑터에 담아줌.
 //        var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoryAllWithCursor())
-
-
-
+//        var recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
+//        recycleListView.layoutManager = LinearLayoutManager(this)
+//        recycleListView.adapter = adapter
         var recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
         recycleListView.layoutManager = LinearLayoutManager(this)
-//        recycleListView.adapter = adapter
+
+        DBManagerMemory.init(this)
+        //DBManagerMemory.defaultAddTimeCapesule()
+
+        var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoryAllWithCursor())
+        recycleListView.adapter = adapter
+
     }
 
     override fun onStart() {

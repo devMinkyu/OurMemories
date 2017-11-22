@@ -9,7 +9,7 @@ data class NationData(val id:Long = 0,
                       val longitude: Double = 0.0) {
 
     companion object {
-        val DB_NAME = "OurMemory.db"
+        val DB_NAME = "OurMemory1.db"
         val DB_VERSION = 1
     }
     //메모리 테이블 테스트

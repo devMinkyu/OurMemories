@@ -38,7 +38,7 @@ class MemoryListFragment : Fragment() , View.OnClickListener {
         recycleListView.layoutManager = LinearLayoutManager(activity)
 
         DBManagerNation.init(activity)
-//        DBManagerNation.defaultAddNation()
+        //DBManagerNation.defaultAddNation()
 
         var adapter = NationAdapter(activity, DBManagerNation.getNationAllWithCursor())
         recycleListView.adapter = adapter
