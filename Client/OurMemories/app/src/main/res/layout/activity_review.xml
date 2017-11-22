@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/memoryRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -62,8 +63,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/memory_20size"
                     android:layout_marginTop="@dimen/memory_15size"
-                    android:textSize="@dimen/font_title_Large_ize"
-                    android:hint="@string/memory_date" />
+                    android:hint="@string/memory_date"
+                    android:textSize="@dimen/font_title_Large_ize" />
             </RelativeLayout>
 
             <EditText
@@ -100,11 +101,23 @@
                     android:contentDescription="@string/memory_address"
                     android:src="@drawable/ic_room_black_24dp" />
             </RelativeLayout>
+
             <RelativeLayout
-                android:id="@+id/reviewMap"
+                android:id="@+id/reviewMapRoot"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/memory_15size"/>
+                android:layout_height="@dimen/video_height"
+                android:layout_marginLeft="@dimen/memory_15size"
+                android:layout_marginRight="@dimen/memory_15size"
+                android:visibility="gone">
+
+                <fragment
+                    android:id="@+id/reviewMap"
+                    android:name="com.kotlin.ourmemories.view.memorylist.MemoryMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    tools:context=".view.review.ReviewActivity" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -157,7 +170,7 @@
                 android:id="@+id/reviewContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/memory_15size"/>
+                android:layout_margin="@dimen/memory_15size" />
 
             <Button
                 android:id="@+id/reviewSave"

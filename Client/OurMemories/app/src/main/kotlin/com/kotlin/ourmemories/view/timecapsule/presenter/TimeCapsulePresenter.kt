@@ -25,13 +25,13 @@ import java.util.*
 /**
  * Created by kimmingyu on 2017. 11. 14..
  */
-class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
+class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     companion object {
         val PICK_IMAGE: Int = 1010
         val PICK_VIDEO: Int = 1011
         val REQ_PERMISSON_IMAGE_PHOTO = 101
         val REQ_PERMISSON_IMAGE_VIDEO = 102
-        val REQ_PERMISSON_CAMERA_PHOTO  = 103
+        val REQ_PERMISSON_CAMERA_PHOTO = 103
         val REQ_PERMISSON_CAMERA_VIDEO = 104
         val REQ_PERMISSON_LOCATION = 105
     }
@@ -40,15 +40,16 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
     lateinit private var uploadFile: File
     lateinit override var activity: TimeCapsuleActivity
     lateinit override var mView: TimeCapsuleContract.View
-    override var mGoogleApiClient : GoogleApiClient? = null
+    override var mGoogleApiClient: GoogleApiClient? = null
+
     private val mContext = context
     private var mYear = 0
     private var mMonth = 0
     private var mDay = 0
     private var mHour = 24
     private var mMinute = 24
-    private var lat:Double = 0.0
-    private var lon:Double = 0.0
+    private var lat: Double = 0.0
+    private var lon: Double = 0.0
 
     // 날짜 처리하는 함수
     override fun dateTimeCapsule() {
@@ -63,7 +64,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
         if (mYear > year) {
             print(mContext.resources.getString(R.string.year_error_message))
             return@OnDateSetListener
-        } else if(mYear == year) {
+        } else if (mYear == year) {
             if (mMonth > month) {
                 print(mContext.resources.getString(R.string.month_error_message))
                 return@OnDateSetListener
@@ -119,16 +120,20 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
     // GPS 부분
     @SuppressLint("MissingPermission")
     override fun currentAddress() {
-        val permission = arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION)
+        val permission = arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION)
         if ((ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 or (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(activity, permission, REQ_PERMISSON_LOCATION)
         } else {
-            val location:Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
-            lat = location.latitude
-            lon = location.longitude
-            activity.toast("$lat $lon")
-            mView.updateAddressView(lat,lon)
+            val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
+            if(location == null){
+                activity.toast("GPS가 꺼져 있습니다")
+            }else {
+                lat = location.latitude
+                lon = location.longitude
+                activity.toast("$lat $lon")
+                mView.updateAddressView(lat, lon)
+            }
         }
     }
 
@@ -142,73 +147,73 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
         alertDialogBuilder.setItems(items) { dialog, id ->
             when (id) {
                 0 -> {
-                    when{
-                        (mDay == 1) and (mMonth == 0)->{
-                            calendar.set(Calendar.YEAR, mYear-1)
-                            calendar.set(Calendar.MONTH,11)
-                            calendar.set(mYear-1,11,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),mHour,mMinute,0)
+                    when {
+                        (mDay == 1) and (mMonth == 0) -> {
+                            calendar.set(Calendar.YEAR, mYear - 1)
+                            calendar.set(Calendar.MONTH, 11)
+                            calendar.set(mYear - 1, 11, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), mHour, mMinute, 0)
                         }
-                        (mDay == 1) and (mMonth != 0)->{
+                        (mDay == 1) and (mMonth != 0) -> {
                             calendar.set(Calendar.YEAR, mYear)
-                            calendar.set(Calendar.MONTH,mMonth-1)
-                            calendar.set(mYear,mMonth-1,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),mHour,mMinute,0)
+                            calendar.set(Calendar.MONTH, mMonth - 1)
+                            calendar.set(mYear, mMonth - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), mHour, mMinute, 0)
                         }
-                        (mDay != 1)->{
-                            calendar.set(mYear, mMonth, mDay - 1, mHour, mMinute,0)
+                        (mDay != 1) -> {
+                            calendar.set(mYear, mMonth, mDay - 1, mHour, mMinute, 0)
                         }
                     }
                     mView.updateAlarmView(items[0])
                 }
                 1 -> {
-                    when{
-                        (mHour < 12) and (mMonth == 0)->{
-                            calendar.set(Calendar.YEAR, mYear-1)
-                            calendar.set(Calendar.MONTH,11)
-                            calendar.set(mYear-1,11,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-12,mMinute,0)
+                    when {
+                        (mHour < 12) and (mMonth == 0) -> {
+                            calendar.set(Calendar.YEAR, mYear - 1)
+                            calendar.set(Calendar.MONTH, 11)
+                            calendar.set(mYear - 1, 11, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + mHour - 12, mMinute, 0)
                         }
-                        (mHour < 12) and (mMonth != 0)->{
+                        (mHour < 12) and (mMonth != 0) -> {
                             calendar.set(Calendar.YEAR, mYear)
-                            calendar.set(Calendar.MONTH,mMonth-1)
-                            calendar.set(mYear,mMonth-1,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-12,mMinute,0)
+                            calendar.set(Calendar.MONTH, mMonth - 1)
+                            calendar.set(mYear, mMonth - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + mHour - 12, mMinute, 0)
                         }
-                        (mHour >= 12)->{
-                            calendar.set(mYear, mMonth, mDay, mHour - 12, mMinute,0)
+                        (mHour >= 12) -> {
+                            calendar.set(mYear, mMonth, mDay, mHour - 12, mMinute, 0)
                         }
                     }
                     mView.updateAlarmView(items[1])
                 }
                 2 -> {
-                    when{
-                        (mHour < 6) and (mMonth == 0)->{
-                            calendar.set(Calendar.YEAR, mYear-1)
-                            calendar.set(Calendar.MONTH,11)
-                            calendar.set(mYear-1,11,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-6,mMinute,0)
+                    when {
+                        (mHour < 6) and (mMonth == 0) -> {
+                            calendar.set(Calendar.YEAR, mYear - 1)
+                            calendar.set(Calendar.MONTH, 11)
+                            calendar.set(mYear - 1, 11, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + mHour - 6, mMinute, 0)
                         }
-                        (mHour < 6) and (mMonth != 0)->{
+                        (mHour < 6) and (mMonth != 0) -> {
                             calendar.set(Calendar.YEAR, mYear)
-                            calendar.set(Calendar.MONTH,mMonth-1)
-                            calendar.set(mYear,mMonth-1,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-6,mMinute,0)
+                            calendar.set(Calendar.MONTH, mMonth - 1)
+                            calendar.set(mYear, mMonth - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + mHour - 6, mMinute, 0)
                         }
-                        (mHour >= 6)->{
-                            calendar.set(mYear, mMonth, mDay, mHour - 6, mMinute,0)
+                        (mHour >= 6) -> {
+                            calendar.set(mYear, mMonth, mDay, mHour - 6, mMinute, 0)
                         }
                     }
                     mView.updateAlarmView(items[2])
                 }
                 3 -> {
-                    when{
-                        (mHour < 1) and (mMonth == 0)->{
-                            calendar.set(Calendar.YEAR, mYear-1)
-                            calendar.set(Calendar.MONTH,11)
-                            calendar.set(mYear-1,11,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-1,mMinute,0)
+                    when {
+                        (mHour < 1) and (mMonth == 0) -> {
+                            calendar.set(Calendar.YEAR, mYear - 1)
+                            calendar.set(Calendar.MONTH, 11)
+                            calendar.set(mYear - 1, 11, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + mHour - 1, mMinute, 0)
                         }
-                        (mHour < 1) and (mMonth != 0)->{
+                        (mHour < 1) and (mMonth != 0) -> {
                             calendar.set(Calendar.YEAR, mYear)
-                            calendar.set(Calendar.MONTH,mMonth-1)
-                            calendar.set(mYear,mMonth-1,calendar.getActualMaximum(Calendar.DAY_OF_MONTH),24+mHour-1,mMinute,0)
+                            calendar.set(Calendar.MONTH, mMonth - 1)
+                            calendar.set(mYear, mMonth - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + mHour - 1, mMinute, 0)
                         }
-                        (mHour >= 1)->{
-                            calendar.set(mYear, mMonth, mDay, mHour - 1, mMinute,0)
+                        (mHour >= 1) -> {
+                            calendar.set(mYear, mMonth, mDay, mHour - 1, mMinute, 0)
                         }
                     }
                     mView.updateAlarmView(items[3])

@@ -11,15 +11,19 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.text.InputType
 import android.view.Gravity
+import android.view.View
 import android.widget.*
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationServices
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.MainActivity
+import com.kotlin.ourmemories.view.memorylist.MemoryMapFragment
 import com.kotlin.ourmemories.view.review.presenter.ReviewContract
 import com.kotlin.ourmemories.view.review.presenter.ReviewPresenter
-import com.kotlin.ourmemories.view.review.presenter.ReviewPresenter.Companion.REQ_PERMISSON
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_review.*
+import kotlinx.android.synthetic.main.activity_timecapsule.*
 import java.io.File
 import java.util.*
 
@@ -45,8 +49,8 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         // 오늘 날짜 적용
         val calendar = Calendar.getInstance()
         val dataFormat = this.resources.getString(R.string.date_format)
-        reviewDateText.text = String.format(dataFormat, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH))
-        
+        reviewDateText.text = String.format(dataFormat, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
+
         // editText 를 눌러도 키보드가 안나오게 하기 위함
         reviewLocation.inputType = InputType.TYPE_NULL
 
@@ -63,6 +67,10 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
             reviewText.background = this.resources.getDrawable(R.drawable.border)
             reviewText.setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
             reviewContents.addView(reviewText)
+        }
+
+        reviewLocation.setOnClickListener {
+            presenter.currentAddress()
         }
 
         // 사진 버튼 눌렀을 때
@@ -89,7 +97,25 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         reviewSave.setOnClickListener { }
     }
 
-    override fun updateAddressView() {
+    override fun onStart() {
+        super.onStart()
+        if (presenter.mGoogleApiClient == null) {
+            presenter.mGoogleApiClient = GoogleApiClient.Builder(applicationContext).addApi(LocationServices.API).build()
+        }
+        presenter.mGoogleApiClient!!.connect()
+    }
+
+    override fun onStop() {
+        if (presenter.mGoogleApiClient != null) {
+            presenter.mGoogleApiClient!!.disconnect()
+        }
+        super.onStop()
+    }
+
+    override fun updateAddressView(lat: Double, lon: Double) {
+        timeCapsuleMapRoot.visibility = View.VISIBLE
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.timeCapsuleMap) as MemoryMapFragment
+        mapFragment.getMapAsync(mapFragment)
     }
 
     // 사진을 받아서 contents 에 사진을 추가
@@ -123,28 +149,34 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
 
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        val notGranted = kotlin.arrayOfNulls<String>(permissions.size)
-        when (requestCode) {
-            REQ_PERMISSON -> {
-                var index = 0
-                for (i in 0 until permissions.size) {
-                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                        val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
-                        if (!rationale) {
-                            val dialogBuild = AlertDialog.Builder(this).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
-                                    .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
-                                showSetting()
-                            }
-                            dialogBuild.create().show()
-                            return
-                        } else {
-                            notGranted[index++] = permissions[i]
-                        }
+        for (i in 0 until permissions.size) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
+                if (rationale) {
+                    val dialogBuild = AlertDialog.Builder(this).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
+                            .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
+                        showSetting()
                     }
+                    dialogBuild.create().show()
+                    return
                 }
-                if (notGranted.isNotEmpty()) {
-                    ActivityCompat.requestPermissions(this, notGranted, REQ_PERMISSON)
-                }
+            }
+        }
+        when (requestCode) {
+            ReviewPresenter.REQ_PERMISSON_IMAGE_PHOTO -> {
+                presenter.photoReview()
+            }
+            ReviewPresenter.REQ_PERMISSON_IMAGE_VIDEO -> {
+                presenter.videoReview()
+            }
+            ReviewPresenter.REQ_PERMISSON_CAMERA_PHOTO -> {
+                presenter.cameraPhotoReview()
+            }
+            ReviewPresenter.REQ_PERMISSON_CAMERA_VIDEO -> {
+                presenter.cameraVideoReview()
+            }
+            ReviewPresenter.REQ_PERMISSON_LOCATION -> {
+                presenter.currentAddress()
             }
         }
     }

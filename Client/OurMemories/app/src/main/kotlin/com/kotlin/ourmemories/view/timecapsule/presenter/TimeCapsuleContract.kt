@@ -9,19 +9,20 @@ import java.io.File
  * Created by kimmingyu on 2017. 11. 14..
  */
 interface TimeCapsuleContract {
-    interface View{
-        fun updateDateView(year:Int, monthOfYear:Int, dayOfMonth:Int)
-        fun updateFromTimeView(hourOfDay:Int , minute:Int)
-        fun updateToTimeView(hourOfDay:Int , minute:Int)
-        fun updateAddressView(lat:Double,lon:Double)
+    interface View {
+        fun updateDateView(year: Int, monthOfYear: Int, dayOfMonth: Int)
+        fun updateFromTimeView(hourOfDay: Int, minute: Int)
+        fun updateToTimeView(hourOfDay: Int, minute: Int)
+        fun updateAddressView(lat: Double, lon: Double)
         fun updateAlarmView(alarmMessage: String)
         fun updatePhotoView(uploadFile: File)
         fun updateVideoView(uploadFile: File)
     }
-    interface Presenter{
+
+    interface Presenter {
         var mView: View
-        var activity:TimeCapsuleActivity
-        var mGoogleApiClient : GoogleApiClient?
+        var activity: TimeCapsuleActivity
+        var mGoogleApiClient: GoogleApiClient?
 
         fun dateTimeCapsule()
 

@@ -1,6 +1,7 @@
 package com.kotlin.ourmemories.view.review.presenter
 
 import android.content.Intent
+import com.google.android.gms.common.api.GoogleApiClient
 import com.kotlin.ourmemories.view.review.ReviewActivity
 import java.io.File
 
@@ -8,14 +9,17 @@ import java.io.File
  * Created by kimmingyu on 2017. 11. 19..
  */
 interface ReviewContract {
-    interface View{
-        fun updateAddressView()
+    interface View {
+        fun updateAddressView(lat: Double, lon: Double)
         fun updatePhotoView(uploadFile: File)
         fun updateVideoView(uploadFile: File)
     }
-    interface Presenter{
+
+    interface Presenter {
         var mView: View
-        var activity:ReviewActivity
+        var activity: ReviewActivity
+        var mGoogleApiClient: GoogleApiClient?
+
         fun currentAddress()
 
         fun photoReview()

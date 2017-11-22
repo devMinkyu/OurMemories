@@ -76,15 +76,14 @@ class LoginPresenter: LoginContract.Presenter{
 
         override fun onResponse(call: Call?, response: Response?) {
             val responseData = response?.body()!!.string()
-            Log.d("hoho", responseData)
             val loginRequest:UserLogin = Gson().fromJson(responseData, UserLogin::class.java)
 
             val isSuccess = loginRequest.isSuccess
 
-            activity.hideDialog()
             when(isSuccess){
                 "true/insert"->{
                     activity.runOnUiThread {
+                        activity.hideDialog()
                         // 공유저장소에 저장전 한번 초기화 시켜준다
                         PManager.setUserId("")
                         PManager.setUserEmail("")
@@ -105,6 +104,7 @@ class LoginPresenter: LoginContract.Presenter{
                 }
                 "true/update"->{
                     activity.runOnUiThread {
+                        activity.hideDialog()
                         //(이미 정보 존재 시 수정만 해준다.)공유저장소에 등록될 수정될 내용은 토큰값만 바꾸어 준다.
                         PManager.setUserFacebookId(accessToken)
 
@@ -114,7 +114,7 @@ class LoginPresenter: LoginContract.Presenter{
                 }
                 "false"->{
                     activity.runOnUiThread {
-
+                        activity.hideDialog()
                         val alertDialog = AlertDialog.Builder(activity)
                         alertDialog.setTitle("Login")
                                 .setMessage("로그인 실패 (다시 접속해주세)")

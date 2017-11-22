@@ -109,7 +109,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
     }
 
     override fun onStop() {
-        if(presenter.mGoogleApiClient != null){
+        if (presenter.mGoogleApiClient != null) {
             presenter.mGoogleApiClient!!.disconnect()
         }
         super.onStop()
@@ -117,7 +117,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
 
     override fun onStart() {
         super.onStart()
-        if(presenter.mGoogleApiClient == null){
+        if (presenter.mGoogleApiClient == null) {
             presenter.mGoogleApiClient = GoogleApiClient.Builder(applicationContext).addApi(LocationServices.API).build()
         }
         presenter.mGoogleApiClient!!.connect()
@@ -175,9 +175,10 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         mapFragment.getMapAsync(mapFragment)
     }
 
-    override fun updateAlarmView(alarmMessage:String) {
+    override fun updateAlarmView(alarmMessage: String) {
         timeCapsuleAlarm.setText(alarmMessage)
     }
+
     // 사진을 받아서 contents 에 사진을 추가
     override fun updatePhotoView(uploadFile: File) {
         val timeCapsulePhoto = ImageView(this)

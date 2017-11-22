@@ -145,6 +145,7 @@
                 android:layout_marginLeft="@dimen/memory_15size"
                 android:layout_marginRight="@dimen/memory_15size"
                 android:visibility="gone">
+
                 <fragment
                     android:id="@+id/timeCapsuleMap"
                     android:name="com.kotlin.ourmemories.view.memorylist.MemoryMapFragment"
@@ -228,7 +229,7 @@
                 android:id="@+id/timeCapsuleContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/memory_15size"/>
+                android:layout_margin="@dimen/memory_15size" />
 
 
             <Button
