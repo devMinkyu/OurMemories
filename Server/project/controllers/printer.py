@@ -41,18 +41,28 @@ db = connection.airbnb
 def index():
     return redirect(url_for('login'))
 
-
+# android의 access token으로 페이스북 정보 가져오기
 @app.route('/facebookLogin', methods=['GET', 'POST'])
 def login():
     accessToken = request.form['accessToken']
-    print(accessToken)
-    callback = url_for(
-        'facebook_authorized',
-        next=request.args.get('next') or request.referrer or None,
-        _external=True
-    )
-    print(callback)
-    return facebook.authorize(callback=callback)
+    print(accessToken) # 토큰을 받았는지 test
+
+    session['oauth_token'] = (accessToken, '')
+    
+    me = facebook.get('/me?fields=id,name,email,picture')
+    print(me.data)
+
+# @app.route('/facebookLogin', methods=['GET', 'POST'])
+# def login():
+#     accessToken = request.form['accessToken']
+#     print(accessToken)
+#     callback = url_for(
+#         'facebook_authorized',
+#         next=request.args.get('next') or request.referrer or None,
+#         _external=True
+#     )
+#     print(callback)
+#     return facebook.authorize(callback=callback)
 
 
 @app.route('/login/authorized')
