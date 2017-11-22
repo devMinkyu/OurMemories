@@ -7,20 +7,16 @@ import android.app.DatePickerDialog
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
-import android.util.Log
 import android.widget.Toast
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationServices
 import com.kotlin.ourmemories.R
-import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.timecapsule.TimeCapsuleActivity
 import org.jetbrains.anko.toast
 import java.io.File
@@ -33,13 +29,18 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
     companion object {
         val PICK_IMAGE: Int = 1010
         val PICK_VIDEO: Int = 1011
-        val REQ_PERMISSON = 101
+        val REQ_PERMISSON_IMAGE_PHOTO = 101
+        val REQ_PERMISSON_IMAGE_VIDEO = 102
+        val REQ_PERMISSON_CAMERA_PHOTO  = 103
+        val REQ_PERMISSON_CAMERA_VIDEO = 104
+        val REQ_PERMISSON_LOCATION = 105
     }
 
     lateinit var path: String
     lateinit private var uploadFile: File
     lateinit override var activity: TimeCapsuleActivity
     lateinit override var mView: TimeCapsuleContract.View
+    override var mGoogleApiClient : GoogleApiClient? = null
     private val mContext = context
     private var mYear = 0
     private var mMonth = 0
@@ -118,14 +119,15 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
     // GPS 부분
     @SuppressLint("MissingPermission")
     override fun currentAddress() {
-        val check = ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
-        if (check != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQ_PERMISSON)
+        val permission = arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if ((ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                or (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(activity, permission, REQ_PERMISSON_LOCATION)
         } else {
-            val locationManager:LocationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            val location:Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
             lat = location.latitude
             lon = location.longitude
+            activity.toast("$lat $lon")
             mView.updateAddressView(lat,lon)
         }
     }
@@ -236,11 +238,12 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
         )
     }
 
+    // request Code 해결 ㄱㄱ
 
     override fun photoTimeCapsule() {
         val check = ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (check != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSON)
+            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSON_IMAGE_PHOTO)
         } else {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = "image/*"
@@ -251,7 +254,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
     override fun videoTimeCapsule() {
         val check = ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (check != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSON)
+            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSON_IMAGE_VIDEO)
         } else {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
             intent.type = "video/*"
@@ -262,7 +265,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
     override fun cameraPhotoTimeCapsule() {
         val check = ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.CAMERA)
         if (check != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.CAMERA), REQ_PERMISSON)
+            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.CAMERA), REQ_PERMISSON_CAMERA_PHOTO)
         } else {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             activity.startActivityForResult(intent, PICK_IMAGE)
@@ -272,7 +275,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter{
     override fun cameraVideoTimeCapsule() {
         val check = ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.CAMERA)
         if (check != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.CAMERA), REQ_PERMISSON)
+            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.CAMERA), REQ_PERMISSON_CAMERA_VIDEO)
         } else {
             val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             activity.startActivityForResult(intent, PICK_VIDEO)

@@ -76,6 +76,7 @@ class LoginPresenter: LoginContract.Presenter{
 
         override fun onResponse(call: Call?, response: Response?) {
             val responseData = response?.body()!!.string()
+            Log.d("hoho", responseData)
             val loginRequest:UserLogin = Gson().fromJson(responseData, UserLogin::class.java)
 
             val isSuccess = loginRequest.isSuccess

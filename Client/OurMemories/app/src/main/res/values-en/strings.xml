@@ -42,6 +42,6 @@
     <string name="same_day_error_message">Please choose another day instead of today.</string>
     <string name="time_error_message">The selected time must not be later than the start time.</string>
     <string name="permission_setting">Set permissions</string>
-    <string name="permission_message">To create an image, you need to have permission to save. If you do not approve, you will not be able to set the image.</string>
+    <string name="permission_message">Multiple permissions are required to make contents. If you do not give these permissions, you can not make contents.</string>
     <string name="permission_button">Go to Settings</string>
 </resources>

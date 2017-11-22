@@ -1,6 +1,7 @@
 package com.kotlin.ourmemories.view.timecapsule.presenter
 
 import android.content.Intent
+import com.google.android.gms.common.api.GoogleApiClient
 import com.kotlin.ourmemories.view.timecapsule.TimeCapsuleActivity
 import java.io.File
 
@@ -20,6 +21,7 @@ interface TimeCapsuleContract {
     interface Presenter{
         var mView: View
         var activity:TimeCapsuleActivity
+        var mGoogleApiClient : GoogleApiClient?
 
         fun dateTimeCapsule()
 

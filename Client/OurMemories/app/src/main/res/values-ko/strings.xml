@@ -42,7 +42,7 @@
     <string name="same_day_error_message">오늘말고 다른 날을 선택해주세요.</string>
     <string name="time_error_message">선태한 시간이 시작 시간보다 늦거나 같으면 안됩니다.</string>
     <string name="permission_setting">권한 설정</string>
-    <string name="permission_message">이미지을 만들기 위해서 저장권한 필요합니다. 승인 하지 않으면 이미지를 설정 할 수 없습니다.</string>
+    <string name="permission_message">컨텐츠를 만들기 위해서 여러 권한들이 필요합니다. 이러한 권한을 주지 않으면 컨텐츠를 만들 수가 없습니다.</string>
     <string name="permission_button">설정하러 가기</string>
 
 </resources>

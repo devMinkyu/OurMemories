@@ -8,22 +8,21 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
 import android.widget.*
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationServices
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.memorylist.MemoryMapFragment
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsuleContract
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter
-import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter.Companion.REQ_PERMISSON
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_timecapsule.*
-import org.jetbrains.anko.toast
 import java.io.File
 
 class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
@@ -107,6 +106,21 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         }
 
         timeCapsuleSave.setOnClickListener { }
+    }
+
+    override fun onStop() {
+        if(presenter.mGoogleApiClient != null){
+            presenter.mGoogleApiClient!!.disconnect()
+        }
+        super.onStop()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(presenter.mGoogleApiClient == null){
+            presenter.mGoogleApiClient = GoogleApiClient.Builder(applicationContext).addApi(LocationServices.API).build()
+        }
+        presenter.mGoogleApiClient!!.connect()
     }
 
     // 날짜 선택 뷰
@@ -195,28 +209,34 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
 
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        val notGranted = kotlin.arrayOfNulls<String>(permissions.size)
-        when (requestCode) {
-            REQ_PERMISSON -> {
-                var index = 0
-                for (i in 0 until permissions.size) {
-                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                        val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
-                        if (!rationale) {
-                            val dialogBuild = AlertDialog.Builder(this).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
-                                    .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
-                                showSetting()
-                            }
-                            dialogBuild.create().show()
-                            return
-                        } else {
-                            notGranted[index++] = permissions[i]
-                        }
+        for (i in 0 until permissions.size) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
+                if (rationale) {
+                    val dialogBuild = AlertDialog.Builder(this).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
+                            .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
+                        showSetting()
                     }
+                    dialogBuild.create().show()
+                    return
                 }
-                if (notGranted.isNotEmpty()) {
-                    ActivityCompat.requestPermissions(this, notGranted, REQ_PERMISSON)
-                }
+            }
+        }
+        when (requestCode) {
+            TimeCapsulePresenter.REQ_PERMISSON_IMAGE_PHOTO -> {
+                presenter.photoTimeCapsule()
+            }
+            TimeCapsulePresenter.REQ_PERMISSON_IMAGE_VIDEO -> {
+                presenter.videoTimeCapsule()
+            }
+            TimeCapsulePresenter.REQ_PERMISSON_CAMERA_PHOTO -> {
+                presenter.cameraPhotoTimeCapsule()
+            }
+            TimeCapsulePresenter.REQ_PERMISSON_CAMERA_VIDEO -> {
+                presenter.cameraVideoTimeCapsule()
+            }
+            TimeCapsulePresenter.REQ_PERMISSON_LOCATION -> {
+                presenter.currentAddress()
             }
         }
     }
