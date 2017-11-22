@@ -41,7 +41,7 @@ db = connection.airbnb
 def index():
     return redirect(url_for('login'))
 
-# android의 access token으로 페이스북 정보 가져오기
+# android의 access token으로 페이스북 정보 가져오기 / Json 형식으로 Android로 넘기기
 @app.route('/facebookLogin', methods=['GET', 'POST'])
 def login():
     accessToken = request.form['accessToken']
@@ -50,18 +50,13 @@ def login():
     session['oauth_token'] = (accessToken, '')
 
     me = facebook.get('/me?fields=id,name,email,picture')
-    print(me.data)
 
     # Json 파싱을 통해 값을 가져온다
     # 키 값으로 가져온다
     user_id = jsonify(me.data['id'])
     name = jsonify(me.data['name'])
     email = jsonify(me.data['email'])
-    picture = jsonify(me.data['picture'])
-    print(user_id)
-    print(name)
-    print(email)
-    print(picture)
+    picture = jsonify(me.data['picture']['data']['url'])
 
     # 각각의 Json 데이터를 만들어준다.
     user_object = []
@@ -69,18 +64,18 @@ def login():
     user_object.append({'userName' : name})
     user_object.append({'userEmail' : email})
     user_object.append({'userProfileImageUrl' : picture})
-    print(user_object)
 
     # isSuccess
     result_object = []
     isSuccess = 'true/insert'
-    # dict(zip(('isSuccess'), ('true/insert','true/update', 'false') ))
-    # isSuccess = ('true/insert','true/update', 'false')
     result_object.append({'userLoginResult':user_object})
-    # result_object.append(dict(zip(('isSuccess'), ('true/insert','true/update', 'false') )))
     result_object.append({'isSuccess':isSuccess})
-    print(result_object)
-    return result_object
+    # print(result_object)
+
+    sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+    print(sendToAndroid)
+
+    return jsonify(sendToAndroid)
 
 # 웹에서 페이스북 로그인을 위한
 # @app.route('/facebookLogin')
@@ -106,20 +101,19 @@ def facebook_authorized(resp):
         return 'Access denied: %s' % resp.message
 
     session['oauth_token'] = (resp['access_token'], '')
-    print(resp['access_token'])
     me = facebook.get('/me?fields=id,name,email,picture')
-    print(me.data)
+    # print(me.data)
 
     # Json 파싱을 통해 값을 가져온다
     # 키 값으로 가져온다
-    user_id = jsonify(me.data['id'])
-    name = jsonify(me.data['name'])
-    email = jsonify(me.data['email'])
-    picture = jsonify(me.data['picture'])
-    print(user_id)
-    print(name)
-    print(email)
-    print(picture)
+    user_id = (me.data['id'])
+    name = (me.data['name'])
+    email = (me.data['email'])
+    picture = (me.data['picture']['data']['url'])
+    # print(user_id)
+    # print(name)
+    # print(email)
+    # print(picture)
 
     # 각각의 Json 데이터를 만들어준다.
     user_object = []
@@ -127,22 +121,26 @@ def facebook_authorized(resp):
     user_object.append({'userName' : name})
     user_object.append({'userEmail' : email})
     user_object.append({'userProfileImageUrl' : picture})
-    print(user_object)
+    # print(user_object)
 
     # isSuccess
     result_object = []
-    # dict(zip(('isSuccess'), ('true/insert','true/update', 'false') ))
-    # isSuccess = ('true/insert','true/update', 'false')
-    # result_object.append(dict(zip(('isSuccess'), ('true/insert','true/update', 'false') )))
+    isSuccess = 'true/insert'
+    result_object.append({'userLoginResult':user_object})
+    result_object.append({'isSuccess':isSuccess})
     # print(result_object)
 
+    sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+    print(sendToAndroid)
+
+    return jsonify(sendToAndroid)
     # return jsonify(me.data)
 
-    return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
-        (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
+    # return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
+    #     (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
 
     # 데이터를 json형태로
-    # test = dict(zip(('isSuccess', 'data'), ( ('true/insert','true/update', 'false'), me.data)))
+    # test = dict(zip(('isSuccess', 'data'), ('true/insert', me.data) ))
     # return jsonify(test)
 
 
