@@ -73,10 +73,14 @@ def login():
 
     # isSuccess
     result_object = []
+    isSuccess = 'true/insert'
     # dict(zip(('isSuccess'), ('true/insert','true/update', 'false') ))
     # isSuccess = ('true/insert','true/update', 'false')
-    result_object.append(dict(zip(('isSuccess'), ('true/insert','true/update', 'false') )))
+    result_object.append({'userLoginResult':user_object})
+    # result_object.append(dict(zip(('isSuccess'), ('true/insert','true/update', 'false') )))
+    result_object.append({'isSuccess':isSuccess})
     print(result_object)
+    return result_object
 
 # 웹에서 페이스북 로그인을 위한
 # @app.route('/facebookLogin')
