@@ -19,22 +19,22 @@ from project import *
 # DB 선택
 db = connection.airbnb
 
-# 게시판 데이터 다큐먼트
-class BBS(Document):
-    structure = {
-    'title' : unicode,
-    'content' : unicode,
-    }
-    required_fields = ['title', 'content']
-    use_dot_notation = True
-
-    def __repr__(self):
-        return '<BBS %r>' % (self.name)
-
-connection.register([BBS])
-collection = connection['airbnb'].bbs
-bbs = collection.BBS()
-bbs = db.bbs # collection 선택
+# # 게시판 데이터 다큐먼트
+# class BBS(Document):
+#     structure = {
+#     'title' : unicode,
+#     'content' : unicode,
+#     }
+#     required_fields = ['title', 'content']
+#     use_dot_notation = True
+#
+#     def __repr__(self):
+#         return '<BBS %r>' % (self.name)
+#
+# connection.register([BBS])
+# collection = connection['airbnb'].bbs
+# bbs = collection.BBS()
+# bbs = db.bbs # collection 선택
 
 
 @app.route('/')
@@ -42,8 +42,10 @@ def index():
     return redirect(url_for('login'))
 
 
-@app.route('/facebookLogin')
+@app.route('/facebookLogin', methods=['GET', 'POST'])
 def login():
+    accessToken = request.form['accessToken']
+    print(accessToken)
     callback = url_for(
         'facebook_authorized',
         next=request.args.get('next') or request.referrer or None,
@@ -65,37 +67,40 @@ def facebook_authorized(resp):
         return 'Access denied: %s' % resp.message
 
     # 안드로이드에서 토큰받는 테스트 코드
-    accessToken = request.form['accessToken']
-    print(accessToken)
-    session['oauth_token'] = (accessToken, '')
+    # accessToken = request.form['accessToken']
+    # print(accessToken)
+    # session['oauth_token'] = (accessToken, '')
 
-    # session['oauth_token'] = (resp['access_token'], '')
-    # print(resp['access_token'])
+    session['oauth_token'] = (resp['access_token'], '')
+    print(resp['access_token'])
     me = facebook.get('/me?fields=id,name,email,picture')
     print(me.data)
 
     # Json 파싱을 통해 값을 가져온다
     # 키 값으로 가져온다
-    # user_id = jsonify(me.data['id'])
-    # name = jsonify(me.data['name'])
-    # email = jsonify(me.data['email'])
-    # picture = jsonify(me.data['picture'])
-    # print(user_id)
-    # print(name)
-    # print(email)
-    # print(picture)
+    user_id = jsonify(me.data['id'])
+    name = jsonify(me.data['name'])
+    email = jsonify(me.data['email'])
+    picture = jsonify(me.data['picture'])
+    print(user_id)
+    print(name)
+    print(email)
+    print(picture)
 
     # 각각의 Json 데이터를 만들어준다.
-    # rest_json = []
-    # rest_json.append({'user_id': user_id})
-    # rest_json.append({'name' : name})
-    # rest_json.append({'email' : email})
-    # rest_json.append({'picture' : picture})
-    # print(rest_json)
+    user_object = []
+    user_object.append({'userId': user_id})
+    user_object.append({'userName' : name})
+    user_object.append({'userEmail' : email})
+    user_object.append({'userProfileImageUrl' : picture})
+    print(user_object)
 
-    # is_success
-    # result_object = []
-    # result_object.append({'is_success', '' + is_success})
+    # isSuccess
+    result_object = []
+    # dict(zip(('isSuccess'), ('true/insert','true/update', 'false') ))
+    # isSuccess = ('true/insert','true/update', 'false')
+    result_object.append(dict(zip(('isSuccess'), ('true/insert','true/update', 'false') )))
+    print(result_object)
 
     # return jsonify(me.data)
 
@@ -103,10 +108,8 @@ def facebook_authorized(resp):
     #     (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
 
     # 데이터를 json형태로
-    # test = dict(zip(('isSuccess', 'data'), ( ('true/insert','true/update', 'flask'), me.data)))
+    # test = dict(zip(('isSuccess', 'data'), ( ('true/insert','true/update', 'false'), me.data)))
     # return jsonify(test)
-
-    return 'dfdf'
 
 
 @facebook.tokengetter
