@@ -10,6 +10,7 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.text.InputType
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.*
@@ -105,12 +106,17 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             presenter.cameraVideoTimeCapsule()
         }
 
-        timeCapsuleSave.setOnClickListener { }
+        timeCapsuleSave.setOnClickListener {
+            presenter.saveMemory()
+        }
+
     }
+
 
     override fun onStop() {
         if (presenter.mGoogleApiClient != null) {
             presenter.mGoogleApiClient!!.disconnect()
+            presenter.mGoogleApiClient = null
         }
         super.onStop()
     }
@@ -135,18 +141,10 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         val amTimeFormat = this.resources.getString(R.string.am_time_format)
         val pmTimeFormat = this.resources.getString(R.string.pm_time_format)
         when {
-            hourOfDay > 12 -> {
-                timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay - 12, minute))
-            }
-            hourOfDay == 12 -> {
-                timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay, minute))
-            }
-            hourOfDay == 24 -> {
-                timeCapsuleFromTime.setText(String.format(pmTimeFormat, 23, 59))
-            }
-            hourOfDay < 12 -> {
-                timeCapsuleFromTime.setText(String.format(amTimeFormat, hourOfDay, minute))
-            }
+            hourOfDay > 12 -> timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay - 12, minute))
+            hourOfDay == 12 -> timeCapsuleFromTime.setText(String.format(pmTimeFormat, hourOfDay, minute))
+            hourOfDay == 24 -> timeCapsuleFromTime.setText(String.format(pmTimeFormat, 23, 59))
+            hourOfDay < 12 -> timeCapsuleFromTime.setText(String.format(amTimeFormat, hourOfDay, minute))
         }
     }
 
@@ -169,10 +167,11 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         }
     }
 
-    override fun updateAddressView(lat: Double, lon: Double) {
+    override fun updateAddressView(address: String) {
         timeCapsuleMapRoot.visibility = View.VISIBLE
         val mapFragment = supportFragmentManager.findFragmentById(R.id.timeCapsuleMap) as MemoryMapFragment
         mapFragment.getMapAsync(mapFragment)
+        timeCapsuleLocation.setText(address)
     }
 
     override fun updateAlarmView(alarmMessage: String) {
@@ -224,21 +223,11 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             }
         }
         when (requestCode) {
-            TimeCapsulePresenter.REQ_PERMISSON_IMAGE_PHOTO -> {
-                presenter.photoTimeCapsule()
-            }
-            TimeCapsulePresenter.REQ_PERMISSON_IMAGE_VIDEO -> {
-                presenter.videoTimeCapsule()
-            }
-            TimeCapsulePresenter.REQ_PERMISSON_CAMERA_PHOTO -> {
-                presenter.cameraPhotoTimeCapsule()
-            }
-            TimeCapsulePresenter.REQ_PERMISSON_CAMERA_VIDEO -> {
-                presenter.cameraVideoTimeCapsule()
-            }
-            TimeCapsulePresenter.REQ_PERMISSON_LOCATION -> {
-                presenter.currentAddress()
-            }
+            TimeCapsulePresenter.REQ_PERMISSON_IMAGE_PHOTO -> presenter.photoTimeCapsule()
+            TimeCapsulePresenter.REQ_PERMISSON_IMAGE_VIDEO -> presenter.videoTimeCapsule()
+            TimeCapsulePresenter.REQ_PERMISSON_CAMERA_PHOTO -> presenter.cameraPhotoTimeCapsule()
+            TimeCapsulePresenter.REQ_PERMISSON_CAMERA_VIDEO -> presenter.cameraVideoTimeCapsule()
+            TimeCapsulePresenter.REQ_PERMISSON_LOCATION -> presenter.currentAddress()
         }
     }
 

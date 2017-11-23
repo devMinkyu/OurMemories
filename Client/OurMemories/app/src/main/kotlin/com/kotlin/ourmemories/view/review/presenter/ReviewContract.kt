@@ -10,7 +10,7 @@ import java.io.File
  */
 interface ReviewContract {
     interface View {
-        fun updateAddressView(lat: Double, lon: Double)
+        fun updateAddressView(address: String)
         fun updatePhotoView(uploadFile: File)
         fun updateVideoView(uploadFile: File)
     }
@@ -29,5 +29,7 @@ interface ReviewContract {
 
         fun getImage(data: Intent?)
         fun getVideo(data: Intent?)
+
+        fun saveMemory()
     }
 }

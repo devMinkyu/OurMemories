@@ -3,14 +3,24 @@ package com.kotlin.ourmemories.view.review.presenter
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
 import android.provider.MediaStore
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
+import com.kotlin.ourmemories.DB.DBManagerMemory
+import com.kotlin.ourmemories.DB.MemoryData
+import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.manager.networkmanager.NManager
+import com.kotlin.ourmemories.unit.InputVaildation
 import com.kotlin.ourmemories.view.review.ReviewActivity
+import kotlinx.android.synthetic.main.activity_review.*
 import org.jetbrains.anko.toast
 import java.io.File
+import java.util.*
 
 /**
  * Created by kimmingyu on 2017. 11. 19..
@@ -27,30 +37,47 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         val REQ_PERMISSON_LOCATION = 105
     }
 
-    lateinit var path: String
-    lateinit private var uploadFile: File
 
     lateinit override var mView: ReviewContract.View
     lateinit override var activity: ReviewActivity
     override var mGoogleApiClient: GoogleApiClient? = null
 
+    lateinit var path: String
+    lateinit private var uploadFile: File
+
     private val mContext = context
     private var lat: Double = 0.0
     private var lon: Double = 0.0
+    private var nation = ""
+
+    init {
+        DBManagerMemory.init(mContext)
+        NManager.init()
+    }
 
     override fun currentAddress() {
+        val locationManger = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val permission = arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION)
         if ((ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 or (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(activity, permission, REQ_PERMISSON_LOCATION)
         } else {
-            val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
-            lat = location.latitude
-            lon = location.longitude
-            activity.toast("$lat $lon")
-            mView.updateAddressView(lat, lon)
+            if (!locationManger.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                intent.addCategory(Intent.CATEGORY_DEFAULT)
+                activity.startActivity(intent)
+            } else {
+                // 다시
+                val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
+                lat = location.latitude
+                lon = location.longitude
+                val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat,lon,2)
+                nation = address[0].countryName
+                mView.updateAddressView(address[0].getAddressLine(0))
+            }
         }
     }
+
 
     override fun photoReview() {
         val check = ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -123,5 +150,24 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
             mView.updateVideoView(uploadFile)
         }
         cursor.close()
+    }
+
+    override fun saveMemory() {
+        // 내용을 채웠는지 검사
+        val inputValidation = InputVaildation(mContext)
+        if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_title), activity.reviewTitleEditText, activity.reviewTitleLayoutText)) return
+        if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.reviewLocation, activity.reviewLocationLayoutText)) return
+        if(!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.reviewContents, activity.reviewContentsLayoutText)) return
+
+        val date = activity.reviewDateText.text.toString()
+        val title = activity.reviewTitleEditText.text.toString()
+
+
+        val memory = MemoryData(0, title,lat,lon,nation,date,"", 1)
+        DBManagerMemory.addMemory(memory)
+
+        DBManagerMemory.close()
+
+        activity.finish()
     }
 }

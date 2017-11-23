@@ -13,7 +13,7 @@ interface TimeCapsuleContract {
         fun updateDateView(year: Int, monthOfYear: Int, dayOfMonth: Int)
         fun updateFromTimeView(hourOfDay: Int, minute: Int)
         fun updateToTimeView(hourOfDay: Int, minute: Int)
-        fun updateAddressView(lat: Double, lon: Double)
+        fun updateAddressView(address: String)
         fun updateAlarmView(alarmMessage: String)
         fun updatePhotoView(uploadFile: File)
         fun updateVideoView(uploadFile: File)
@@ -39,6 +39,8 @@ interface TimeCapsuleContract {
 
         fun getImage(data: Intent?)
         fun getVideo(data: Intent?)
+
+        fun saveMemory()
 
     }
 }

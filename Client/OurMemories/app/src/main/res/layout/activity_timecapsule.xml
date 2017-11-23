@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/memoryRoot"
     android:layout_width="match_parent"
@@ -26,14 +27,14 @@
             android:background="@color/colorPrimary"
             android:minHeight="?attr/actionBarSize">
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/timeCapsuleBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:src="@drawable/ic_chevron_left_white_24dp" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/timeCapsuleTitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
         </android.support.v7.widget.Toolbar>
     </LinearLayout>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="90dp">
@@ -53,14 +54,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/timeCapsuleTitleEditText"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/timeCapsuleTitleLayoutText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/memory_15size"
                 android:layout_marginRight="@dimen/memory_15size"
                 android:layout_marginTop="@dimen/memory_15size"
-                android:hint="@string/memory_title" />
+                app:errorTextAppearance="@style/error">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/timeCapsuleTitleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/memory_title" />
+
+            </android.support.design.widget.TextInputLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -72,23 +82,38 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/timeCapsuleDateText"
-                        android:layout_width="@dimen/memory_editText_width"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/timeCapsuleDateLayoutText"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/memory_20size"
                         android:layout_marginTop="@dimen/memory_15size"
-                        android:hint="@string/memory_date" />
+                        app:errorTextAppearance="@style/error">
 
-                    <EditText
-                        android:id="@+id/timeCapsuleFromTime"
-                        android:layout_width="@dimen/memory_editText_width"
+                        <TextView
+                            android:id="@+id/timeCapsuleDateText"
+                            android:layout_width="@dimen/memory_editText_width"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/memory_date" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/timeCapsuleFromTimeLayoutText"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/memory_15size"
-                        android:hint="@string/memory_from_time" />
+                        app:errorTextAppearance="@style/error">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/timeCapsuleFromTime"
+                            android:layout_width="@dimen/memory_editText_width"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/memory_from_time" />
+
+                    </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/FromTo"
                     android:layout_width="@dimen/memory_right_chevron"
                     android:layout_height="@dimen/memory_right_chevron"
@@ -96,37 +121,52 @@
                     android:layout_toEndOf="@+id/timeCapsuleFromTimeView"
                     android:src="@drawable/ic_chevron_right_black_24dp" />
 
-                <EditText
-                    android:id="@+id/timeCapsuleToTime"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/timeCapsuleToTimeLayoutText"
                     android:layout_width="@dimen/memory_editText_width"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="33dp"
                     android:layout_toEndOf="@+id/FromTo"
-                    android:hint="@string/memory_to_time" />
+                    app:errorTextAppearance="@style/error">
 
-                <Button
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/timeCapsuleToTime"
+                        android:layout_width="@dimen/memory_editText_width"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/memory_to_time" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/timeCapsuleAllTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/memory_30size"
-                    android:layout_toEndOf="@+id/timeCapsuleToTime"
+                    android:layout_toEndOf="@+id/timeCapsuleToTimeLayoutText"
                     android:text="@string/memory_all_time" />
             </RelativeLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/timeCapsuleLocation"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/timeCapsuleLocationLayoutText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/memory_15size"
                     android:layout_marginRight="@dimen/memory_15size"
                     android:layout_marginTop="@dimen/memory_15size"
-                    android:hint="@string/memory_location" />
+                    app:errorTextAppearance="@style/error">
 
-                <ImageButton
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/timeCapsuleLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/memory_location" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/timeCapsuleAddress"
                     android:layout_width="@dimen/memory_30size"
                     android:layout_height="@dimen/memory_30size"
@@ -155,20 +195,28 @@
                     tools:context=".view.timecapsule.TimeCapsuleActivity" />
             </RelativeLayout>
 
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/timeCapsuleAlarm"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/timeCapsuleAlarmLayoutText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/memory_15size"
                     android:layout_marginRight="@dimen/memory_15size"
                     android:layout_marginTop="@dimen/memory_15size"
-                    android:hint="@string/memory_alarm" />
+                    app:errorTextAppearance="@style/error">
 
-                <ImageView
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/timeCapsuleAlarm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/memory_alarm" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.AppCompatImageView
                     android:layout_width="@dimen/memory_30size"
                     android:layout_height="@dimen/memory_30size"
                     android:layout_alignParentEnd="true"
@@ -185,14 +233,14 @@
                 android:layout_marginRight="@dimen/memory_20size"
                 android:layout_marginTop="@dimen/memory_15size">
 
-                <ImageButton
+                <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/timeCapsuleText"
                     android:layout_width="@dimen/memory_contents_width"
                     android:layout_height="@dimen/memory_contents_height"
                     android:contentDescription="@string/memory_text"
                     android:src="@drawable/ic_text_black_24dp" />
 
-                <ImageButton
+                <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/timeCapsulePhoto"
                     android:layout_width="@dimen/memory_contents_width"
                     android:layout_height="@dimen/memory_contents_height"
@@ -200,7 +248,7 @@
                     android:contentDescription="@string/memory_photo"
                     android:src="@drawable/ic_photo_black_24dp" />
 
-                <ImageButton
+                <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/timeCapsuleVideo"
                     android:layout_width="@dimen/memory_contents_width"
                     android:layout_height="@dimen/memory_contents_height"
@@ -208,7 +256,7 @@
                     android:contentDescription="@string/memory_video"
                     android:src="@drawable/ic_video_black_24dp" />
 
-                <ImageButton
+                <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/timeCapsuleCameraPhoto"
                     android:layout_width="@dimen/memory_contents_width"
                     android:layout_height="@dimen/memory_contents_height"
@@ -216,7 +264,7 @@
                     android:contentDescription="@string/memory_camera"
                     android:src="@drawable/ic_camera_alt_black_24dp" />
 
-                <ImageButton
+                <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/timeCapsuleCameraVideo"
                     android:layout_width="@dimen/memory_contents_width"
                     android:layout_height="@dimen/memory_contents_height"
@@ -225,14 +273,21 @@
                     android:src="@drawable/ic_video_call_black_24dp" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/timeCapsuleContents"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/timeCapsuleContentsLayoutText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/memory_15size" />
+                android:layout_margin="@dimen/memory_15size"
+                app:errorTextAppearance="@style/error">
 
+                <RelativeLayout
+                    android:id="@+id/timeCapsuleContents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <Button
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/timeCapsuleSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -240,7 +295,7 @@
                 android:text="@string/memory_add"
                 android:theme="@style/Button" />
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 
 </FrameLayout>

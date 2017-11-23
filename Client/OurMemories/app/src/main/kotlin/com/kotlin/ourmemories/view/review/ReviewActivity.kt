@@ -23,7 +23,6 @@ import com.kotlin.ourmemories.view.review.presenter.ReviewContract
 import com.kotlin.ourmemories.view.review.presenter.ReviewPresenter
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_review.*
-import kotlinx.android.synthetic.main.activity_timecapsule.*
 import java.io.File
 import java.util.*
 
@@ -94,7 +93,9 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
             presenter.cameraVideoReview()
         }
 
-        reviewSave.setOnClickListener { }
+        reviewSave.setOnClickListener {
+            presenter.saveMemory()
+        }
     }
 
     override fun onStart() {
@@ -108,14 +109,16 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
     override fun onStop() {
         if (presenter.mGoogleApiClient != null) {
             presenter.mGoogleApiClient!!.disconnect()
+            presenter.mGoogleApiClient = null
         }
         super.onStop()
     }
 
-    override fun updateAddressView(lat: Double, lon: Double) {
-        timeCapsuleMapRoot.visibility = View.VISIBLE
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.timeCapsuleMap) as MemoryMapFragment
+    override fun updateAddressView(address: String) {
+        reviewMapRoot.visibility = View.VISIBLE
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.reviewMap) as MemoryMapFragment
         mapFragment.getMapAsync(mapFragment)
+        reviewLocation.setText(address)
     }
 
     // 사진을 받아서 contents 에 사진을 추가

@@ -12,8 +12,8 @@
     <string name="memory_review">Review</string>
     <string name="memory_title">Title</string>
     <string name="memory_date">Date</string>
-    <string name="memory_from_time">AM12:00</string>
-    <string name="memory_to_time">PM12:00</string>
+    <string name="memory_from_time">Start</string>
+    <string name="memory_to_time">End</string>
     <string name="memory_location">Location</string>
     <string name="memory_alarm">Alarm</string>
     <string name="memory_all_time">ALL</string>
@@ -23,6 +23,14 @@
     <string name="memory_camera">Camera</string>
     <string name="memory_address">Address</string>
     <string name="memory_add">ADD</string>
+
+    <string name="error_message_title">Enter Full Title</string>
+    <string name="error_message_date">Enter Date</string>
+    <string name="error_message_start">Enter Start Time</string>
+    <string name="error_message_end">Enter End Time</string>
+    <string name="error_message_location">Enter Location</string>
+    <string name="error_message_alarm">Enter Alarm</string>
+    <string name="error_message_contents">Enter Contents</string>
 
     <string name="facebook_login">Facebook Login</string>
     <string name="kakao_login">Kakao Login</string>
