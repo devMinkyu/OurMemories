@@ -16,14 +16,17 @@ from project import *
 
 # api = Api(app)
 
-# DB 선택
+# 게시판 DB
 # db = connection.airbnb
-
-# collection 선택
 # ddd = db.bbs
 
-db = connection.OurMemories
-user = db.users
+# test DB
+db = connection.facebook
+user = db.user
+
+# android DB
+# db = connection.OurMemories # DB 선택
+# user = db.users # collection 선택
 
 @app.route('/')
 def index():
@@ -47,17 +50,46 @@ def login():
     email = (me.data['email'])
     picture = (me.data['picture']['data']['url'])
 
-    user.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken})
+    is_user = user.find_one({"id" : user_id})
+    if is_user == None:
+        # isSuccess
+        isSuccess = 'true/insert'
+        # transform user data to json
+        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
+        # isSuccess와 userLoginResult를 Json으로
+        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+        users.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
+    elif is_user != None:
+        # isSuccess
+        isSuccess = 'true/update'
+        # transform user data to json
+        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
+        # isSuccess와 userLoginResult를 Json으로
+        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+        user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
+    else:
+        # isSuccess
+        isSuccess = 'false'
+        # transform user data to json
+        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(0,0,0,0)))
+        # isSuccess와 userLoginResult를 Json으로
+        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
 
-    # isSuccess
-    isSuccess = 'true/insert'
+    return jsonify(sendToAndroid)
 
-    # transform user data to json
-    user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
 
-    # isSuccess와 userLoginResult를 Json으로
-    sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-    print(sendToAndroid)
+# 자동로그인
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    userId = request.form['userId']
+    is_user = user.find_one({"id" : userId})
+
+    if is_user != None:
+        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(is_user['id'],is_user['userName'],is_user['email'],is_user['profile'],"1")))
+        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), ("true", user_object)))
+    else :
+        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(0,0,0,0,"0")))
+        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), ("false", user_object)))
 
     return jsonify(sendToAndroid)
 
@@ -70,7 +102,7 @@ def login():
 #         next=request.args.get('next') or request.referrer or None,
 #         _external=True
 #     )
-#     print(callback)
+#     # print(callback)
 #     return facebook.authorize(callback=callback)
 
 
@@ -96,20 +128,35 @@ def facebook_authorized(resp):
     email = (me.data['email'])
     picture = (me.data['picture']['data']['url'])
 
-    # user 정보 DB에 저장
-    users.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
 
-    # isSuccess
-    isSuccess = 'true/insert'
+    is_user = user.find_one({"id" : user_id})
+    if is_user == None:
+        # isSuccess
+        isSuccess = 'true/insert'
+        # transform user data to json
+        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
+        # isSuccess와 userLoginResult를 Json으로
+        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+        users.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
+    elif is_user != None:
+        # isSuccess
+        isSuccess = 'true/update'
+        # transform user data to json
+        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
+        # isSuccess와 userLoginResult를 Json으로
+        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+        user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
+    else:
+        # isSuccess
+        isSuccess = 'false'
+        # transform user data to json
+        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(0,0,0,0)))
+        # isSuccess와 userLoginResult를 Json으로
+        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+    # for doc in is_user:
+    #     print(doc['id'])
 
-    # transform user data to json
-    user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
-
-    # isSuccess와 userLoginResult를 Json으로
-    sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-
-    print(sendToAndroid)
-
+    # print(sendToAndroid)
     return jsonify(sendToAndroid)
 
     # return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
