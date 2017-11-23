@@ -21,12 +21,12 @@ from project import *
 # ddd = db.bbs
 
 # test DB
-db = connection.facebook
-user = db.user
+# db = connection.facebook
+# user = db.user
 
 # android DB
-# db = connection.OurMemories # DB 선택
-# user = db.users # collection 선택
+db = connection.OurMemories # DB 선택
+user = db.users # collection 선택
 
 @app.route('/')
 def index():
@@ -58,7 +58,7 @@ def login():
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
         # isSuccess와 userLoginResult를 Json으로
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-        users.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken})
+        user.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken})
     elif is_user != None:
         # isSuccess
         isSuccess = 'true/update'
@@ -137,7 +137,7 @@ def facebook_authorized(resp):
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
         # isSuccess와 userLoginResult를 Json으로
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-        users.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
+        user.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
     elif is_user != None:
         # isSuccess
         isSuccess = 'true/update'
