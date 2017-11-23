@@ -86,10 +86,10 @@ def profile():
 
     if is_user != None:
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(is_user['id'],is_user['userName'],is_user['email'],is_user['profile'],"1")))
-        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), ("true", user_object)))
+        sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), ("true", user_object)))
     else :
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(0,0,0,0,"0")))
-        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), ("false", user_object)))
+        sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), ("false", user_object)))
 
     return jsonify(sendToAndroid)
 
@@ -138,7 +138,7 @@ def facebook_authorized(resp):
         # isSuccess와 userLoginResult를 Json으로
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
         user.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
-    elif is_user != None:
+    elif is_user != None
         # isSuccess
         isSuccess = 'true/update'
         # transform user data to json
