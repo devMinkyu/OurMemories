@@ -20,7 +20,9 @@ import android.util.Log
 import android.widget.EditText
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
+import com.google.gson.Gson
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.data.jsondata.UserMemory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.unit.InputVaildation
@@ -94,20 +96,28 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         override fun onResponse(call: Call?, response: Response?) {
             activity.runOnUiThread {
                 activity.hideDialog()
+                val responseData = response?.body()!!.string()
+                val memoryRequest:UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
+
+                val isSuccess = memoryRequest.isSuccess
                 // 서버 디비에 저장된 후 로컬 디비 저장
-                memoryData.memorySave(title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
-                // 알람 설정
-                val intent = Intent("com.kotlin.ourmemories.ALARM_START")
-                val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-                val mAlarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                mAlarmManager.set(
-                        AlarmManager.RTC_WAKEUP,
-                        calendar.timeInMillis,
-                        pendingIntent
-                )
-                activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
-                    yesButton { activity.finish() }
-                }.show()
+                if(isSuccess == "true") {
+                    memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
+                    // 알람 설정
+                    val intent = Intent("com.kotlin.ourmemories.ALARM_START")
+                    val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+                    val mAlarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                    mAlarmManager.set(
+                            AlarmManager.RTC_WAKEUP,
+                            calendar.timeInMillis,
+                            pendingIntent
+                    )
+                    activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
+                        yesButton { activity.finish() }
+                    }.show()
+                }else if(isSuccess == "false"){
+
+                }
             }
         }
 
@@ -382,9 +392,9 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         activity.showDialog()
         if (uploadFile == null) {
             val timeCapsuleText: EditText = activity.timeCapsuleContents.getChildAt(0) as EditText
-            memoryData.memorySave(title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
+            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
         } else {
-            memoryData.memorySave(title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
+            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
         }
     }
 

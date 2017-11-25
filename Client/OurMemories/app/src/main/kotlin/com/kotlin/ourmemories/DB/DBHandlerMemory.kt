@@ -41,6 +41,7 @@ object DBManagerMemory {
     // 추억 추가
     fun addMemory(memoryData: MemoryData){
         val cv = ContentValues()
+        cv.put(MemoryData.MemoryTable._ID, memoryData.id)
         cv.put(MemoryData.MemoryTable.TITLE, memoryData.title)
         cv.put(MemoryData.MemoryTable.LATITUDE, memoryData.latitude)
         cv.put(MemoryData.MemoryTable.LONGITUDE, memoryData.longitude)
@@ -154,7 +155,7 @@ class DBHandlerMemory(context:Context) : SQLiteOpenHelper(context, MemoryData.DB
         db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
 
         db?.createTable(MemoryData.MemoryTable.TABLE_NAME,true,
-                Pair(MemoryData.MemoryTable._ID, INTEGER + PRIMARY_KEY),
+                Pair(MemoryData.MemoryTable._ID, TEXT + PRIMARY_KEY),
                 Pair(MemoryData.MemoryTable.TITLE, TEXT),
                 Pair(MemoryData.MemoryTable.LATITUDE, REAL),
                 Pair(MemoryData.MemoryTable.LONGITUDE, REAL),

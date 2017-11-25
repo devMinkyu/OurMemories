@@ -3,7 +3,7 @@ package com.kotlin.ourmemories.DB
 /**
  * Created by kimmingyu on 2017. 11. 15..
  */
-data class MemoryData(val id:Long = 0,
+data class MemoryData(val id:String = "",
                       val title:String = "No Title",
                       val latitude: Double = 0.0,
                       val longitude: Double = 0.0,
