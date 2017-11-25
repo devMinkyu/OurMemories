@@ -31,6 +31,9 @@
     <string name="error_message_location">주소를 채워주세요</string>
     <string name="error_message_alarm">알람을 선택해주세요.</string>
     <string name="error_message_contents">컨턴츠를 만들어주세요.</string>
+    <string name="error_message_network">요청에러 (네트워크 상태를 점검해주세요)</string>
+
+    <string name="success_message_memory">성공적으로 등록되었습니다.</string>
 
     <string name="facebook_login">페이스북 로그인</string>
     <string name="kakao_login">카카오톡 로그인</string>

@@ -2,6 +2,7 @@ package com.kotlin.ourmemories.view.timecapsule.presenter
 
 import android.content.Intent
 import com.google.android.gms.common.api.GoogleApiClient
+import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.view.timecapsule.TimeCapsuleActivity
 import java.io.File
 
@@ -23,6 +24,7 @@ interface TimeCapsuleContract {
         var mView: View
         var activity: TimeCapsuleActivity
         var mGoogleApiClient: GoogleApiClient?
+        var memoryData: MemoryRepository
 
         fun dateTimeCapsule()
 

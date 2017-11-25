@@ -31,6 +31,9 @@
     <string name="error_message_location">Enter Location</string>
     <string name="error_message_alarm">Enter Alarm</string>
     <string name="error_message_contents">Enter Contents</string>
+    <string name="error_message_network">Check your connection(Network error)</string>
+
+    <string name="success_message_memory">Successfully registered</string>
 
     <string name="facebook_login">Facebook Login</string>
     <string name="kakao_login">Kakao Login</string>
@@ -38,6 +41,8 @@
     <string name="date_format" formatted="false">%d/%d/%d</string>
     <string name="am_time_format" formatted="false">AM %d:%d</string>
     <string name="pm_time_format" formatted="false">PM %d:%d</string>
+    <string name="db_memory_am_format" formatted="false">%d/%d/%d AM %d:%d</string>
+    <string name="db_memory_pm_format" formatted="false">%d/%d/%d PM %d:%d</string>
 
     <string name="alarm_day_ago">A day ago</string>
     <string name="alarm_half_ago">12 hours ago</string>

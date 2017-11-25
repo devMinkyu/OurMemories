@@ -204,5 +204,15 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/reviewLoding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="loading_animation.json"
+        app:lottie_loop="true"/>
+
 
 </FrameLayout>

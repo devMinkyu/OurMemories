@@ -16,19 +16,22 @@ import android.location.LocationManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AlertDialog
 import android.util.Log
-import android.widget.Toast
+import android.widget.EditText
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
-import com.kotlin.ourmemories.DB.DBManagerMemory
-import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.unit.InputVaildation
 import com.kotlin.ourmemories.view.timecapsule.TimeCapsuleActivity
 import kotlinx.android.synthetic.main.activity_timecapsule.*
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import org.jetbrains.anko.*
 import java.io.File
+import java.io.IOException
 import java.util.*
 
 /**
@@ -48,29 +51,66 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     lateinit override var activity: TimeCapsuleActivity
     lateinit override var mView: TimeCapsuleContract.View
     override var mGoogleApiClient: GoogleApiClient? = null
+    lateinit override var memoryData: MemoryRepository
+
 
     private val mContext = context
     lateinit var path: String
-    lateinit private var uploadFile: File
-    private var mYear:Int
-    private var mMonth :Int
-    private var mDay:Int
-    private var fromHour:Int
-    private var fromMinute:Int
+    private var uploadFile: File? = null
+    private var mYear: Int
+    private var mMonth: Int
+    private var mDay: Int
+    private var fromHour: Int
+    private var fromMinute: Int
     private var toHour = 0
     private var toMinute = 0
     private var lat: Double = 0.0
     private var lon: Double = 0.0
     private var nation = ""
     private val calendar = Calendar.getInstance()
+
+    lateinit var title: String
+    lateinit var fromDate: String
+    lateinit var toDate: String
+
     init {
-        DBManagerMemory.init(mContext)
-        NManager.init()
         mYear = calendar.get(Calendar.YEAR)
         mMonth = calendar.get(Calendar.MONTH)
         mDay = calendar.get(Calendar.DAY_OF_MONTH)
         fromHour = calendar.get(Calendar.HOUR_OF_DAY)
         fromMinute = calendar.get(Calendar.MINUTE)
+    }
+
+    private val requestTimeCapsuleCallback: Callback = object : Callback {
+        override fun onFailure(call: Call?, e: IOException?) {
+            activity.runOnUiThread {
+                activity.hideDialog()
+                activity.alert(activity.resources.getString(R.string.error_message_network), "TimeCapsule") {
+                    yesButton { activity.finish() }
+                }.show()
+            }
+        }
+
+        override fun onResponse(call: Call?, response: Response?) {
+            activity.runOnUiThread {
+                activity.hideDialog()
+                // 서버 디비에 저장된 후 로컬 디비 저장
+                memoryData.memorySave(title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
+                // 알람 설정
+                val intent = Intent("com.kotlin.ourmemories.ALARM_START")
+                val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+                val mAlarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                mAlarmManager.set(
+                        AlarmManager.RTC_WAKEUP,
+                        calendar.timeInMillis,
+                        pendingIntent
+                )
+                activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
+                    yesButton { activity.finish() }
+                }.show()
+            }
+        }
+
     }
 
     // 날짜 처리하는 함수
@@ -141,20 +181,21 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     override fun currentAddress() {
         val locationManger = activity.getSystemService(LOCATION_SERVICE) as LocationManager
         val permission = arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION)
+        // 권한체크
         if ((ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 or (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(activity, permission, REQ_PERMISSON_LOCATION)
         } else {
-            if(!locationManger.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            if (!locationManger.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 intent.addCategory(Intent.CATEGORY_DEFAULT)
                 activity.startActivity(intent)
-            }else {
+            } else {
                 // 나중에 해결
                 val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
                 lat = location.latitude
                 lon = location.longitude
-                val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat,lon,2)
+                val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
                 nation = address[0].countryName
                 mView.updateAddressView(address[0].getAddressLine(0))
             }
@@ -162,13 +203,12 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     }
 
 
-    // 알람 설정 하는 부분
+    // 알람 설정 하는 부분(anko library 사용
     override fun alarmTimeCapsule() {
-        val items = arrayOf(mContext.resources.getString(R.string.alarm_day_ago), mContext.resources.getString(R.string.alarm_half_ago),
+        val items = listOf(mContext.resources.getString(R.string.alarm_day_ago), mContext.resources.getString(R.string.alarm_half_ago),
                 mContext.resources.getString(R.string.alarm_half_half_ago), mContext.resources.getString(R.string.alarm_hour_ago))
-        val alertDialogBuilder = AlertDialog.Builder(mContext)
-        alertDialogBuilder.setItems(items) { dialog, id ->
-            when (id) {
+        activity.selector("Alarm", items, { dialogInterface, i ->
+            when (i) {
                 0 -> {
                     when {
                         (mDay == 1) and (mMonth == 0) -> {
@@ -189,124 +229,49 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                             calendar.set(mYear, mMonth, mDay - 1, fromHour, fromMinute, 0)
                         }
                     }
-                    mView.updateAlarmView(items[0])
                 }
-                1 -> {
-                    when {
-                        (fromHour < 12) and (mMonth == 0) and (mDay == 1)-> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear - 1)
-                                set(Calendar.MONTH, 11)
-                                set(mYear - 1, 11, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + fromHour - 12, fromMinute, 0)
-                            }
-                        }
-                        (fromHour < 12) and (mMonth == 0) and (mDay != 1)-> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear)
-                                set(Calendar.MONTH, mMonth)
-                                set(mYear, mMonth, mDay-1, 24 + fromHour - 12, fromMinute, 0)
-                            }
-                        }
-                        (fromHour < 12) and (mMonth != 0) and (mMonth == 1)-> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear)
-                                set(Calendar.MONTH, mMonth - 1)
-                                set(mYear, mMonth - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + fromHour - 12, fromMinute, 0)
-                            }
-                        }
-                        (fromHour < 12) and (mMonth != 0) and (mMonth != 1)-> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear)
-                                set(Calendar.MONTH, mMonth)
-                                set(mYear, mMonth, mDay-1, 24 + fromHour - 12, fromMinute, 0)
-                            }
-                        }
-                        (fromHour >= 12) -> {
-                            calendar.set(mYear, mMonth, mDay, fromHour - 12, fromMinute, 0)
-                        }
-                    }
-                    mView.updateAlarmView(items[1])
-                }
-                2 -> {
-                    when {
-                        (fromHour < 6) and (mMonth == 0) and (mDay == 1) -> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear - 1)
-                                set(Calendar.MONTH, 11)
-                                set(mYear - 1, 11, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + fromHour - 6, fromMinute, 0)
-                            }
-                        }
-                        (fromHour < 6) and (mMonth == 0) and (mDay != 1) -> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear)
-                                set(Calendar.MONTH, mMonth)
-                                set(mYear, mMonth, mDay-1, 24 + fromHour - 6, fromMinute, 0)
-                            }
-                        }
-                        (fromHour < 6) and (mMonth != 0) and (mDay != 1) -> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear)
-                                set(Calendar.MONTH, mMonth)
-                                set(mYear, mMonth, mDay-1, 24 + fromHour - 6, fromMinute, 0)
-                            }
-                        }
-                        (fromHour < 6) and (mMonth != 0) and (mDay == 1) -> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear)
-                                set(Calendar.MONTH, mMonth-1)
-                                set(mYear, mMonth - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + fromHour - 6, fromMinute, 0)
-                            }
-                        }
-                        (fromHour >= 6) -> {
-                            calendar.set(mYear, mMonth, mDay, fromHour - 6, fromMinute, 0)
-                        }
-                    }
-                    mView.updateAlarmView(items[2])
-                }
-                3 -> {
-                    when {
-                        (fromHour < 1) and (mMonth == 0) and (mDay == 1)-> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear - 1)
-                                set(Calendar.MONTH, 11)
-                                set(mYear - 1, 11, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + fromHour - 1, fromMinute, 0)
-                            }
-                        }
-                        (fromHour < 1) and (mMonth == 0) and (mDay != 1)-> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear)
-                                set(Calendar.MONTH, mMonth)
-                                set(mYear, mMonth, mDay-1, 24 + fromHour - 1, fromMinute, 0)
-                            }
-                        }
-                        (fromHour < 1) and (mMonth != 0) and (mDay == 1)-> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear)
-                                set(Calendar.MONTH, mMonth - 1)
-                                set(mYear, mMonth - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + fromHour - 1, fromMinute, 0)
-                            }
-                        }
-                        (fromHour < 1) and (mMonth != 0) and (mDay != 1)-> {
-                            calendar.run {
-                                set(Calendar.YEAR, mYear)
-                                set(Calendar.MONTH, mMonth)
-                                set(mYear, mMonth , mDay-1, 24 + fromHour - 1, fromMinute, 0)
-                            }
-                        }
-                        (fromHour >= 1) -> {
-                            calendar.set(mYear, mMonth, mDay, fromHour - 1, fromMinute, 0)
-                        }
-                    }
-                    mView.updateAlarmView(items[3])
+                1 -> alarmTimeCheck(12)
+                2 -> alarmTimeCheck(6)
+                3 -> alarmTimeCheck(1)
+            }
+            mView.updateAlarmView(items[i])
+        })
+    }
+
+    private fun alarmTimeCheck(time: Int) {
+        when {
+            (fromHour < time) and (mMonth == 0) and (mDay == 1) -> {
+                calendar.run {
+                    set(Calendar.YEAR, mYear - 1)
+                    set(Calendar.MONTH, 11)
+                    set(mYear - 1, 11, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + fromHour - time, fromMinute, 0)
                 }
             }
-
+            (fromHour < time) and (mMonth == 0) and (mDay != 1) -> {
+                calendar.run {
+                    set(Calendar.YEAR, mYear)
+                    set(Calendar.MONTH, mMonth)
+                    set(mYear, mMonth, mDay - 1, 24 + fromHour - 12, fromMinute, 0)
+                }
+            }
+            (fromHour < time) and (mMonth != 0) and (mMonth == 1) -> {
+                calendar.run {
+                    set(Calendar.YEAR, mYear)
+                    set(Calendar.MONTH, mMonth - 1)
+                    set(mYear, mMonth - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 24 + fromHour - time, fromMinute, 0)
+                }
+            }
+            (fromHour < time) and (mMonth != 0) and (mMonth != 1) -> {
+                calendar.run {
+                    set(Calendar.YEAR, mYear)
+                    set(Calendar.MONTH, mMonth)
+                    set(mYear, mMonth, mDay - 1, 24 + fromHour - time, fromMinute, 0)
+                }
+            }
+            (fromHour >= time) -> {
+                calendar.set(mYear, mMonth, mDay, fromHour - time, fromMinute, 0)
+            }
         }
-
-        val alertDialog = alertDialogBuilder.create()
-        alertDialog.show()
-
-
     }
 
     override fun photoTimeCapsule() {
@@ -362,7 +327,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
 
             uploadFile = File(path)
 
-            mView.updatePhotoView(uploadFile)
+            mView.updatePhotoView(uploadFile!!)
 
         }
         cursor.close()
@@ -379,7 +344,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
 
             uploadFile = File(path)
 
-            mView.updateVideoView(uploadFile)
+            mView.updateVideoView(uploadFile!!)
         }
         cursor.close()
     }
@@ -387,60 +352,44 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     override fun saveMemory() {
         // 내용을 채웠는지 검사
         val inputValidation = InputVaildation(mContext)
-        if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_title), activity.timeCapsuleTitleEditText, activity.timeCapsuleTitleLayoutText)) return
-        if(!inputValidation.isInputDate(mContext.resources.getString(R.string.error_message_date), activity.timeCapsuleDateText, activity.timeCapsuleDateLayoutText)) return
-        if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_start), activity.timeCapsuleFromTime, activity.timeCapsuleFromTimeLayoutText)) return
-        if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_end), activity.timeCapsuleToTime, activity.timeCapsuleToTimeLayoutText)) return
-        if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.timeCapsuleLocation, activity.timeCapsuleLocationLayoutText)) return
-        if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_alarm), activity.timeCapsuleAlarm, activity.timeCapsuleAlarmLayoutText)) return
-        if(!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.timeCapsuleContents, activity.timeCapsuleContentsLayoutText)) return
+        if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_title), activity.timeCapsuleTitleEditText, activity.timeCapsuleTitleLayoutText)) return
+        if (!inputValidation.isInputDate(mContext.resources.getString(R.string.error_message_date), activity.timeCapsuleDateText, activity.timeCapsuleDateLayoutText)) return
+        if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_start), activity.timeCapsuleFromTime, activity.timeCapsuleFromTimeLayoutText)) return
+        if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_end), activity.timeCapsuleToTime, activity.timeCapsuleToTimeLayoutText)) return
+        if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.timeCapsuleLocation, activity.timeCapsuleLocationLayoutText)) return
+        if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_alarm), activity.timeCapsuleAlarm, activity.timeCapsuleAlarmLayoutText)) return
+        if (!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.timeCapsuleContents, activity.timeCapsuleContentsLayoutText)) return
 
-        // DB의 저장 -> data 부분으로 이동
-        val title = activity.timeCapsuleTitleEditText.text.toString()
+        title = activity.timeCapsuleTitleEditText.text.toString()
         val amDBDATEFormat = activity.resources.getString(R.string.db_memory_am_format)
         val pmDBDATEFormat = activity.resources.getString(R.string.db_memory_pm_format)
-        var fromDate = when {
+        fromDate = when {
             fromHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, fromHour, fromMinute)
             fromHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, fromHour, fromMinute)
             fromHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth, mDay, fromHour, fromMinute)
             else -> "0"
         }
-        var toDate = when {
+        toDate = when {
             toHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, toHour, toMinute)
             toHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, toHour, toMinute)
             toHour == 24 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, 23, 59)
             toHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth, mDay, toHour, toMinute)
             else -> "0"
         }
-        Log.d("hoho", fromDate)
-        val memory = MemoryData(0, title,lat,lon,nation,fromDate,toDate, 0)
-        DBManagerMemory.addMemory(memory)
-        DBManagerMemory.close()
 
-        // 알람 설정
-        val intent = Intent("com.kotlin.ourmemories.ALARM_START")
-        val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-
-        val mAlarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        mAlarmManager.set(
-                AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis,
-                pendingIntent
-        )
-        Log.d("hoho", calendar.get(Calendar.MONTH).toString())
-        Log.d("hoho", calendar.get(Calendar.HOUR_OF_DAY).toString())
-
-//        // 테스트
-//        val cursor:Cursor = DBManagerMemory.getMemoryAllWithCursor()
-//        Log.d("hoho" , cursor.count.toString())
-//        cursor.moveToFirst()
-//        Log.d("hoho" , "${cursor.getString(1)} ${cursor.getString(2)} ${cursor.getString(3)} ${cursor.getDouble(4)} ${cursor.getDouble(5)} ${cursor.getString(6)} ${cursor.getInt(7)}")
-
-
-        activity.finish()
+        // 로컬 디비전에 서버 디비에 우선 저장
+        // 텍스트일 경우와 사진,동영상일 경우
+        activity.showDialog()
+        if (uploadFile == null) {
+            val timeCapsuleText: EditText = activity.timeCapsuleContents.getChildAt(0) as EditText
+            memoryData.memorySave(title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
+        } else {
+            memoryData.memorySave(title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
+        }
     }
 
+
     private fun print(text: String) {
-        Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show()
+        activity.toast(text)
     }
 }

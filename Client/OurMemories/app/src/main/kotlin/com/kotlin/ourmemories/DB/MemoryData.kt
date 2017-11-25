@@ -9,7 +9,7 @@ data class MemoryData(val id:Long = 0,
                       val longitude: Double = 0.0,
                       val nationName: String = "No Nation",
                       val fromDate: String = "No Date",
-                      val toDate: String = "No Date",
+                      val toDate: String? = "No Date",
                       val classification:Int = 0) {
     companion object {
         val DB_NAME = "OurMemory.db"

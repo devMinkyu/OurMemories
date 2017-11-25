@@ -9,17 +9,25 @@ import android.location.LocationManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.widget.EditText
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.unit.InputVaildation
 import com.kotlin.ourmemories.view.review.ReviewActivity
 import kotlinx.android.synthetic.main.activity_review.*
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.yesButton
 import java.io.File
+import java.io.IOException
 import java.util.*
 
 /**
@@ -41,7 +49,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
     lateinit override var mView: ReviewContract.View
     lateinit override var activity: ReviewActivity
     override var mGoogleApiClient: GoogleApiClient? = null
-
+    lateinit override var memoryData: MemoryRepository
     lateinit var path: String
     lateinit private var uploadFile: File
 
@@ -50,9 +58,29 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
     private var lon: Double = 0.0
     private var nation = ""
 
-    init {
-        DBManagerMemory.init(mContext)
-        NManager.init()
+    lateinit var title: String
+    lateinit var date: String
+
+    private val requestReviewCallback: Callback = object : Callback {
+        override fun onFailure(call: Call?, e: IOException?) {
+            activity.runOnUiThread {
+                activity.hideDialog()
+                activity.alert(activity.resources.getString(R.string.error_message_network), "Review") {
+                    yesButton { activity.finish() }
+                }.show()
+            }
+        }
+
+        override fun onResponse(call: Call?, response: Response?) {
+            activity.runOnUiThread {
+                activity.hideDialog()
+                // 서버 디비에 저장된 후 로컬 디비 저장
+                memoryData.memorySave(title, date, null, lat, lon, nation, null, null, 1, null, activity)
+                activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
+                    yesButton { activity.finish() }
+                }.show()
+            }
+        }
     }
 
     override fun currentAddress() {
@@ -159,15 +187,17 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.reviewLocation, activity.reviewLocationLayoutText)) return
         if(!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.reviewContents, activity.reviewContentsLayoutText)) return
 
-        val date = activity.reviewDateText.text.toString()
-        val title = activity.reviewTitleEditText.text.toString()
+        date = activity.reviewDateText.text.toString()
+        title = activity.reviewTitleEditText.text.toString()
 
-
-        val memory = MemoryData(0, title,lat,lon,nation,date,"", 1)
-        DBManagerMemory.addMemory(memory)
-
-        DBManagerMemory.close()
-
-        activity.finish()
+        // 로컬 디비전에 서버 디비에 우선 저장
+        // 텍스트일 경우와 사진,동영상일 경우
+        activity.showDialog()
+        if (uploadFile == null) {
+            val reviewText: EditText = activity.reviewContents.getChildAt(0) as EditText
+            memoryData.memorySave(title, date, null, lat, lon, nation, reviewText.text.toString(), null, 1, requestReviewCallback, activity)
+        } else {
+            memoryData.memorySave(title, date, null, lat, lon, nation, null, uploadFile, 1, requestReviewCallback, activity)
+        }
     }
 }

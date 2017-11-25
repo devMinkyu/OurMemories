@@ -23,6 +23,7 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.gson.Gson
+import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.UserLogin
 import com.kotlin.ourmemories.data.source.login.LoginRepository
 import com.kotlin.ourmemories.manager.PManager
@@ -34,8 +35,10 @@ import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startService
+import org.jetbrains.anko.yesButton
 import java.io.IOException
 import java.util.*
 
@@ -56,21 +59,14 @@ class LoginPresenter: LoginContract.Presenter{
         PManager.init()
     }
     // 네트워크 콜백받는 부분
-    private var requestloginCallback:Callback = object :Callback{
+    private val requestloginCallback:Callback = object :Callback{
         override fun onFailure(call: Call?, e: IOException?) {
             // 네트워크 에러
-            Log.d("hoho", "error message: ${e?.message}")
-
             activity.runOnUiThread {
                 activity.hideDialog()
-
-                val alertDialog = AlertDialog.Builder(activity)
-                alertDialog.setTitle("Login")
-                        .setMessage("요청에러 (네트워크 상태를 점검해주세요)")
-                        .setCancelable(false)
-                        .setPositiveButton("확인") { dialog, which -> mLoginManager.logOut()}
-                val alert = alertDialog.create()
-                alert.show()
+                activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
+                    yesButton { mLoginManager.logOut() }
+                }.show()
             }
         }
 

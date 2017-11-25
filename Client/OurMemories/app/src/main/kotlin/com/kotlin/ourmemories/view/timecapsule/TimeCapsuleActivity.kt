@@ -17,12 +17,14 @@ import android.widget.*
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.memorylist.MemoryMapFragment
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsuleContract
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_timecapsule.*
 import java.io.File
 
@@ -36,6 +38,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         presenter = TimeCapsulePresenter(this).apply {
             mView = this@TimeCapsuleActivity
             activity = this@TimeCapsuleActivity
+            memoryData = MemoryRepository(this@TimeCapsuleActivity)
         }
 
         // 폰트 변경
@@ -249,6 +252,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         }
 
     }
-
+    fun showDialog() { timeCapsuleLoding.visibility = View.VISIBLE }
+    fun hideDialog() { timeCapsuleLoding.visibility = View.INVISIBLE }
 
 }

@@ -16,6 +16,7 @@ import android.widget.*
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.memorylist.MemoryMapFragment
@@ -36,6 +37,7 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         presenter = ReviewPresenter(this).apply {
             mView = this@ReviewActivity
             activity = this@ReviewActivity
+            memoryData = MemoryRepository(this@ReviewActivity)
         }
 
         val canaroExtraBold = Typeface.createFromAsset(this.assets, MainActivity.CANARO_EXTRA_BOLD_PATH)
@@ -200,6 +202,8 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
                 presenter.getVideo(data)
             }
         }
-
     }
+
+    fun showDialog() { reviewLoding.visibility = View.VISIBLE }
+    fun hideDialog() { reviewLoding.visibility = View.INVISIBLE }
 }

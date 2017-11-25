@@ -82,6 +82,7 @@ class LoginActivity : AppCompatActivity(){
      */
     override fun onResume() {
         super.onResume()
+        hideDialog()
         LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_READY))
         LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_GENERATING))
         LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE))
