@@ -116,7 +116,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                         yesButton { activity.finish() }
                     }.show()
                 }else if(isSuccess == "false"){
-
+                    // 아직은 고려중
                 }
             }
         }
@@ -129,18 +129,19 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     }
 
     private val dateListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-        if (mYear > year) {
+        val mCalendar = Calendar.getInstance()
+        if (mCalendar.get(Calendar.YEAR) > year) {
             print(mContext.resources.getString(R.string.year_error_message))
             return@OnDateSetListener
-        } else if (mYear == year) {
-            if (mMonth > month) {
+        } else if (mCalendar.get(Calendar.YEAR) == year) {
+            if (mCalendar.get(Calendar.MONTH) > month) {
                 print(mContext.resources.getString(R.string.month_error_message))
                 return@OnDateSetListener
-            } else if (mMonth == month) {
-                if (mDay > dayOfMonth) {
+            } else if (mCalendar.get(Calendar.MONTH) == month) {
+                if (mCalendar.get(Calendar.DAY_OF_MONTH) > dayOfMonth) {
                     print(mContext.resources.getString(R.string.day_error_message))
                     return@OnDateSetListener
-                } else if (mDay == dayOfMonth) {
+                } else if (mCalendar.get(Calendar.DAY_OF_MONTH) == dayOfMonth) {
                     print(mContext.resources.getString(R.string.same_day_error_message))
                     return@OnDateSetListener
                 }
@@ -374,16 +375,16 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         val amDBDATEFormat = activity.resources.getString(R.string.db_memory_am_format)
         val pmDBDATEFormat = activity.resources.getString(R.string.db_memory_pm_format)
         fromDate = when {
-            fromHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, fromHour, fromMinute)
-            fromHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, fromHour, fromMinute)
-            fromHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth, mDay, fromHour, fromMinute)
+            fromHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, fromHour, fromMinute)
+            fromHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, fromHour, fromMinute)
+            fromHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth+1, mDay, fromHour, fromMinute)
             else -> "0"
         }
         toDate = when {
-            toHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, toHour, toMinute)
-            toHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, toHour, toMinute)
-            toHour == 24 -> String.format(pmDBDATEFormat, mYear, mMonth, mDay, 23, 59)
-            toHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth, mDay, toHour, toMinute)
+            toHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, toHour, toMinute)
+            toHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, toHour, toMinute)
+            toHour == 24 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, 23, 59)
+            toHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth+1, mDay, toHour, toMinute)
             else -> "0"
         }
 

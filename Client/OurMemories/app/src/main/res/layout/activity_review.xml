@@ -134,7 +134,7 @@
                     tools:context=".view.review.ReviewActivity" />
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/memory_20size"
@@ -143,43 +143,48 @@
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/reviewText"
-                    android:layout_width="@dimen/memory_contents_width"
-                    android:layout_height="@dimen/memory_contents_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:contentDescription="@string/memory_text"
                     android:src="@drawable/ic_text_black_24dp" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/reviewPhoto"
-                    android:layout_width="@dimen/memory_contents_width"
-                    android:layout_height="@dimen/memory_contents_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_toEndOf="@+id/reviewText"
                     android:contentDescription="@string/memory_photo"
                     android:src="@drawable/ic_photo_black_24dp" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/reviewVideo"
-                    android:layout_width="@dimen/memory_contents_width"
-                    android:layout_height="@dimen/memory_contents_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_toEndOf="@+id/reviewPhoto"
                     android:contentDescription="@string/memory_video"
                     android:src="@drawable/ic_video_black_24dp" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/reviewCameraPhoto"
-                    android:layout_width="@dimen/memory_contents_width"
-                    android:layout_height="@dimen/memory_contents_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_toEndOf="@+id/reviewVideo"
                     android:contentDescription="@string/memory_camera"
                     android:src="@drawable/ic_camera_alt_black_24dp" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/reviewCameraVideo"
-                    android:layout_width="@dimen/memory_contents_width"
-                    android:layout_height="@dimen/memory_contents_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_toEndOf="@+id/reviewCameraPhoto"
                     android:contentDescription="@string/memory_camera"
                     android:src="@drawable/ic_video_call_black_24dp" />
-            </RelativeLayout>
+            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/reviewContentsLayoutText"

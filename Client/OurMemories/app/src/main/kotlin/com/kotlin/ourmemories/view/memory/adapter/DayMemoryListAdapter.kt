@@ -16,7 +16,7 @@ class DayMemoryListAdapter(context: Context, cursor: Cursor): CursorRecyclerView
 
     override fun onBindViewHolder(holder: DayMemoryListViewHolder, cursor: Cursor) {
         holder.itemView.setOnClickListener(onItemClick)
-        // 추후 메모리 리스트와 합친후 진행
+        if(cursor.getString(5).matches())
         //holder.bindView(cursor.getLong())
     }
     fun setOnItemClickListener(l:View.OnClickListener){

@@ -16,7 +16,6 @@
     <string name="memory_to_time">종료시간</string>
     <string name="memory_location">위치</string>
     <string name="memory_alarm">알람</string>
-    <string name="memory_all_time">ALL</string>
     <string name="memory_text">텍스트</string>
     <string name="memory_photo">사진</string>
     <string name="memory_video">동영상</string>

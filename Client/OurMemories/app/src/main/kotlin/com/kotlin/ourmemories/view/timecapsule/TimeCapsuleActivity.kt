@@ -24,9 +24,9 @@ import com.kotlin.ourmemories.view.memorylist.MemoryMapFragment
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsuleContract
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_timecapsule.*
 import java.io.File
+import java.util.*
 
 class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
     private lateinit var presenter: TimeCapsuleContract.Presenter
@@ -41,6 +41,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             memoryData = MemoryRepository(this@TimeCapsuleActivity)
         }
 
+        updateFromTimeView(Calendar.getInstance().get(Calendar.HOUR_OF_DAY),Calendar.getInstance().get(Calendar.MINUTE))
         // 폰트 변경
         val canaroExtraBold = Typeface.createFromAsset(this.assets, MainActivity.CANARO_EXTRA_BOLD_PATH)
         timeCapsuleTitleText.typeface = canaroExtraBold
@@ -62,11 +63,6 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         // 시간 버튼 눌렀을 때
         timeCapsuleFromTime.setOnClickListener { presenter.fromTimeTimeCapsule() }
         timeCapsuleToTime.setOnClickListener { presenter.toTimeTimeCapsule() }
-        timeCapsuleAllTime.setOnClickListener {
-            updateFromTimeView(0, 0)
-            updateToTimeView(23, 59)
-
-        }
 
         // 텍스트 버튼 눌렀을 때 EditText 생성
         timeCapsuleText.setOnClickListener {
@@ -82,10 +78,18 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             timeCapsuleText.setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
             timeCapsuleContents.addView(timeCapsuleText)
         }
+        // 위치
         timeCapsuleLocation.setOnClickListener {
             presenter.currentAddress()
         }
+        timeCapsuleAddress.setOnClickListener {
+            presenter.currentAddress()
+        }
+        //알람
         timeCapsuleAlarm.setOnClickListener {
+            presenter.alarmTimeCapsule()
+        }
+        timeCapsuleAlarmImage.setOnClickListener {
             presenter.alarmTimeCapsule()
         }
         // 사진 버튼 눌렀을 때

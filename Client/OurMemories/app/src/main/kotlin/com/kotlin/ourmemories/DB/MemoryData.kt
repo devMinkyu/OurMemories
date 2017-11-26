@@ -23,8 +23,8 @@ data class MemoryData(val id:String = "",
         val LATITUDE = "latitude" //x좌표
         val LONGITUDE = "longitude" //y좌표
         val NATION_NAME = "nation_name"
-        val FROM_DATE = "form_date"
-        val TO_DATE = "TO_date"
+        val FROM_DATE = "from_date"
+        val TO_DATE = "to_date"
         val CLASSIFICATION = "classification" //타임캡슐 0, 후기 1
     }
 }

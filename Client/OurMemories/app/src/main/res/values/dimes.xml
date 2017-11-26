@@ -8,7 +8,7 @@
 
     <dimen name="memory_right_chevron">40dp</dimen>
 
-    <dimen name="memory_editText_width">120dp</dimen>
+    <dimen name="memory_editText_width">150dp</dimen>
 
     <dimen name="memory_contents_width">65dp</dimen>
     <dimen name="memory_contents_height">60dp</dimen>
