@@ -1,6 +1,5 @@
 package com.kotlin.ourmemories.view.memory
 
-import android.database.Cursor
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -9,12 +8,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kotlin.ourmemories.DB.DBManagerMemory
-import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.MainActivity.Companion.CANARO_EXTRA_BOLD_PATH
 import com.kotlin.ourmemories.view.memory.adapter.DayMemoryListAdapter
@@ -33,9 +29,8 @@ import java.util.*
  */
 class MemoryFragment : Fragment(), MemoryContract.View, OnDateSelectedListener, View.OnClickListener {
     private lateinit var presenter: MemoryContract.Presenter
-
     var adapter: DayMemoryListAdapter? = null
-
+    private lateinit var dBDateFormat:String
     companion object {
 
         val RIPPLE_DURATION: Long = 250
@@ -71,6 +66,7 @@ class MemoryFragment : Fragment(), MemoryContract.View, OnDateSelectedListener, 
             mView = this@MemoryFragment
         }
 
+        // memory 추가하기 위해 액티비티 변경 부분
         review.setOnClickListener {
             menu.close()
             presenter.intentActivity(ReviewActivity())
@@ -92,13 +88,13 @@ class MemoryFragment : Fragment(), MemoryContract.View, OnDateSelectedListener, 
 
     override fun onStart() {
         super.onStart()
-        val dBDateFormat = activity.resources.getString(R.string.date_format)
+        dBDateFormat = activity.resources.getString(R.string.date_format)
         val date = String.format(dBDateFormat, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
         presenter.loadMemory(date)
     }
 
+    // 유저가 선택한 날짜
     override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
-        val dBDateFormat = activity.resources.getString(R.string.date_format)
         val date = String.format(dBDateFormat,date.year, date.month+1, date.day)
         presenter.loadMemory(date)
     }

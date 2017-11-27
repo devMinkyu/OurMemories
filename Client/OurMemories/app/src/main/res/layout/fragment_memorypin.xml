@@ -9,7 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
+        android:visibility="gone"
         app:lottie_autoPlay="true"
         app:lottie_fileName="bouncy_mapmaker.json"
         app:lottie_loop="true"/>
+
+    
 </RelativeLayout>
