@@ -41,19 +41,16 @@ class MemoryFragment : Fragment(), MemoryContract.View, OnDateSelectedListener, 
         val RIPPLE_DURATION: Long = 250
     }
 
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View?
             = inflater?.inflate(R.layout.fragment_memory, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        DBManagerMemory.init(context)
         val memoryMenu = LayoutInflater.from(context).inflate(R.layout.memory_menu, null)
         memoryRoot.addView(memoryMenu)
 
-        // 우선 adater에 recyclerview를 붙이기 위한 adapter를 할당해주고 그럼 다음 리스트가 있는 xml의 adapter에 붙여준다
-        dayMemoryList.layoutManager = LinearLayoutManager(context)
-
         // memory_menu 애니메이션
-        GuillotineAnimation.GuillotineBuilder(memoryMenu, memoryMenu.findViewById(R.id.memoryHamburger), contentHamburger)
+        val menu = GuillotineAnimation.GuillotineBuilder(memoryMenu, memoryMenu.findViewById(R.id.memoryHamburger), contentHamburger)
                 .setStartDelay(RIPPLE_DURATION)
                 .setActionBarViewForAnimation(toolbar)
                 .setClosedOnStart(true)
@@ -75,54 +72,38 @@ class MemoryFragment : Fragment(), MemoryContract.View, OnDateSelectedListener, 
         }
 
         review.setOnClickListener {
+            menu.close()
             presenter.intentActivity(ReviewActivity())
         }
         timeCapsule.setOnClickListener {
+            menu.close()
             presenter.intentActivity(TimeCapsuleActivity())
         }
 
+        // calendarView 부분
         calendarView.state().edit().setFirstDayOfWeek(Calendar.SUNDAY)
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit()
         calendarView.addDecorators(SundayDecorator(), SaturdayDecorator(), OneDayDecorate())
-
         calendarView.setOnDateChangedListener(this)
 
         dayMemoryList.layoutManager = LinearLayoutManager(context)
-        var memoryOne = DBManagerMemory.getMemoryAllWithCursor()
-        memoryOne.moveToFirst()
+    }
 
-//        var dayOne:Cursor
-//        Log.d("hoho", memoryOne.count.toString())
-//        for(memoryData in 0 until memoryOne.count){
-//            Log.d("hoho", memoryOne.getString(5))
-//            dayOne.extras = memoryOne
-//            memoryOne.moveToNext()
-//        }
-
-        if(memoryOne.count !=0) {
-            adapter = DayMemoryListAdapter(context, memoryOne)
-            dayMemoryList.adapter = adapter
-            adapter?.setOnItemClickListener(this)
-        }
+    override fun onStart() {
+        super.onStart()
+        val dBDateFormat = activity.resources.getString(R.string.date_format)
+        val date = String.format(dBDateFormat, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+        presenter.loadMemory(date)
     }
 
     override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
-        Log.d("hoho", date.month.toString())
-        var memoryOne = DBManagerMemory.getMemoryAllWithCursor()
-        memoryOne.moveToFirst()
-        if(adapter == null){
-            adapter = DayMemoryListAdapter(context, memoryOne)
-            dayMemoryList.adapter = adapter
-            adapter?.setOnItemClickListener(this)
-        }
-        adapter?.changeCursor(memoryOne)
-        adapter?.notifyDataSetChanged()
+        val dBDateFormat = activity.resources.getString(R.string.date_format)
+        val date = String.format(dBDateFormat,date.year, date.month+1, date.day)
+        presenter.loadMemory(date)
     }
 
-    override fun onClick(v: View?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onClick(v: View?) {}
 
 }
 

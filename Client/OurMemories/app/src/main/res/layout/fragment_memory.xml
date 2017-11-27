@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <View
         android:id="@+id/top"
-        android:layout_gravity="top"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="@color/colorPrimary"
-        />
+        android:layout_gravity="top"
+        android:background="@color/colorPrimary" />
 
     <LinearLayout
-        android:layout_marginTop="35dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="35dp"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
@@ -31,8 +31,8 @@
                 android:id="@+id/contentHamburger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
                 android:layout_marginLeft="10dp"
+                android:background="@color/transparent"
                 android:src="@drawable/ic_menu_90" />
 
             <TextView
@@ -44,17 +44,20 @@
                 android:textSize="@dimen/font_title_Large_ize" />
         </android.support.v7.widget.Toolbar>
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:mcv_selectionColor="#a9dbf0cb"
-            app:mcv_showOtherDates="defaults"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/dayMemoryList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:mcv_selectionColor="#a9dbf0cb"
+                app:mcv_showOtherDates="defaults" />
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dayMemoryList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="6"/>
+
+    </LinearLayout>
 </FrameLayout>
 

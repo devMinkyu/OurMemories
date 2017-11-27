@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.view.memory.presenter
 
+import android.database.Cursor
 import android.support.v7.app.AppCompatActivity
 import com.kotlin.ourmemories.view.memory.MemoryFragment
 
@@ -13,5 +14,6 @@ interface MemoryContract {
         var mView:MemoryContract.View
 
         fun intentActivity(activity: AppCompatActivity)
+        fun loadMemory(date:String)
     }
 }

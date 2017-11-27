@@ -26,6 +26,8 @@ import com.kotlin.ourmemories.data.jsondata.UserMemory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.unit.InputVaildation
+import com.kotlin.ourmemories.view.MainActivity
+import com.kotlin.ourmemories.view.memory.MemoryFragment
 import com.kotlin.ourmemories.view.timecapsule.TimeCapsuleActivity
 import kotlinx.android.synthetic.main.activity_timecapsule.*
 import okhttp3.Call
@@ -388,15 +390,18 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             else -> "0"
         }
 
+        // 테스트
+        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
+        activity.finish()
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
-        activity.showDialog()
-        if (uploadFile == null) {
-            val timeCapsuleText: EditText = activity.timeCapsuleContents.getChildAt(0) as EditText
-            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
-        } else {
-            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
-        }
+//        activity.showDialog()
+//        if (uploadFile == null) {
+//            val timeCapsuleText: EditText = activity.timeCapsuleContents.getChildAt(0) as EditText
+//            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
+//        } else {
+//            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
+//        }
     }
 
 

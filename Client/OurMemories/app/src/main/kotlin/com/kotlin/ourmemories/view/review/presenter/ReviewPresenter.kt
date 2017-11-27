@@ -20,6 +20,7 @@ import com.kotlin.ourmemories.data.jsondata.UserMemory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.unit.InputVaildation
+import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.review.ReviewActivity
 import kotlinx.android.synthetic.main.activity_review.*
 import okhttp3.Call
@@ -200,14 +201,18 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         date = activity.reviewDateText.text.toString()
         title = activity.reviewTitleEditText.text.toString()
 
+        // 테스트
+        memoryData.memorySave("0", title, date, null, lat, lon, nation, null, null, 1, null, activity)
+        activity.finish()
+
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
-        activity.showDialog()
-        if (uploadFile == null) {
-            val reviewText: EditText = activity.reviewContents.getChildAt(0) as EditText
-            memoryData.memorySave("0",title, date, null, lat, lon, nation, reviewText.text.toString(), null, 1, requestReviewCallback, activity)
-        } else {
-            memoryData.memorySave("0",title, date, null, lat, lon, nation, null, uploadFile, 1, requestReviewCallback, activity)
-        }
+//        activity.showDialog()
+//        if (uploadFile == null) {
+//            val reviewText: EditText = activity.reviewContents.getChildAt(0) as EditText
+//            memoryData.memorySave("0",title, date, null, lat, lon, nation, reviewText.text.toString(), null, 1, requestReviewCallback, activity)
+//        } else {
+//            memoryData.memorySave("0",title, date, null, lat, lon, nation, null, uploadFile, 1, requestReviewCallback, activity)
+//        }
     }
 }

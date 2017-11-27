@@ -19,7 +19,6 @@ object DBManagerMemory {
     fun init(context: Context) {
         if (mDBHandler == null) {
             mDBHandler = DBHandlerMemory(context)
-            defaultAddTimeCapesule()
         }
     }
 
@@ -41,10 +40,22 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.CLASSIFICATION),
                     null, null, null, null, MemoryData.MemoryTable._ID)
 
+    fun getMemoryDayWithCursor(day:String): Cursor =
+            mDBHandler?.readableDatabase!!.query(TABLE_NAME,
+                    arrayOf(MemoryData.MemoryTable._ID,
+                            MemoryData.MemoryTable.TITLE,
+                            MemoryData.MemoryTable.LATITUDE,
+                            MemoryData.MemoryTable.LONGITUDE,
+                            MemoryData.MemoryTable.NATION_NAME,
+                            MemoryData.MemoryTable.FROM_DATE,
+                            MemoryData.MemoryTable.TO_DATE,
+                            MemoryData.MemoryTable.CLASSIFICATION),
+                    "from_date Like ?", arrayOf(day+"%"), null, null, MemoryData.MemoryTable._ID)
+
     // 추억 추가
     fun addMemory(memoryData: MemoryData) {
         val cv = ContentValues()
-        cv.put(MemoryData.MemoryTable._ID, memoryData.id)
+        //cv.put(MemoryData.MemoryTable._ID, memoryData.id)
         cv.put(MemoryData.MemoryTable.TITLE, memoryData.title)
         cv.put(MemoryData.MemoryTable.LATITUDE, memoryData.latitude)
         cv.put(MemoryData.MemoryTable.LONGITUDE, memoryData.longitude)
@@ -60,116 +71,12 @@ object DBManagerMemory {
     // 추억 삭제
     fun deleteMemory(id: String) {
         mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.delete(MemoryData.MemoryTable.TABLE_NAME, "_id", arrayOf(id))
+            mDBHandler?.writableDatabase?.delete(MemoryData.MemoryTable.TABLE_NAME, "_id=?", arrayOf(id))
         }
     }
 
     fun close() {
         mDBHandler?.close()
-    }
-
-    //    // 테스트용
-    fun defaultAddTimeCapesule() {
-        val cv = ContentValues()
-        cv.put("title", "추억1")
-        cv.put("latitude", 33.11)
-        cv.put("longitude", 22.54)
-        cv.put("nation_name", "나라1")
-        cv.put(MemoryData.MemoryTable.FROM_DATE, "11")
-        cv.put("to_date", "11")
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-        }
-
-        cv.put("title", "추억2")
-        cv.put("latitude", 13.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라2")
-        cv.put(MemoryData.MemoryTable.FROM_DATE, "12")
-        cv.put("to_date", "12")
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-        }
-
-        cv.put("title", "추억3")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", "13")
-        cv.put("to_date", "13")
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-        }
-
-        cv.put("title", "추억4")
-        cv.put("latitude", 33.11)
-        cv.put("longitude", 22.54)
-        cv.put("nation_name", "나라1")
-        cv.put("from_date", "14")
-        cv.put("to_date", "14")
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-        }
-
-        cv.put("title", "추억5")
-        cv.put("latitude", 13.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라2")
-        cv.put("from_date", "15")
-        cv.put("to_date", "15")
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-        }
-
-        cv.put("title", "추억6")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", "16")
-        cv.put("to_date", "16")
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-        }
-
-        cv.put("title", "추억7")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", "17")
-        cv.put("to_date", "17")
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-        }
-
-        cv.put("title", "추억8")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", "18")
-        cv.put("to_date", "18")
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-        }
-
-        cv.put("title", "추억9")
-        cv.put("latitude", 53.11)
-        cv.put("longitude", 32.54)
-        cv.put("nation_name", "나라3")
-        cv.put("from_date", "19")
-        cv.put("to_date", "19")
-        cv.put("classification", 0)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
-        }
-
     }
 }
 

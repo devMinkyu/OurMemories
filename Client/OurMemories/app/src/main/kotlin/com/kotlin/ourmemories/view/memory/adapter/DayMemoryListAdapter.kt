@@ -9,16 +9,16 @@ import com.kotlin.phonebook.adapter.CursorRecyclerViewAdapter
 /**
  * Created by kimmingyu on 2017. 11. 21..
  */
-class DayMemoryListAdapter(context: Context, cursor: Cursor): CursorRecyclerViewAdapter<DayMemoryListViewHolder>(context,cursor) {
+class DayMemoryListAdapter(context: Context, cursor: Cursor): CursorRecyclerViewAdapter<DayMemoryListViewHolder>(context,cursor){
     private var onItemClick: View.OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DayMemoryListViewHolder = DayMemoryListViewHolder(parent)
 
     override fun onBindViewHolder(holder: DayMemoryListViewHolder, cursor: Cursor) {
         holder.itemView.setOnClickListener(onItemClick)
-        if(cursor.getString(5).matches())
-        //holder.bindView(cursor.getLong())
+        holder.bindView(cursor)
     }
+
     fun setOnItemClickListener(l:View.OnClickListener){
         onItemClick = l
     }
