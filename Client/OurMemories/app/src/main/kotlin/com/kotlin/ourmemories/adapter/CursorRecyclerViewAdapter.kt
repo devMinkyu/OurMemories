@@ -103,4 +103,6 @@ open class CursorRecyclerViewAdapter<VH : RecyclerView.ViewHolder>(context: Cont
         }
 
     }
+
+
 }

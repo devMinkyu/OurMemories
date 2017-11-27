@@ -44,6 +44,7 @@ object DBManagerNation{
         }
     }
 
+
     fun deleteNation(id: Long){
         mDBHandler?.writableDatabase.use {
             mDBHandler?.writableDatabase?.delete(NationData.NationTable.TABLE_NAME, "_id", arrayOf(id.toString()))

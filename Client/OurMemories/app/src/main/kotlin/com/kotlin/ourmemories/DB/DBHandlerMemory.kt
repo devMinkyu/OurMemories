@@ -34,6 +34,15 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.CLASSIFICATION),
             null, null, null, null, MemoryData.MemoryTable._ID)
 
+    fun getMemoriesWithCursor(nationName: String) : Cursor =
+            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
+                    arrayOf(MemoryData.MemoryTable._ID,
+                            MemoryData.MemoryTable.TITLE,
+                            MemoryData.MemoryTable.LATITUDE,
+                            MemoryData.MemoryTable.LONGITUDE,
+                            MemoryData.MemoryTable.NATION_NAME,
+                            MemoryData.MemoryTable.CLASSIFICATION),
+                    MemoryData.MemoryTable.NATION_NAME+"=?", arrayOf(nationName), null, null, MemoryData.MemoryTable._ID)
 
     // 추억 추가
     fun addMemory(memoryData: MemoryData){
@@ -79,17 +88,6 @@ object DBManagerMemory {
 }
 
 class DBHandlerMemory(context:Context) : ManagedSQLiteOpenHelper(context, MemoryData.DB_NAME, null, MemoryData.DB_VERSION){
-//    companion object {
-//        private var instance: DBHandlerMemory? = null
-//
-//        @Synchronized
-//        fun getInstance(context: Context):DBHandlerMemory{
-//            if (instance == null){
-//                instance = DBHandlerMemory(context.applicationContext)
-//            }
-//            return instance!!
-//        }
-//    }
 
     override fun onCreate(db: SQLiteDatabase?) {
         //db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
@@ -108,6 +106,4 @@ class DBHandlerMemory(context:Context) : ManagedSQLiteOpenHelper(context, Memory
         db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
 
     }
-//    val Context.database : DBHandlerMemory
-//        get() = DBHandlerMemory.getInstance(applicationContext)
 }

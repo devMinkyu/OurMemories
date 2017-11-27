@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.view.memorylist
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -23,13 +24,17 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 //        var recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
 //        recycleListView.layoutManager = LinearLayoutManager(this)
 //        recycleListView.adapter = adapter
+
+        val intent : Intent = getIntent()
+        var nationName : String = intent.getStringExtra("nationName")
+
         var recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
         recycleListView.layoutManager = LinearLayoutManager(this)
 
         DBManagerMemory.init(this)
         //DBManagerMemory.defaultAddTimeCapesule()
 
-        var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoryAllWithCursor())
+        var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesWithCursor(nationName))
         recycleListView.adapter = adapter
 
     }
@@ -37,7 +42,9 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.memoryMap) as MemoryMapFragment
+
         mapFragment.getMapAsync(mapFragment)
+
     }
 
     override fun onStop() {
