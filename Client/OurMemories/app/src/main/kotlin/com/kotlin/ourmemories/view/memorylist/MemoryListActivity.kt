@@ -10,7 +10,10 @@ import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.R
 
 class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
-
+    var nationName : String
+    init {
+        nationName = ""
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +29,11 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 //        recycleListView.adapter = adapter
 
         val intent : Intent = getIntent()
-        var nationName : String = intent.getStringExtra("nationName")
+        nationName = intent.getStringExtra("nationName")
 
         var recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
         recycleListView.layoutManager = LinearLayoutManager(this)
+
 
         DBManagerMemory.init(this)
         //DBManagerMemory.defaultAddTimeCapesule()
@@ -42,8 +46,8 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.memoryMap) as MemoryMapFragment
-
         mapFragment.getMapAsync(mapFragment)
+
 
     }
 

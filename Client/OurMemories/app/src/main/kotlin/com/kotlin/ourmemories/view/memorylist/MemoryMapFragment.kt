@@ -17,20 +17,28 @@ class MemoryMapFragment : SupportMapFragment(), OnMapReadyCallback{
 
     override fun onMapReady(map: GoogleMap?) {
         mMap = map as GoogleMap
+        var nationName = activity.intent.extras.getString("nationName")
+        //context.toast(nationName)
+        if(nationName == "대한민국"){
+            val kor = LatLng(37.574515, 126.976930)
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(kor))
+        } else if (nationName == "일본"){
+            val jpn = LatLng(35.709261, 139.731070)
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(jpn))
+        } else if (nationName == "미국"){
+            val usa = LatLng(38.906414, -77.040912)
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(usa))
+        }
 
 
-
-        val kor = LatLng(37.574515, 126.976930)
-        mMap.addMarker(MarkerOptions().position(kor).title("Seed nay"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(kor))
 
         //임시 테스트 데이터
         //DBManagerMemory.init(activity)
-        var cursor: Cursor = DBManagerMemory.getMemoryAllWithCursor()
+        var cursor: Cursor = DBManagerMemory.getMemoriesWithCursor(nationName)
 
         if(cursor.moveToFirst()){
             for(n in 0..cursor.columnCount-1) {
-                val spot = LatLng(cursor.getString(2).toDouble(), cursor.getString(3).toDouble());
+                val spot = LatLng(cursor.getString(2).toDouble(), cursor.getString(3).toDouble())
                 mMap.addMarker(MarkerOptions().position(spot).title(cursor.getString(1)))
                 cursor.moveToNext()
             }

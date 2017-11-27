@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.kotlin.ourmemories.DB.DBManagerNation
 import com.kotlin.ourmemories.R
-import org.jetbrains.anko.toast
 
 /**
  * Created by kimmingyu on 2017. 11. 5..
@@ -58,7 +57,7 @@ class MemoryListFragment : Fragment() , View.OnClickListener {
         val tv : TextView = v?.findViewById(R.id.tv_tag) as TextView
         val tvName : TextView = v?.findViewById(R.id.tv_name) as TextView
 
-        context.toast(tv.text.toString() + ", " + tvName.text.toString() + " Clicked")
+        //context.toast(tv.text.toString() + ", " + tvName.text.toString() + " Clicked")
 
         val intent = Intent(context, MemoryListActivity::class.java)
         intent.putExtra("nationName", tvName.text.toString())
