@@ -84,7 +84,7 @@ def login():
 # 사진 저장
 @app.route('/memory', methods=['GET', 'POST'])
 def multyData():
-    image = request.form['uploadFile']
+    image = request.files['uploadFile']
     print(image)
     # images.insert({'image' : image})
 
