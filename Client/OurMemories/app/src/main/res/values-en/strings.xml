@@ -29,6 +29,7 @@
     <string name="error_message_end">Enter End Time</string>
     <string name="error_message_location">Enter Location</string>
     <string name="error_message_alarm">Enter Alarm</string>
+    <string name="error_message_text">Enter Text</string>
     <string name="error_message_contents">Enter Contents</string>
     <string name="error_message_network">Check your connection(Network error)</string>
 

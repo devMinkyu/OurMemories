@@ -64,20 +64,6 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         timeCapsuleFromTime.setOnClickListener { presenter.fromTimeTimeCapsule() }
         timeCapsuleToTime.setOnClickListener { presenter.toTimeTimeCapsule() }
 
-        // 텍스트 버튼 눌렀을 때 EditText 생성
-        timeCapsuleText.setOnClickListener {
-            timeCapsuleContents.removeAllViews()
-            val paddingSize: Int = this.resources.getDimension(R.dimen.memory_5size).toInt()
-            val timeCapsuleText = EditText(this)
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            timeCapsuleText.layoutParams = params
-            timeCapsuleText.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
-            timeCapsuleText.gravity = Gravity.TOP and Gravity.START
-            timeCapsuleText.setLines(6)
-            timeCapsuleText.background = this.resources.getDrawable(R.drawable.border)
-            timeCapsuleText.setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
-            timeCapsuleContents.addView(timeCapsuleText)
-        }
         // 위치
         timeCapsuleLocation.setOnClickListener {
             presenter.currentAddress()

@@ -95,6 +95,7 @@ class SplashPresenter: SplashContract.Presenter {
         when(userId){
             // 유저가 현재공유저장소에 값이 있는지를 비교
             ""->{
+                Log.d("hoho", "에에에")
                 loginPageIntent()
             }
             else->{

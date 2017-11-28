@@ -55,21 +55,6 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         // editText 를 눌러도 키보드가 안나오게 하기 위함
         reviewLocation.inputType = InputType.TYPE_NULL
 
-        // 텍스트 버튼 눌렀을 때 EditText 생성
-        reviewText.setOnClickListener {
-            reviewContents.removeAllViews()
-            val paddingSize: Int = this.resources.getDimension(R.dimen.memory_5size).toInt()
-            val reviewText = EditText(this)
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            reviewText.layoutParams = params
-            reviewText.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
-            reviewText.gravity = Gravity.TOP and Gravity.START
-            reviewText.setLines(6)
-            reviewText.background = this.resources.getDrawable(R.drawable.border)
-            reviewText.setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
-            reviewContents.addView(reviewText)
-        }
-
         reviewLocation.setOnClickListener {
             presenter.currentAddress()
         }

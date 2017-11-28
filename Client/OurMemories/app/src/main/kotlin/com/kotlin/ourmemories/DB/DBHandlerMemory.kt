@@ -5,8 +5,10 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.kotlin.ourmemories.DB.MemoryData.MemoryTable.TABLE_NAME
 import org.jetbrains.anko.db.*
+import java.io.File
 
 /**
  * Created by nyoun_000 on 2017-11-14.
@@ -21,10 +23,8 @@ object DBManagerMemory {
             mDBHandler = DBHandlerMemory(context)
         }
     }
-
-    val SQL_DELETE_TIMECAPSULE_ENTRIES = "drop table if exists " + TABLE_NAME
-    fun deleteTable(db: SQLiteDatabase) {
-        db.execSQL(SQL_DELETE_TIMECAPSULE_ENTRIES)
+    fun deleteTable() {
+        mDBHandler?.writableDatabase!!.dropTable(TABLE_NAME,true)
     }
 
     // 디비에 있는 내용 다 가져오기
@@ -66,6 +66,7 @@ object DBManagerMemory {
         mDBHandler?.writableDatabase.use {
             mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
         }
+
     }
 
     // 추억 삭제
@@ -82,7 +83,6 @@ object DBManagerMemory {
 
 class DBHandlerMemory(context: Context) : SQLiteOpenHelper(context, MemoryData.DB_NAME, null, MemoryData.DB_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
 
         db?.createTable(MemoryData.MemoryTable.TABLE_NAME, true,
                 Pair(MemoryData.MemoryTable._ID, TEXT + PRIMARY_KEY),

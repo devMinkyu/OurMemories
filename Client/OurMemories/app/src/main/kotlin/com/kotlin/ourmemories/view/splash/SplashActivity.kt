@@ -2,6 +2,7 @@ package com.kotlin.ourmemories.view.splash
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.data.source.profile.ProfileRepository
 import com.kotlin.ourmemories.view.splash.presenter.SplashContract
 import com.kotlin.ourmemories.view.splash.presenter.SplashPresenter
@@ -15,7 +16,6 @@ class SplashActivity :AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         presenter = SplashPresenter().apply {
             activity = this@SplashActivity
             profileData = ProfileRepository()

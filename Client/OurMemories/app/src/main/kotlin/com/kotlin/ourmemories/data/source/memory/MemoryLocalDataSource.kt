@@ -15,7 +15,7 @@ object MemoryLocalDataSource:MemorySource {
     fun init(context: Context) {
         DBManagerMemory.init(context)
     }
-    override fun memorySave(id:String, title: String, fromDate: String, toDate: String?, lat: Double, lon: Double, nation: String, text:String?, uploadFile: File?, classification: Int, requestMemoryCallback: Callback?, activity: AppCompatActivity) {
+    override fun memorySave(id:String, title: String, fromDate: String, toDate: String?, lat: Double, lon: Double, nation: String, text:String, uploadFile: File?, classification: Int, requestMemoryCallback: Callback?, activity: AppCompatActivity) {
         val memory = MemoryData(id, title,lat,lon,nation,fromDate,toDate, classification)
         DBManagerMemory.addMemory(memory)
         DBManagerMemory.close()

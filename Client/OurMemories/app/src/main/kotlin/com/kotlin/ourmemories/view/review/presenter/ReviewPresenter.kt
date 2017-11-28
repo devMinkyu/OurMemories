@@ -63,6 +63,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
 
     lateinit var title: String
     lateinit var date: String
+    lateinit var text: String
 
     private val requestReviewCallback: Callback = object : Callback {
         override fun onFailure(call: Call?, e: IOException?) {
@@ -83,7 +84,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
                 val isSuccess = memoryRequest.isSuccess
                 // 서버 디비에 저장된 후 로컬 디비 저장
                 if(isSuccess == "true") {
-                    memoryData.memorySave(memoryRequest.id, title, date, null, lat, lon, nation, null, null, 1, null, activity)
+                    memoryData.memorySave(memoryRequest.id, title, date, "", lat, lon, nation, text, null, 1, null, activity)
                     activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
                         yesButton { activity.finish() }
                     }.show()
@@ -196,23 +197,21 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         val inputValidation = InputVaildation(mContext)
         if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_title), activity.reviewTitleEditText, activity.reviewTitleLayoutText)) return
         if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.reviewLocation, activity.reviewLocationLayoutText)) return
+        if (!inputValidation.isInputDate(mContext.resources.getString(R.string.error_message_text), activity.reviewText, activity.reviewTextLayoutText)) return
         if(!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.reviewContents, activity.reviewContentsLayoutText)) return
 
         date = activity.reviewDateText.text.toString()
         title = activity.reviewTitleEditText.text.toString()
+        text = activity.reviewText.text.toString()
 
-        // 테스트
-        memoryData.memorySave("0", title, date, null, lat, lon, nation, null, null, 1, null, activity)
-        activity.finish()
+//        // 테스트
+//        memoryData.memorySave("0", title, date, null, lat, lon, nation, text, null, 1, null, activity)
+//        activity.finish()
 
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
-//        activity.showDialog()
-//        if (uploadFile == null) {
-//            val reviewText: EditText = activity.reviewContents.getChildAt(0) as EditText
-//            memoryData.memorySave("0",title, date, null, lat, lon, nation, reviewText.text.toString(), null, 1, requestReviewCallback, activity)
-//        } else {
-//            memoryData.memorySave("0",title, date, null, lat, lon, nation, null, uploadFile, 1, requestReviewCallback, activity)
-//        }
+        activity.showDialog()
+        memoryData.memorySave("0",title, date, "", lat, lon, nation, text, uploadFile, 1, requestReviewCallback, activity)
+
     }
 }
