@@ -10,11 +10,11 @@ from bson.objectid import ObjectId # For ObjectId to work
 from flask_oauth import OAuth, OAuthException
 from flask_session import Session
 from werkzeug import secure_filename
+import os
 
 # from project.models import *
 
 from project import *
-import base64
 
 # APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -88,11 +88,15 @@ def multyData():
     image = request.files['uploadFile']
     print(image)
     imageName = (secure_filename(image.filename))
+    print(imageName)
+
+    image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName))
+    print(imageName)
+
     # images.insert({'image' : image})
     # images.find()
     # for doc in is_user:
     #     print(doc['id'])
-    print(imageName)
 
 
     # sendToAndroid = dict(zip(('isSuccess', 'id'), ('true', 'fdfd')))
