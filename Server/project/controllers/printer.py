@@ -13,9 +13,9 @@ from flask_session import Session
 # from project.models import *
 
 from project import *
-import os
+# import os
 
-APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+# APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # api = Api(app)
 
@@ -88,7 +88,9 @@ def multyData():
     print(image)
     # images.insert({'image' : image})
 
-    return image
+    # return image
+    mimetype = image.mimetype or mimetypes.guess_type(image.filename)[0]
+    return send_file(BytesIO(image.read()), mimetype=mimetype)
 
 
 
