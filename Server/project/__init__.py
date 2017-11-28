@@ -13,7 +13,7 @@ FACEBOOK_APP_SECRET = '19210ee5aceec1dee4d2521028da935d'
 # app = Flask('project')
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/path/to/the/uploads'
+UPLOAD_FOLDER = '/home/ec2-user/OurMemories/Server/uploadFolder'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
