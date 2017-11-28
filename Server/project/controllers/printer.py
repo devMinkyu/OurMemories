@@ -87,12 +87,12 @@ def login():
 def multyData():
     image = request.files['uploadFile']
     print(image)
-    image.save(secure_filename(image.filename))
+    imageName = (secure_filename(image.filename))
     # images.insert({'image' : image})
     # images.find()
     # for doc in is_user:
     #     print(doc['id'])
-    print(image)
+    print(imageName)
 
 
     # sendToAndroid = dict(zip(('isSuccess', 'id'), ('true', 'fdfd')))
