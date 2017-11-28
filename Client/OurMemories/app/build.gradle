@@ -52,6 +52,7 @@ dependencies {
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     // lottie library
     compile 'com.airbnb.android:lottie:2.1.0'
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
 }
 repositories {
     mavenCentral()
