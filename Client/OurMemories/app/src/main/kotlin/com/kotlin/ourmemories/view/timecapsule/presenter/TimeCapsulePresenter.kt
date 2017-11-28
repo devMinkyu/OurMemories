@@ -16,7 +16,6 @@ import android.location.LocationManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.util.Log
 import android.widget.EditText
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -24,16 +23,16 @@ import com.google.gson.Gson
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.UserMemory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
-import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.unit.InputVaildation
-import com.kotlin.ourmemories.view.MainActivity
-import com.kotlin.ourmemories.view.memory.MemoryFragment
 import com.kotlin.ourmemories.view.timecapsule.TimeCapsuleActivity
 import kotlinx.android.synthetic.main.activity_timecapsule.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
-import org.jetbrains.anko.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.selector
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.yesButton
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -391,17 +390,17 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         }
 
         // 테스트
-        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
-        activity.finish()
+//        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
+//        activity.finish()
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
-//        activity.showDialog()
-//        if (uploadFile == null) {
-//            val timeCapsuleText: EditText = activity.timeCapsuleContents.getChildAt(0) as EditText
-//            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
-//        } else {
-//            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
-//        }
+        activity.showDialog()
+        if (uploadFile == null) {
+            val timeCapsuleText: EditText = activity.timeCapsuleContents.getChildAt(0) as EditText
+            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
+        } else {
+            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
+        }
     }
 
 

@@ -45,7 +45,7 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.memoryMap) as MemoryMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.memoryMap) as MemoryListMapFragment
         mapFragment.getMapAsync(mapFragment)
 
 

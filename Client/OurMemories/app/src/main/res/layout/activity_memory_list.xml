@@ -13,7 +13,7 @@
 
         <fragment
             android:id="@+id/memoryMap"
-            android:name="com.kotlin.ourmemories.view.memorylist.MemoryMapFragment"
+            android:name="com.kotlin.ourmemories.view.memorylist.MemoryListMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

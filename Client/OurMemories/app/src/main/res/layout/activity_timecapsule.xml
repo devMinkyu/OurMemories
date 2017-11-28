@@ -180,7 +180,7 @@
 
                 <fragment
                     android:id="@+id/timeCapsuleMap"
-                    android:name="com.kotlin.ourmemories.view.memorylist.MemoryMapFragment"
+                    android:name="com.kotlin.ourmemories.view.memory.MemoryMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
