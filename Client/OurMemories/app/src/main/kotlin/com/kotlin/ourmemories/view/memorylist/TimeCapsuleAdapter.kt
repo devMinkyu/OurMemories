@@ -33,7 +33,6 @@ class TimeCapsuleAdapter (context:Context, cursor:Cursor) : CursorRecyclerViewAd
         val tv_tag : TextView = view.findViewById(R.id.tv_tag) as TextView
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val mainView : View = mInflater.inflate(R.layout.layout_memorylist_timecapsule_item, parent, false)
         mainView.setOnClickListener(onItemClick)
@@ -42,10 +41,10 @@ class TimeCapsuleAdapter (context:Context, cursor:Cursor) : CursorRecyclerViewAd
     override fun onBindViewHolder(holder: ViewHolder, cursor: Cursor) {
         holder.tv_content.text = cursor.getString(1)
         holder.tv_location.text = "("+cursor.getString(2) + ", " +cursor.getString(3)+")"
-        holder.tv_tag.text = cursor.toString()
+        holder.tv_tag.text = cursor.getString(0)
     }
 
-    override fun getItemCount(): Int = cursor.columnCount
+//    override fun getItemCount(): Int = cursor.columnCount
 
     fun setOnItemClickListener(l:View.OnClickListener)
     {
