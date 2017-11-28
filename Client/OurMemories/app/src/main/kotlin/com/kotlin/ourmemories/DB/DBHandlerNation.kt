@@ -44,6 +44,7 @@ object DBManagerNation{
         }
     }
 
+
     fun deleteNation(id: Long){
         mDBHandler?.writableDatabase.use {
             mDBHandler?.writableDatabase?.delete(NationData.NationTable.TABLE_NAME, "_id", arrayOf(id.toString()))
@@ -55,43 +56,19 @@ object DBManagerNation{
     }
 
     fun defaultAddNation(){
-        val cv = ContentValues()
-        cv.put("name", "대한민국")
-        cv.put("latitude", 33.11)
-        cv.put("longitude", 22.54)
-        mDBHandler?.writableDatabase?.insert(NationData.NationTable.TABLE_NAME, null, cv)
-
-        cv.put("name", "미국")
-        cv.put("latitude", 21.00)
-        cv.put("longitude", 10.47)
-        mDBHandler?.writableDatabase?.insert(NationData.NationTable.TABLE_NAME, null, cv)
-
-        cv.put("name", "일본")
-        cv.put("latitude", 34.11)
-        cv.put("longitude", 10.54)
-        mDBHandler?.writableDatabase?.insert(NationData.NationTable.TABLE_NAME, null, cv)
-
-        cv.put("name", "대한민국2")
-        cv.put("latitude", 33.11)
-        cv.put("longitude", 22.54)
-        mDBHandler?.writableDatabase?.insert(NationData.NationTable.TABLE_NAME, null, cv)
-
-        cv.put("name", "미국2")
-        cv.put("latitude", 21.00)
-        cv.put("longitude", 10.47)
-        mDBHandler?.writableDatabase?.insert(NationData.NationTable.TABLE_NAME, null, cv)
-
-        cv.put("name", "일본2")
-        cv.put("latitude", 34.11)
-        cv.put("longitude", 10.54)
-        mDBHandler?.writableDatabase?.insert(NationData.NationTable.TABLE_NAME, null, cv)
+        var nation  = NationData(0, "대한민국",37.551836, 126.990684)
+        addNation(nation)
+        nation  = NationData(0, "일본",35.846806,  137.980230)
+        addNation(nation)
+        nation  = NationData(0, "미국",39.829794, -101.340035)
+        addNation(nation)
     }
 
 }
 
 class DBHandlerNation(context: Context) : SQLiteOpenHelper(context, NationData.DB_NAME, null, NationData.DB_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.dropTable(NationData.NationTable.TABLE_NAME, true)
+        //db?.dropTable(NationData.NationTable.TABLE_NAME, true)
         db?.createTable(NationData.NationTable.TABLE_NAME, true,
                 Pair(NationData.NationTable._ID, INTEGER + PRIMARY_KEY),
                 Pair(NationData.NationTable.NAME, TEXT),
@@ -99,9 +76,7 @@ class DBHandlerNation(context: Context) : SQLiteOpenHelper(context, NationData.D
                 Pair(NationData.NationTable.LONGITUDE, REAL)
                 )
     }
-
-
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        db?.dropTable(NationData.NationTable.TABLE_NAME, true)
     }
 }

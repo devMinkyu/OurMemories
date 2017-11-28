@@ -42,7 +42,7 @@ class NationAdapter (context: Context, cursor: Cursor): CursorRecyclerViewAdapte
         holder.tv_tag.text = cursor.getString(0)
     }
 
-    override fun getItemCount(): Int = cursor.columnCount
+//    override fun getItemCount(): Int = cursor.columnCount
 
     fun setOnItemClickListener(l:View.OnClickListener)
     {

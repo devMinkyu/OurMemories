@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.kotlin.ourmemories.DB.MemoryData.MemoryTable.TABLE_NAME
 import org.jetbrains.anko.db.*
 
 /**
@@ -21,15 +20,14 @@ object DBManagerMemory {
             mDBHandler = DBHandlerMemory(context)
         }
     }
-
-    val SQL_DELETE_TIMECAPSULE_ENTRIES = "drop table if exists " + TABLE_NAME
+    val SQL_DELETE_TIMECAPSULE_ENTRIES = "drop table if exists " + MemoryData.MemoryTable.TABLE_NAME
     fun deleteTable(db: SQLiteDatabase) {
         db.execSQL(SQL_DELETE_TIMECAPSULE_ENTRIES)
     }
 
     // 디비에 있는 내용 다 가져오기
     fun getMemoryAllWithCursor(): Cursor =
-            mDBHandler?.readableDatabase!!.query(TABLE_NAME,
+            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
                     arrayOf(MemoryData.MemoryTable._ID,
                             MemoryData.MemoryTable.TITLE,
                             MemoryData.MemoryTable.LATITUDE,
@@ -41,7 +39,7 @@ object DBManagerMemory {
                     null, null, null, null, MemoryData.MemoryTable._ID)
 
     fun getMemoryDayWithCursor(day:String): Cursor =
-            mDBHandler?.readableDatabase!!.query(TABLE_NAME,
+            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
                     arrayOf(MemoryData.MemoryTable._ID,
                             MemoryData.MemoryTable.TITLE,
                             MemoryData.MemoryTable.LATITUDE,
@@ -51,6 +49,16 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.TO_DATE,
                             MemoryData.MemoryTable.CLASSIFICATION),
                     "from_date Like ?", arrayOf(day+"%"), null, null, MemoryData.MemoryTable._ID)
+
+    fun getMemoriesWithCursor(nationName: String) : Cursor =
+            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
+                    arrayOf(MemoryData.MemoryTable._ID,
+                            MemoryData.MemoryTable.TITLE,
+                            MemoryData.MemoryTable.LATITUDE,
+                            MemoryData.MemoryTable.LONGITUDE,
+                            MemoryData.MemoryTable.NATION_NAME,
+                            MemoryData.MemoryTable.CLASSIFICATION),
+                    MemoryData.MemoryTable.NATION_NAME+"=?", arrayOf(nationName), null, null, MemoryData.MemoryTable._ID)
 
     // 추억 추가
     fun addMemory(memoryData: MemoryData) {
@@ -64,7 +72,7 @@ object DBManagerMemory {
         cv.put(MemoryData.MemoryTable.TO_DATE, memoryData.toDate)
         cv.put(MemoryData.MemoryTable.CLASSIFICATION, memoryData.classification)
         mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(TABLE_NAME, null, cv)
+            mDBHandler?.writableDatabase?.insert(MemoryData.MemoryTable.TABLE_NAME, null, cv)
         }
     }
 
@@ -74,15 +82,17 @@ object DBManagerMemory {
             mDBHandler?.writableDatabase?.delete(MemoryData.MemoryTable.TABLE_NAME, "_id=?", arrayOf(id))
         }
     }
-
     fun close() {
         mDBHandler?.close()
     }
+
+
 }
 
 class DBHandlerMemory(context: Context) : SQLiteOpenHelper(context, MemoryData.DB_NAME, null, MemoryData.DB_VERSION) {
+
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
+        //db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
 
         db?.createTable(MemoryData.MemoryTable.TABLE_NAME, true,
                 Pair(MemoryData.MemoryTable._ID, TEXT + PRIMARY_KEY),
@@ -96,10 +106,7 @@ class DBHandlerMemory(context: Context) : SQLiteOpenHelper(context, MemoryData.D
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
 
-    override fun onOpen(db: SQLiteDatabase?) {
-        super.onOpen(db)
     }
 }

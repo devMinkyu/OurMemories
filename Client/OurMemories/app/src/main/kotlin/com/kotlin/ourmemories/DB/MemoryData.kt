@@ -12,7 +12,7 @@ data class MemoryData(val id:String = "",
                       val toDate: String? = "No Date",
                       val classification:Int = 0) {
     companion object {
-        val DB_NAME = "OurMemory.db"
+        val DB_NAME = "OurMemory2.db"
         val DB_VERSION = 1
     }
     //메모리 테이블 테스트
