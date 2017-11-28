@@ -86,13 +86,9 @@ def login():
 def multyData():
     image = request.files['uploadFile']
     print(image)
-    images.insert({'image' : image})
+    # images.insert({'image' : image})
 
-    pictures = images.find()
-    for doc in pictures:
-        print(doc['_id'])
-
-    return dict(zip(('id', 'isSuccess'), (doc['_id'], "true")))
+    return image
 
 
 
