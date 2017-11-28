@@ -13,6 +13,9 @@ from flask_session import Session
 # from project.models import *
 
 from project import *
+import os
+
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # api = Api(app)
 
@@ -27,6 +30,7 @@ from project import *
 # android DB
 db = connection.OurMemories # DB 선택
 user = db.users # collection 선택
+images = db.image # image collection 선택
 
 @app.route('/')
 def index():
@@ -76,6 +80,16 @@ def login():
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
 
     return jsonify(sendToAndroid)
+
+# 사진 저장
+@app.route('/memory', methods=['GET', 'POST'])
+def multyData():
+    image = request.form['uploadFile']
+    print(image)
+    # images.insert({'image' : image})
+
+    return jsonify(image)
+
 
 
 # 자동로그인
@@ -128,7 +142,7 @@ def facebook_authorized(resp):
     email = (me.data['email'])
     picture = (me.data['picture']['data']['url'])
 
-
+    # user Id가 DB에 있는지 확인
     is_user = user.find_one({"id" : user_id})
     if is_user == None:
         # isSuccess

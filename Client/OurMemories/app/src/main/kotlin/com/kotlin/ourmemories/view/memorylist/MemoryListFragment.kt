@@ -20,19 +20,10 @@ class MemoryListFragment : Fragment() , View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fragment_memorylist, container, false)
-//    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-//        val v = inflater?.inflate(R.layout.fragment_memorylist, container, false)
-//        return v
-//    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        DBManagerNation.init(context)
-//        DBManagerNation.defaultAddNation()
-//        var adapter = NationAdapter(context, DBManagerNation.getNationAllWithCursor())
-//        var recycleListView = view.findViewById(R.id.nation_list) as RecyclerView
-//        recycleListView.layoutManager = LinearLayoutManager(context)
-//        recycleListView.adapter = adapter
+
 
         var recycleListView = view.findViewById(R.id.nation_list) as RecyclerView
         recycleListView.layoutManager = LinearLayoutManager(activity)

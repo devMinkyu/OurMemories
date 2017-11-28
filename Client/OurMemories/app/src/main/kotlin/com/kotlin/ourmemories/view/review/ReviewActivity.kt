@@ -19,7 +19,7 @@ import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.MainActivity
-import com.kotlin.ourmemories.view.memorylist.MemoryMapFragment
+import com.kotlin.ourmemories.view.memorylist.MemoryListMapFragment
 import com.kotlin.ourmemories.view.review.presenter.ReviewContract
 import com.kotlin.ourmemories.view.review.presenter.ReviewPresenter
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
@@ -118,7 +118,7 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
 
     override fun updateAddressView(address: String) {
         reviewMapRoot.visibility = View.VISIBLE
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.reviewMap) as MemoryMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.reviewMap) as MemoryListMapFragment
         mapFragment.getMapAsync(mapFragment)
         reviewLocation.setText(address)
     }
