@@ -9,6 +9,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.kotlin.ourmemories.DB.DBManagerMemory
+import org.jetbrains.anko.toast
 
 /**
  * Created by nyoun_000 on 2017-11-11.
@@ -26,7 +27,7 @@ class MemoryListMapFragment : SupportMapFragment(), OnMapReadyCallback {
         val intent: Intent? = activity.intent
         if (intent != null) {
             nationName = activity.intent.extras.getString("nationName")
-            //context.toast(nationName)
+            context.toast(nationName)
             if (nationName == "대한민국") {
                 val kor = LatLng(37.574515, 126.976930)
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(kor))

@@ -15,8 +15,5 @@ class MemoryMapFragment : SupportMapFragment(), OnMapReadyCallback {
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
-
-
-
     }
 }

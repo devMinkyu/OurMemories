@@ -86,7 +86,22 @@ object DBManagerMemory {
         mDBHandler?.close()
     }
 
-
+//    // 테스트용
+//    fun defaultAddTimeCapesule() {
+//
+//        var memoryData = MemoryData("1", "남산에서 타임캡슐",37.553902,126.980732,"대한민국", "0","0",0)
+//        addMemory(memoryData)
+//        memoryData = MemoryData("2", "이태원에서 타임캡슐",37.533924,126.993662,"대한민국", "0","0",0)
+//        addMemory(memoryData)
+//        memoryData = MemoryData("3", "부산 첫만남 장소 타임캡슐",35.153012,129.118680,"대한민국", "0","0",0)
+//        addMemory(memoryData)
+//        memoryData = MemoryData("4", "전주 타임캡슐",35.814836,127.153150,"대한민국", "0","0",0)
+//        addMemory(memoryData)
+//        memoryData = MemoryData("5", "속초 타임캡슐",38.190457,128.603384,"대한민국", "0","0",0)
+//        addMemory(memoryData)
+//        memoryData = MemoryData("6", "여의나루 데이트",37.528145,126.934022,"대한민국", "0","0",1)
+//        addMemory(memoryData)
+//    }
 }
 
 class DBHandlerMemory(context: Context) : SQLiteOpenHelper(context, MemoryData.DB_NAME, null, MemoryData.DB_VERSION) {
