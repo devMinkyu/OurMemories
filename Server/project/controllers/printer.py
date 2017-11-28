@@ -85,12 +85,12 @@ def login():
 @app.route('/memory', methods=['GET', 'POST'])
 def multyData():
     image = request.files['uploadFile']
-    image_string = base64.b64encode(image.read())
+    # image_string = base64.b64encode(image.read())
     print(image)
-    print(image_string)
     # images.insert({'image' : image})
+    print(image.read())
 
-    return image
+    return (image.read())
 
 
 
