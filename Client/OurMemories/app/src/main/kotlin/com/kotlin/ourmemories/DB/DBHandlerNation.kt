@@ -78,6 +78,5 @@ class DBHandlerNation(context: Context) : SQLiteOpenHelper(context, NationData.D
     }
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.dropTable(NationData.NationTable.TABLE_NAME, true)
-
     }
 }

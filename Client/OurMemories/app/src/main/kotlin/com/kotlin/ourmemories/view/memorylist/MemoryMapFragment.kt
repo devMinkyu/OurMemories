@@ -17,6 +17,11 @@ class MemoryMapFragment : SupportMapFragment(), OnMapReadyCallback{
 
     override fun onMapReady(map: GoogleMap?) {
         mMap = map as GoogleMap
+        mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.uiSettings.isMapToolbarEnabled = true
+
+
         var nationName = activity.intent.extras.getString("nationName")
         //context.toast(nationName)
         if(nationName == "대한민국"){
