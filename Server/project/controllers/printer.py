@@ -86,11 +86,13 @@ def login():
 def multyData():
     image = request.files['uploadFile']
     print(image)
-    # images.insert({'image' : image})
+    images.insert({'image' : image})
 
-    # return image
-    mimetype = image.mimetype or mimetypes.guess_type(image.filename)[0]
-    return send_file(BytesIO(image.read()), mimetype=mimetype)
+    pictures = images.find()
+    for doc in pictures:
+        print(doc['_id'])
+
+    return dict(zip(('id', 'isSuccess'), (doc['_id'], "true")))
 
 
 
