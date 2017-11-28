@@ -9,6 +9,7 @@ from mongokit import Connection, Document, Collection
 from bson.objectid import ObjectId # For ObjectId to work
 from flask_oauth import OAuth, OAuthException
 from flask_session import Session
+from werkzeug import secure_filename
 
 # from project.models import *
 
@@ -85,12 +86,19 @@ def login():
 @app.route('/memory', methods=['GET', 'POST'])
 def multyData():
     image = request.files['uploadFile']
-    # image_string = base64.b64encode(image.read())
     print(image)
+    image.save(secure_filename(image.filename))
     # images.insert({'image' : image})
-    print(image.read())
+    # images.find()
+    # for doc in is_user:
+    #     print(doc['id'])
+    print(image)
 
-    return (image.read())
+
+    # sendToAndroid = dict(zip(('isSuccess', 'id'), ('true', 'fdfd')))
+
+    # return jsonify(sendToAndroid)
+    return 'fd'
 
 
 
