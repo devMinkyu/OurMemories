@@ -177,8 +177,6 @@ def get_facebook_oauth_token():
 #
 @app.route('/memory', methods=['GET', 'POST'])
 def multyData():
-    image = request.files['uploadFile'] # android에서 보낸 사진 받기
-    print(image)
 
     # memory 추억에서 입력한 값 가져오기
     userId = request.form['userId']
@@ -205,17 +203,6 @@ def multyData():
 
     sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", mId)))
 
-    imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
-    # print(imageName)
-
-    image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName)) # 폴더에 이미지 저장
-
-    redirect(url_for('uploaded_file', filename=imageName)) # 웹페이지에 사진을 띄위기 위해
-
-    path = SENDING_IMAGE_PATH + 'uploads/' + imageName # android에 보낼 image URL
-    print(path)
-
-    # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') )) # review 보기때 사용
     return jsonify(sendToAndroid)
 
 
