@@ -100,7 +100,12 @@ def multyData():
     memoryNation = request.form['memoryNation']
     memoryClassification = request.form['memoryClassification']
     text = request.form['text']
+    # 정보들 DB에 저장
     images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text})
+
+    # memory 데이터를 JSON으로
+    memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
+    sendToAndroid = dict(zip(('isSuccess', 'userProfileMemoryResult'), ("true", memory_object)))
 
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     # print(imageName)
@@ -113,7 +118,7 @@ def multyData():
     print(path)
 
     # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') )) # review 보기떄 사용
-    # return jsonify(sendToAndroid)
+    return jsonify(sendToAndroid)
 
 
 # 아마존 컴퓨터 주소/uploads/filename로 디렉토리에 저장된 파일 꺼내옴
