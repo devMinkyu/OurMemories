@@ -104,7 +104,7 @@ def multyData():
 
     redirect(url_for('uploaded_file', filename=imageName))
 
-    path = SENDING_IMAGE_PATH + 'uploads/' + filename
+    path = SENDING_IMAGE_PATH + 'uploads/' + imageName
     sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
     return jsonify(sendToAndroid)
 
