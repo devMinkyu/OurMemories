@@ -95,7 +95,7 @@ def multyData():
 
     # print(image.userId)
 
-    print(request.args.get('memoryTitle'))
+    print(request.form['memoryTitle'])
 
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     # print(imageName)
