@@ -174,7 +174,7 @@ def get_facebook_oauth_token():
     return session.get('oauth_token')
 
 
-# 사진 저장
+#
 @app.route('/memory', methods=['GET', 'POST'])
 def multyData():
     image = request.files['uploadFile'] # android에서 보낸 사진 받기
@@ -199,11 +199,11 @@ def multyData():
     info = images.find({"userId" : userId})
     for info in info:
         if info['memoryTitle'] == memoryTitle:
-            mId = info['_id']
+            mId = ObjectId(info['_id'])
             print(mId)
             break
 
-    sendToAndroid = dict(zip(('isSuccess', '_id'), ("true", mId)))
+    sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", mId)))
 
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     # print(imageName)
@@ -219,55 +219,27 @@ def multyData():
     return jsonify(sendToAndroid)
 
 
+# 사진 저장(웹페이지에 사진 띄움)
+# @app.route('/memory', methods=['GET', 'POST'])
+# def multyData():
+#     image = request.files['uploadFile'] # android에서 보낸 사진 받기
+#     print(image)
+#
+#     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
+#     # print(imageName)
+#
+#     image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName)) # 폴더에 이미지 저장
+#
+#     redirect(url_for('uploaded_file', filename=imageName)) # 웹페이지에 사진을 띄위기 위해
+#
+#     path = SENDING_IMAGE_PATH + 'uploads/' + imageName # android에 보낼 image URL
+#     print(path)
+#
+#     sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') )) # review 보기때 사용
+#     return jsonify(sendToAndroid)
+
+
 # 아마존 컴퓨터 주소/uploads/filename로 디렉토리에 저장된 파일 꺼내옴
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
-# DB내용 가져올 수 있는지 test
-# @app.route('/')
-# def index():
-#
-#     todos = ddd.find()
-#
-#     return render_template('bbsList.html', todos = todos)
-
-
-# 게시판
-# @app.route('/')
-# def index():
-#
-#     return render_template('bbs.html')
-#
-# # 게시판 글쓰기
-# @app.route('/write', methods=['POST'])
-# def write():
-#     ddd.title = request.form['title']
-#     ddd.content = request.form['content']
-#
-#     ddd.insert({'title' : request.form['title'], 'content' : request.form['content']})
-#     # bbs.save()
-#
-#     todos = ddd.find()
-#     return render_template('bbsList.html', todos = todos)
-
-
-# class CreateForm(FlaskForm):
-#     text = StringField('name', validators=[DataRequired()])
-#
-# class HelloWorld(Resource):
-#     def get(self):
-#         return {'hello': 'world'}
-#
-# api.add_resource(HelloWorld, '/')
-
-
-# @app.route('/print', methods=['GET', 'POST'])
-# def printer():
-#     form = CreateForm(request.form)
-#     if request.method == 'POST' and form.validate():
-#         from project.models.Printer import Printer
-#         printer = Printer()
-#         printer.show_string(form.text.data)
-#         return render_template('printer/index.html')
-#     return render_template('printer/print.html', form=form)
+# @app.route('/uploads/<filename>')
+# def uploaded_file(filename):
+#     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
