@@ -90,8 +90,8 @@ def multyData():
     image = request.files['uploadFile'] # android에서 보낸 사진 받기
     print(image)
 
-    for info in image
-    print(info['userId'])
+    for info in image:
+        print(info['userId'])
 
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     print(imageName)
