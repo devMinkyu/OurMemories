@@ -199,7 +199,7 @@ def multyData():
     info = images.find({"userId" : userId})
     for info in info:
         if info.memoryTitle == memoryTitle:
-            mId = info._id
+            mId = info['_id']
             print(mId)
             break
 
