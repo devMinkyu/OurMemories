@@ -90,12 +90,17 @@ def multyData():
     image = request.files['uploadFile'] # android에서 보낸 사진 받기
     print(image)
 
-    # for info in image:
-    #     print(info['userId'])
-
-    # print(image.userId)
-
-    print(request.form['memoryTitle'])
+    # memory 추억에서 입력한 값 가져오기
+    userId = request.form['userId']
+    memoryTitle = request.form['memoryTitle']
+    memoryFromDate = request.form['memoryFromDate']
+    memoryToDate = request.form['memoryToDate']
+    memoryLatitude = request.form['memoryLatitude']
+    memoryLongitude = request.form['memoryLongitude']
+    memoryNation = request.form['memoryNation']
+    memoryClassification = request.form['memoryClassification']
+    text = request.form['text']
+    images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text})
 
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     # print(imageName)
@@ -106,9 +111,9 @@ def multyData():
 
     path = SENDING_IMAGE_PATH + 'uploads/' + imageName # android에 보낼 image URL
     print(path)
-    sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
 
-    return jsonify(sendToAndroid)
+    # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') )) # review 보기떄 사용
+    # return jsonify(sendToAndroid)
 
 
 # 아마존 컴퓨터 주소/uploads/filename로 디렉토리에 저장된 파일 꺼내옴
