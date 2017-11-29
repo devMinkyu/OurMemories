@@ -87,7 +87,7 @@ def login():
 @app.route('/memory', methods=['GET', 'POST'])
 def multyData():
     image = request.files['uploadFile'] # android에서 보낸 사진 받기
-    print(image)
+    # print(image)
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     print(imageName)
 
@@ -95,19 +95,17 @@ def multyData():
 
     path = SENDING_IMAGE_PATH + imageName # android에 보낼 image URL
     print(path)
+    #
+    # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
+    # print(sendToAndroid)
+    #
+    # return jsonify(sendToAndroid)
 
-    # images.insert({'image' : image})
-    # images.find()
-    # for doc in is_user:
-    #     print(doc['id'])
+    return redirect(url_for('uploaded_file', filename=imageName))
 
-
-    sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
-    print(sendToAndroid)
-
-    return jsonify(sendToAndroid)
-
-
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 # 자동로그인
 @app.route('/profile', methods=['GET', 'POST'])
