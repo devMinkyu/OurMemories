@@ -95,10 +95,10 @@ def multyData():
 
     # print(image.userId)
 
-    print(request.args.get('userId'))
+    print(request.args.get('memoryTitle'))
 
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
-    print(imageName)
+    # print(imageName)
 
     image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName)) # 폴더에 이미지 저장
 
