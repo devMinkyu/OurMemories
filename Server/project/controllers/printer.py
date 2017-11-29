@@ -101,14 +101,20 @@ def multyData():
     #
     # return jsonify(sendToAndroid)
 
-    return redirect(url_for('uploaded_file', filename=imageName))
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    # return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    redirect(url_for('uploaded_file', filename=imageName))
+
     path = SENDING_IMAGE_PATH + 'uploads/' + filename
     sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
     return jsonify(sendToAndroid)
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    # path = SENDING_IMAGE_PATH + 'uploads/' + filename
+    # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
+    # return jsonify(sendToAndroid)
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 # 자동로그인
 @app.route('/profile', methods=['GET', 'POST'])
