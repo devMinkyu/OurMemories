@@ -93,9 +93,9 @@ def multyData():
 
     image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName)) # 폴더에 이미지 저장
 
-    path = SENDING_IMAGE_PATH + imageName # android에 보낼 image URL
-    print(path)
-    #
+    # path = SENDING_IMAGE_PATH + imageName # android에 보낼 image URL
+    # print(path)
+
     # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
     # print(sendToAndroid)
     #
@@ -105,7 +105,10 @@ def multyData():
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    # return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    path = SENDING_IMAGE_PATH + 'uploads/' + filename
+    sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
+    return jsonify(sendToAndroid)
 
 # 자동로그인
 @app.route('/profile', methods=['GET', 'POST'])

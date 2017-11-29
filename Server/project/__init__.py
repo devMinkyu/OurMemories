@@ -13,7 +13,7 @@ FACEBOOK_APP_SECRET = '19210ee5aceec1dee4d2521028da935d'
 # app = Flask('project')
 app = Flask(__name__)
 
-SENDING_IMAGE_PATH = 'http://13.124.79.162:8000/home/ec2-user/OurMemories/Server/uploadFolder/'
+SENDING_IMAGE_PATH = 'http://13.124.79.162:8000/'
 UPLOAD_FOLDER = '/home/ec2-user/OurMemories/Server/uploadFolder' # 아마존 컴퓨터에 이미지 저장되는 경로
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
