@@ -43,7 +43,7 @@ def index():
 @app.route('/facebookLogin', methods=['GET', 'POST'])
 def login():
     accessToken = request.form['accessToken']
-    print(accessToken) # 토큰을 받았는지 test
+    # print(accessToken) # 토큰을 받았는지 test
 
     session['oauth_token'] = (accessToken, '')
 
@@ -90,8 +90,7 @@ def multyData():
     image = request.files['uploadFile'] # android에서 보낸 사진 받기
     print(image)
 
-    for info in image:
-        print(info['userId'])
+    print(image.userId)
 
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     print(imageName)
@@ -101,6 +100,7 @@ def multyData():
     redirect(url_for('uploaded_file', filename=imageName)) # 웹페이지에 사진을 띄위기 위해
 
     path = SENDING_IMAGE_PATH + 'uploads/' + imageName # android에 보낼 image URL
+    print(path)
     sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
 
     return jsonify(sendToAndroid)
