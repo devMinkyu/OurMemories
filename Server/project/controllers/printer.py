@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, jsonify, Response, session, r
 # from wtforms.validators import DataRequired
 # from flask_restful import Resource, Api
 from mongokit import Connection, Document, Collection
-from bson.objectid import ObjectId # For ObjectId to work
+from bson.objectid import ObjectId # For MONGODB ObjectId to work
 from flask_oauth import OAuth, OAuthException
 from flask_session import Session
 from werkzeug import secure_filename
@@ -82,49 +82,6 @@ def login():
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
 
     return jsonify(sendToAndroid)
-
-
-# 사진 저장
-@app.route('/memory', methods=['GET', 'POST'])
-def multyData():
-    image = request.files['uploadFile'] # android에서 보낸 사진 받기
-    print(image)
-
-    # memory 추억에서 입력한 값 가져오기
-    userId = request.form['userId']
-    memoryTitle = request.form['memoryTitle']
-    memoryFromDate = request.form['memoryFromDate']
-    memoryToDate = request.form['memoryToDate']
-    memoryLatitude = request.form['memoryLatitude']
-    memoryLongitude = request.form['memoryLongitude']
-    memoryNation = request.form['memoryNation']
-    memoryClassification = request.form['memoryClassification']
-    text = request.form['text']
-    # 정보들 DB에 저장
-    images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text})
-
-    # memory 데이터를 JSON으로
-    memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
-    sendToAndroid = dict(zip(('isSuccess', 'userProfileMemoryResult'), ("true", memory_object)))
-
-    imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
-    # print(imageName)
-
-    image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName)) # 폴더에 이미지 저장
-
-    redirect(url_for('uploaded_file', filename=imageName)) # 웹페이지에 사진을 띄위기 위해
-
-    path = SENDING_IMAGE_PATH + 'uploads/' + imageName # android에 보낼 image URL
-    print(path)
-
-    # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') )) # review 보기떄 사용
-    return jsonify(sendToAndroid)
-
-
-# 아마존 컴퓨터 주소/uploads/filename로 디렉토리에 저장된 파일 꺼내옴
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 # 자동로그인
@@ -216,6 +173,56 @@ def facebook_authorized(resp):
 def get_facebook_oauth_token():
     return session.get('oauth_token')
 
+
+# 사진 저장
+@app.route('/memory', methods=['GET', 'POST'])
+def multyData():
+    image = request.files['uploadFile'] # android에서 보낸 사진 받기
+    print(image)
+
+    # memory 추억에서 입력한 값 가져오기
+    userId = request.form['userId']
+    memoryTitle = request.form['memoryTitle']
+    memoryFromDate = request.form['memoryFromDate']
+    memoryToDate = request.form['memoryToDate']
+    memoryLatitude = request.form['memoryLatitude']
+    memoryLongitude = request.form['memoryLongitude']
+    memoryNation = request.form['memoryNation']
+    memoryClassification = request.form['memoryClassification']
+    text = request.form['text']
+    # 정보들 DB에 저장
+    images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text})
+
+    # memory 데이터를 JSON으로
+    # memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
+
+    info = images.find({"userId" : userId})
+    for info in info:
+        if info.memoryTitle == memoryTitle:
+            mId = info._id
+            print(mId)
+            break
+
+    sendToAndroid = dict(zip(('isSuccess', '_id'), ("true", mId)))
+
+    imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
+    # print(imageName)
+
+    image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName)) # 폴더에 이미지 저장
+
+    redirect(url_for('uploaded_file', filename=imageName)) # 웹페이지에 사진을 띄위기 위해
+
+    path = SENDING_IMAGE_PATH + 'uploads/' + imageName # android에 보낼 image URL
+    print(path)
+
+    # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') )) # review 보기때 사용
+    return jsonify(sendToAndroid)
+
+
+# 아마존 컴퓨터 주소/uploads/filename로 디렉토리에 저장된 파일 꺼내옴
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 # DB내용 가져올 수 있는지 test
 # @app.route('/')
