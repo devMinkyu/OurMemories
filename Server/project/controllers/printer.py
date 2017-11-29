@@ -102,7 +102,7 @@ def multyData():
     #     print(doc['id'])
 
 
-    sendToAndroid = dict(zip(('mediaMemory'), (path)))
+    sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
     print(sendToAndroid)
 
     return jsonify(sendToAndroid)
