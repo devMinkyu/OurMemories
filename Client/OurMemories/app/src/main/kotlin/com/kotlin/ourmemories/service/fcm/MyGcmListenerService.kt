@@ -49,7 +49,7 @@ class MyGcmListenerService:GcmListenerService() {
     }
 
     /**
-     * 실제 디바에스에 GCM으로부터 받은 메세지를 알려주는 함수이다. 디바이스 Notification Center에 나타난다. 알림을 위한 메소드
+     * 실제 디바에스에 GCM 으로부터 받은 메세지를 알려주는 함수이다. 디바이스 Notification Center 에 나타난다. 알림을 위한 메소드
      *
      * @param title 메세지 제목
      * @param message 메세지 내용
@@ -74,6 +74,10 @@ class MyGcmListenerService:GcmListenerService() {
         notificationManager.notify(0,notificationBuilder.build())
     }
 
+    /**
+     * 알람이 오면 앱 아이콘에 뱃지를 달아 유저에게 알람이 왔다는 것을 알려준다
+     *
+     */
     private fun setAlarmBadge() {
         val intent = Intent("android.intent.action.BADGE_COUNT_UPDATE")
 

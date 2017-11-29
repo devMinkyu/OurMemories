@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.kotlin.ourmemories.R
 import com.kotlin.phonebook.adapter.CursorRecyclerViewAdapter
+import kotlinx.android.synthetic.main.layout_memorylist_timecapsule_item.view.*
 
 /**
  * Created by nyoun_000 on 2017-11-11.
@@ -28,21 +29,24 @@ class TimeCapsuleAdapter (context:Context, cursor:Cursor) : CursorRecyclerViewAd
     private var onItemClick:View.OnClickListener? = null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tv_location : TextView = view.findViewById(R.id.tv_location) as TextView
-        val tv_content : TextView = view.findViewById(R.id.tv_content) as TextView
-        val tv_tag : TextView = view.findViewById(R.id.tv_tag) as TextView
+        val mView= view
+        fun bindView(cursor: Cursor){
+            with(mView){
+                tv_content.text = cursor.getString(1)
+                tv_location.text = "("+cursor.getString(2) + ", " +cursor.getString(3)+")"
+                tv_tag.text = cursor.toString()
+            }
+        }
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val mainView : View = mInflater.inflate(R.layout.layout_memorylist_timecapsule_item, parent, false)
-        mainView.setOnClickListener(onItemClick)
         return ViewHolder(mainView)
     }
     override fun onBindViewHolder(holder: ViewHolder, cursor: Cursor) {
-        holder.tv_content.text = cursor.getString(1)
-        holder.tv_location.text = "("+cursor.getString(2) + ", " +cursor.getString(3)+")"
-        holder.tv_tag.text = cursor.toString()
+        holder.itemView.setOnClickListener(onItemClick)
+        holder.bindView(cursor)
     }
 
     override fun getItemCount(): Int = cursor.columnCount

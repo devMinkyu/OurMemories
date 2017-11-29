@@ -22,6 +22,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.data.jsondata.MemoryItem
 import com.kotlin.ourmemories.data.jsondata.UserMemory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
@@ -122,6 +123,15 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     // 아직은 고려중
                 }
             }
+//            activity.runOnUiThread {
+//                activity.hideDialog()
+//                val responseData = response?.body()!!.string()
+//                val memoryRequest:MemoryItem = Gson().fromJson(responseData, MemoryItem::class.java)
+//
+//                Log.d("hoho", memoryRequest.mediaMemory)
+//
+//                mView.ex(memoryRequest.mediaMemory)
+//            }
         }
 
     }
@@ -326,6 +336,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.CAMERA), REQ_PERMISSON_CAMERA_VIDEO)
         } else {
             val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT,(1024*1024*4).toLong())
             activity.startActivityForResult(intent, PICK_VIDEO)
         }
     }

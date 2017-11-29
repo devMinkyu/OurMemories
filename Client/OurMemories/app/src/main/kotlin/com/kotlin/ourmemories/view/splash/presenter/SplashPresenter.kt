@@ -68,6 +68,8 @@ class SplashPresenter: SplashContract.Presenter {
                         PManager.setUserEmail(profileRequest.userProfileResult.userEmail)
                         PManager.setUserId(profileRequest.userProfileResult.userId)
 
+                        // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
+
                         activity.startActivity<MainActivity>()
                         activity.finish()
                     } else if(loginAuth == "0") // 로그아웃한 경우
@@ -95,7 +97,6 @@ class SplashPresenter: SplashContract.Presenter {
         when(userId){
             // 유저가 현재공유저장소에 값이 있는지를 비교
             ""->{
-                Log.d("hoho", "에에에")
                 loginPageIntent()
             }
             else->{

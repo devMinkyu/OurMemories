@@ -25,7 +25,6 @@ class MemoryRepository(context: Context):MemorySource {
             }
             // 서버 디비 저장
             (uploadFile != null)->{
-                Log.d("hoho", "서버로 들어감~")
                 memoryRemoteDataSource.memorySave(id, title,fromDate,toDate,lat,lon,nation,text,uploadFile,classification, requestMemoryCallback, activity)
             }
         }

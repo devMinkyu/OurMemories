@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.R
+import kotlinx.android.synthetic.main.activity_memory_list.*
 
 class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -33,9 +34,8 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
-        var recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
-        recycleListView.layoutManager = LinearLayoutManager(this)
-        recycleListView.adapter = adapter
+        timecapsule_list.layoutManager = LinearLayoutManager(this)
+        timecapsule_list.adapter = adapter
     }
 
     override fun onStart() {

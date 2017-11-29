@@ -39,8 +39,8 @@ object MemoryRemoteDataSource:MemorySource {
                 .addFormDataPart("memoryToDate", toDate)
                 .addFormDataPart("memoryLatitude", lat.toString())
                 .addFormDataPart("memoryLongitude", lon.toString())
-                .addFormDataPart("memoryNation", title)
-                .addFormDataPart("memoryClassification", title)
+                .addFormDataPart("memoryNation", nation)
+                .addFormDataPart("memoryClassification", classification.toString())
                 .addFormDataPart("text", text)
 
         // 사진,동영상 선택 여부

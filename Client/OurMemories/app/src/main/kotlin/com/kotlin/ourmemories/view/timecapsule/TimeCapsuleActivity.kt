@@ -27,6 +27,10 @@ import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_timecapsule.*
 import java.io.File
 import java.util.*
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import com.squareup.picasso.Picasso
+
+
 
 class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
     private lateinit var presenter: TimeCapsuleContract.Presenter
@@ -141,6 +145,8 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         }
     }
 
+
+
     override fun updateToTimeView(hourOfDay: Int, minute: Int) {
         val amTimeFormat = this.resources.getString(R.string.am_time_format)
         val pmTimeFormat = this.resources.getString(R.string.pm_time_format)
@@ -186,6 +192,22 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
                 .into(timeCapsulePhoto)
         timeCapsuleContents.addView(timeCapsulePhoto)
     }
+// 사진 받아서 보여주기 -> 나중에 memoryPin으로 이동
+//    override fun ex(image: String) {
+//        timeCapsuleContents.removeAllViews()
+//        val timeCapsulePhoto = ImageView(this)
+//        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+//        timeCapsulePhoto.layoutParams = params
+//        timeCapsulePhoto.scaleType = ImageView.ScaleType.FIT_START
+//        timeCapsulePhoto.adjustViewBounds = true
+//
+//
+//        Picasso.with(this)
+//                .load(image)
+//                .transform(CropSquareTransformation())
+//                .into(timeCapsulePhoto)
+//        timeCapsuleContents.addView(timeCapsulePhoto)
+//    }
 
     // 동영상을 받아서 contents 에 동영상 추가
     override fun updateVideoView(uploadFile: File) {

@@ -57,4 +57,7 @@
     <string name="permission_setting">Set permissions</string>
     <string name="permission_message">Multiple permissions are required to make contents. If you do not give these permissions, you can not make contents.</string>
     <string name="permission_button">Go to Settings</string>
+
+    <string name="memory_pin_timecapsule_subtitle">Find the good memories you have forgotten</string>
+    <string name="memory_pin_review_subtitle">Find your footsteps</string>
 </resources>
