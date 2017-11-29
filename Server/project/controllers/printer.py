@@ -197,11 +197,11 @@ def multyData():
     info = images.find({"userId" : userId})
     for info in info:
         if info['memoryTitle'] == memoryTitle:
-            mId = ObjectId(info['_id'])
+            mId = info['_id']
             print(mId)
             break
 
-    sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", mId)))
+    sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", "fdfd")))
 
     return jsonify(sendToAndroid)
 
