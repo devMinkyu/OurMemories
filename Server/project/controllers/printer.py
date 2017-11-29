@@ -83,38 +83,34 @@ def login():
 
     return jsonify(sendToAndroid)
 
+
 # 사진 저장
 @app.route('/memory', methods=['GET', 'POST'])
 def multyData():
     image = request.files['uploadFile'] # android에서 보낸 사진 받기
-    # print(image)
+    print(image)
+
+    for info in image
+    print(info['userId'])
+
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     print(imageName)
 
     image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName)) # 폴더에 이미지 저장
 
-    # path = SENDING_IMAGE_PATH + imageName # android에 보낼 image URL
-    # print(path)
+    redirect(url_for('uploaded_file', filename=imageName)) # 웹페이지에 사진을 띄위기 위해
 
-    # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
-    # print(sendToAndroid)
-    #
-    # return jsonify(sendToAndroid)
-
-
-    redirect(url_for('uploaded_file', filename=imageName))
-
-    path = SENDING_IMAGE_PATH + 'uploads/' + imageName
+    path = SENDING_IMAGE_PATH + 'uploads/' + imageName # android에 보낼 image URL
     sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
+
     return jsonify(sendToAndroid)
 
 
+# 아마존 컴퓨터 주소/uploads/filename로 디렉토리에 저장된 파일 꺼내옴
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    # path = SENDING_IMAGE_PATH + 'uploads/' + filename
-    # sendToAndroid = dict(zip( ('mediaMemory', 'isSuccess'), (path, 'true') ))
-    # return jsonify(sendToAndroid)
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 # 자동로그인
 @app.route('/profile', methods=['GET', 'POST'])
