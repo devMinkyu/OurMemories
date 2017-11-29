@@ -32,6 +32,7 @@
     <string name="error_message_text">Enter Text</string>
     <string name="error_message_contents">Enter Contents</string>
     <string name="error_message_network">Check your connection(Network error)</string>
+    <string name="error_message_same_title">The same title exists.</string>
 
     <string name="success_message_memory">Successfully registered</string>
 

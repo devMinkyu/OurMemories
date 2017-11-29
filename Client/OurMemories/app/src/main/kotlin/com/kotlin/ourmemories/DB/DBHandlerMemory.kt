@@ -86,7 +86,7 @@ class DBHandlerMemory(context: Context) : SQLiteOpenHelper(context, MemoryData.D
 
         db?.createTable(MemoryData.MemoryTable.TABLE_NAME, true,
                 Pair(MemoryData.MemoryTable._ID, TEXT + PRIMARY_KEY),
-                Pair(MemoryData.MemoryTable.TITLE, TEXT),
+                Pair(MemoryData.MemoryTable.TITLE, TEXT + PRIMARY_KEY),
                 Pair(MemoryData.MemoryTable.LATITUDE, REAL),
                 Pair(MemoryData.MemoryTable.LONGITUDE, REAL),
                 Pair(MemoryData.MemoryTable.NATION_NAME, TEXT),

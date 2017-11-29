@@ -385,6 +385,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.timeCapsuleLocation, activity.timeCapsuleLocationLayoutText)) return
         if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_alarm), activity.timeCapsuleAlarm, activity.timeCapsuleAlarmLayoutText)) return
         if (!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.timeCapsuleContents, activity.timeCapsuleContentsLayoutText)) return
+        if (!inputValidation.isSameTitle(mContext.resources.getString(R.string.error_message_same_title), activity.timeCapsuleTitleEditText, activity.timeCapsuleTitleLayoutText)) return
 
         title = activity.timeCapsuleTitleEditText.text.toString()
         text = activity.timeCapsuleText.text.toString()

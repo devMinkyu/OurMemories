@@ -200,6 +200,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.reviewLocation, activity.reviewLocationLayoutText)) return
         if (!inputValidation.isInputDate(mContext.resources.getString(R.string.error_message_text), activity.reviewText, activity.reviewTextLayoutText)) return
         if(!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.reviewContents, activity.reviewContentsLayoutText)) return
+        if (!inputValidation.isSameTitle(mContext.resources.getString(R.string.error_message_same_title), activity.reviewTitleEditText, activity.reviewTitleLayoutText)) return
 
         date = activity.reviewDateText.text.toString()
         title = activity.reviewTitleEditText.text.toString()

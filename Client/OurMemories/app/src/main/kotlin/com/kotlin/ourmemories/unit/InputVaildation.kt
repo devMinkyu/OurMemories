@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.kotlin.ourmemories.DB.DBManagerMemory
 
 /**
  * Created by kimmingyu on 2017. 11. 23..
@@ -42,6 +43,23 @@ class InputVaildation(context:Context) {
             return false
         }else{
             textInputLayout.isErrorEnabled = false
+        }
+        return true
+    }
+
+    fun isSameTitle(message: String, textInputEditText: TextInputEditText, textInputLayout: TextInputLayout):Boolean{
+        DBManagerMemory.init(mContext)
+        val mTitle = textInputEditText.text.toString()
+        val cursor = DBManagerMemory.getMemoryAllWithCursor()
+        cursor.moveToFirst()
+        if(cursor.count !=0) {
+            for (title in cursor.getString(1)) {
+                if (mTitle == cursor.getString(1)) {
+                    textInputLayout.error = message
+                    return false
+                }
+                cursor.moveToNext()
+            }
         }
         return true
     }

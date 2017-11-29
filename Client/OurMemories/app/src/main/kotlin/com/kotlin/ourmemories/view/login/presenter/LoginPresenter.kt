@@ -79,20 +79,7 @@ class LoginPresenter: LoginContract.Presenter{
             when(isSuccess){
                 "true/insert"->{
                     activity.runOnUiThread {
-                        activity.hideDialog()
-                        // 공유저장소에 저장전 한번 초기화 시켜준다
-                        PManager.setUserId("")
-                        PManager.setUserEmail("")
-                        PManager.setUserName("")
-                        PManager.setUserFacebookId("")
-                        PManager.setUserProfileImageUrl("")
-
-                        // 서버로 부터 온 데이터 공유저장소에 저장
-                        PManager.setUserId(loginRequest.userLoginResult.userId)
-                        PManager.setUserEmail(loginRequest.userLoginResult.userEmail)
-                        PManager.setUserName(loginRequest.userLoginResult.userName)
-                        PManager.setUserFacebookId(accessToken)
-                        PManager.setUserProfileImageUrl(loginRequest.userLoginResult.userProfileImageUrl)
+                        userSave(loginRequest)
 
                         // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
 
@@ -102,9 +89,9 @@ class LoginPresenter: LoginContract.Presenter{
                 }
                 "true/update"->{
                     activity.runOnUiThread {
-                        activity.hideDialog()
-                        //(이미 정보 존재 시 수정만 해준다.)공유저장소에 등록될 수정될 내용은 토큰값만 바꾸어 준다.
-                        PManager.setUserFacebookId(accessToken)
+                        userSave(loginRequest)
+
+                        // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
 
                         activity.startActivity<MainActivity>()
                         activity.finish()
@@ -206,6 +193,22 @@ class LoginPresenter: LoginContract.Presenter{
         return token != null
     }
 
+    fun userSave(loginRequest:UserLogin){
+        activity.hideDialog()
+        // 공유저장소에 저장전 한번 초기화 시켜준다
+        PManager.setUserId("")
+        PManager.setUserEmail("")
+        PManager.setUserName("")
+        PManager.setUserFacebookId("")
+        PManager.setUserProfileImageUrl("")
+
+        // 서버로 부터 온 데이터 공유저장소에 저장
+        PManager.setUserId(loginRequest.userLoginResult.userId)
+        PManager.setUserEmail(loginRequest.userLoginResult.userEmail)
+        PManager.setUserName(loginRequest.userLoginResult.userName)
+        PManager.setUserFacebookId(accessToken)
+        PManager.setUserProfileImageUrl(loginRequest.userLoginResult.userProfileImageUrl)
+    }
 
     // 애니메이션
     override fun animation() {
