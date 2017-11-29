@@ -35,6 +35,7 @@ images = db.image # image collection 선택
 
 @app.route('/')
 def index():
+    print(SENDING_IMAGE_PATH)
     return redirect(url_for('login'))
 
 
@@ -85,13 +86,15 @@ def login():
 # 사진 저장
 @app.route('/memory', methods=['GET', 'POST'])
 def multyData():
-    image = request.files['uploadFile']
+    image = request.files['uploadFile'] # android에서 보낸 사진 받기
     print(image)
-    imageName = (secure_filename(image.filename))
+    imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     print(imageName)
 
-    image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName))
-    print(imageName)
+    image.save(os.path.join(app.config['UPLOAD_FOLDER'], imageName)) # 폴더에 이미지 저장
+
+    path = SENDING_IMAGE_PATH + imageName # android에 보낼 image URL
+    print(path)
 
     # images.insert({'image' : image})
     # images.find()
