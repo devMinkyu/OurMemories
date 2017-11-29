@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from project import app
-from flask import Flask, render_template, request, jsonify, Response, session, redirect, flash, url_for
+from flask import Flask, render_template, request, jsonify, Response, session, redirect, flash, url_for, send_from_directory
 # from flask_wtf import FlaskForm
 # from wtforms import StringField
 # from wtforms.validators import DataRequired
