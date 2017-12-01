@@ -16,13 +16,7 @@ import os
 
 from project import *
 
-# APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-
 # api = Api(app)
-
-# 게시판 DB
-# db = connection.airbnb
-# ddd = db.bbs
 
 # test DB
 # db = connection.facebook
@@ -174,7 +168,7 @@ def get_facebook_oauth_token():
     return session.get('oauth_token')
 
 
-#
+# OurMemories 추억에서 입력한 값 DB에 저장
 @app.route('/memory', methods=['GET', 'POST'])
 def multyData():
 
@@ -194,6 +188,8 @@ def multyData():
     # memory 데이터를 JSON으로
     # memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
 
+    mId = ""
+
     info = images.find({"userId" : userId})
     for info in info:
         if info['memoryTitle'] == memoryTitle:
@@ -201,7 +197,8 @@ def multyData():
             print(mId)
             break
 
-    sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", "fdfd")))
+    print(mId)
+    sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", mId)))
 
     return jsonify(sendToAndroid)
 
