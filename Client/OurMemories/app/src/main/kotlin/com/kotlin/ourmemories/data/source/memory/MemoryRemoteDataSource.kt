@@ -5,6 +5,7 @@ import android.util.Log
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.PManager
 import com.kotlin.ourmemories.manager.networkmanager.NManager
+import com.kotlin.ourmemories.view.memorypin.presenter.MemoryPinPresenter
 import okhttp3.*
 import okhttp3.MultipartBody
 import java.io.File
@@ -15,6 +16,8 @@ import java.io.File
  */
 // 서버랑 연동하여 서버 디비에 저장
 object MemoryRemoteDataSource:MemorySource {
+    lateinit override var memoryPinPresenter: MemoryPinPresenter
+
     override fun memorySave(id:String, title: String, fromDate: String, toDate: String?, lat: Double, lon: Double, nation: String, text:String, uploadFile: File?, classification: Int, requestMemoryCallback: Callback?, activity: AppCompatActivity) {
         // 네트워크 설정
         NManager.init()
@@ -72,5 +75,8 @@ object MemoryRemoteDataSource:MemorySource {
         // 비동기 방식(enqueue)으로 Callback 구현
         client!!.newCall(request).enqueue(requestMemoryCallback)
 
+    }
+
+    override fun getMemory(classification: Int, isLocal: Boolean, lat:Double, lon:Double) {
     }
 }

@@ -100,7 +100,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         override fun onResponse(call: Call?, response: Response?) {
             activity.runOnUiThread {
                 activity.hideDialog()
-                val responseData = response?.body()!!.string()
+                                                  val responseData = response?.body()!!.string()
                 val memoryRequest:UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
 
                 val isSuccess = memoryRequest.isSuccess

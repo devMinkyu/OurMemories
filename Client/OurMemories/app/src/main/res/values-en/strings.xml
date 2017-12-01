@@ -33,6 +33,7 @@
     <string name="error_message_contents">Enter Contents</string>
     <string name="error_message_network">Check your connection(Network error)</string>
     <string name="error_message_same_title">The same title exists.</string>
+    <string name="error_message_memory">The memories do not exist or do not meet the conditions</string>
 
     <string name="success_message_memory">Successfully registered</string>
 

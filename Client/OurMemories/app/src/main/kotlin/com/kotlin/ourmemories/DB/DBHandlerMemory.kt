@@ -23,8 +23,9 @@ object DBManagerMemory {
             mDBHandler = DBHandlerMemory(context)
         }
     }
+
     fun deleteTable() {
-        mDBHandler?.writableDatabase!!.dropTable(TABLE_NAME,true)
+        mDBHandler?.writableDatabase!!.dropTable(TABLE_NAME, true)
     }
 
     // 디비에 있는 내용 다 가져오기
@@ -40,7 +41,7 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.CLASSIFICATION),
                     null, null, null, null, MemoryData.MemoryTable._ID)
 
-    fun getMemoryDayWithCursor(day:String): Cursor =
+    fun getMemoryDayWithCursor(day: String): Cursor =
             mDBHandler?.readableDatabase!!.query(TABLE_NAME,
                     arrayOf(MemoryData.MemoryTable._ID,
                             MemoryData.MemoryTable.TITLE,
@@ -50,7 +51,19 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.FROM_DATE,
                             MemoryData.MemoryTable.TO_DATE,
                             MemoryData.MemoryTable.CLASSIFICATION),
-                    "from_date Like ?", arrayOf(day+"%"), null, null, MemoryData.MemoryTable._ID)
+                    "from_date Like ?", arrayOf(day + "%"), null, null, MemoryData.MemoryTable._ID)
+
+    fun getMemoryClassificationWithCursor(clssification: Int): Cursor =
+            mDBHandler?.readableDatabase!!.query(TABLE_NAME,
+                    arrayOf(MemoryData.MemoryTable._ID,
+                            MemoryData.MemoryTable.TITLE,
+                            MemoryData.MemoryTable.LATITUDE,
+                            MemoryData.MemoryTable.LONGITUDE,
+                            MemoryData.MemoryTable.FROM_DATE,
+                            MemoryData.MemoryTable.TO_DATE,
+                            MemoryData.MemoryTable.CLASSIFICATION),
+                    "classification=?", arrayOf(clssification.toString()), null, null, MemoryData.MemoryTable._ID)
+
 
     // 추억 추가
     fun addMemory(memoryData: MemoryData) {
@@ -86,7 +99,7 @@ class DBHandlerMemory(context: Context) : SQLiteOpenHelper(context, MemoryData.D
 
         db?.createTable(MemoryData.MemoryTable.TABLE_NAME, true,
                 Pair(MemoryData.MemoryTable._ID, TEXT + PRIMARY_KEY),
-                Pair(MemoryData.MemoryTable.TITLE, TEXT + PRIMARY_KEY),
+                Pair(MemoryData.MemoryTable.TITLE, TEXT),
                 Pair(MemoryData.MemoryTable.LATITUDE, REAL),
                 Pair(MemoryData.MemoryTable.LONGITUDE, REAL),
                 Pair(MemoryData.MemoryTable.NATION_NAME, TEXT),

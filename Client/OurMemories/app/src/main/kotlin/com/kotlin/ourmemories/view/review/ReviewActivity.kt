@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.view.review
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
@@ -12,6 +13,7 @@ import android.support.v7.app.AlertDialog
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -56,6 +58,7 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         reviewLocation.inputType = InputType.TYPE_NULL
 
         reviewLocation.setOnClickListener {
+            hideKey()
             presenter.currentAddress()
         }
 
@@ -191,4 +194,8 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
 
     fun showDialog() { reviewLoding.visibility = View.VISIBLE }
     fun hideDialog() { reviewLoding.visibility = View.INVISIBLE }
+    fun hideKey(){
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(reviewTitleEditText.windowToken, 0)
+    }
 }

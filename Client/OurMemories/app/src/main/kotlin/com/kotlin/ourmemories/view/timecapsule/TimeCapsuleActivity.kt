@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.view.timecapsule
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
@@ -10,9 +11,8 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.text.InputType
-import android.util.Log
-import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -27,9 +27,6 @@ import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_timecapsule.*
 import java.io.File
 import java.util.*
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import com.squareup.picasso.Picasso
-
 
 
 class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
@@ -45,7 +42,8 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             memoryData = MemoryRepository(this@TimeCapsuleActivity)
         }
 
-        updateFromTimeView(Calendar.getInstance().get(Calendar.HOUR_OF_DAY),Calendar.getInstance().get(Calendar.MINUTE))
+
+        updateFromTimeView(Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE))
         // 폰트 변경
         val canaroExtraBold = Typeface.createFromAsset(this.assets, MainActivity.CANARO_EXTRA_BOLD_PATH)
         timeCapsuleTitleText.typeface = canaroExtraBold
@@ -63,23 +61,36 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         timeCapsuleLocation.inputType = InputType.TYPE_NULL
 
         // 날짜 버튼 눌렀을 때
-        timeCapsuleDateText.setOnClickListener { presenter.dateTimeCapsule() }
+        timeCapsuleDateText.setOnClickListener {
+            hideKey()
+            presenter.dateTimeCapsule()
+        }
         // 시간 버튼 눌렀을 때
-        timeCapsuleFromTime.setOnClickListener { presenter.fromTimeTimeCapsule() }
-        timeCapsuleToTime.setOnClickListener { presenter.toTimeTimeCapsule() }
+        timeCapsuleFromTime.setOnClickListener {
+            hideKey()
+            presenter.fromTimeTimeCapsule()
+        }
+        timeCapsuleToTime.setOnClickListener {
+            hideKey()
+            presenter.toTimeTimeCapsule()
+        }
 
         // 위치
         timeCapsuleLocation.setOnClickListener {
+            hideKey()
             presenter.currentAddress()
         }
         timeCapsuleAddress.setOnClickListener {
+            hideKey()
             presenter.currentAddress()
         }
         //알람
         timeCapsuleAlarm.setOnClickListener {
+            hideKey()
             presenter.alarmTimeCapsule()
         }
         timeCapsuleAlarmImage.setOnClickListener {
+            hideKey()
             presenter.alarmTimeCapsule()
         }
         // 사진 버튼 눌렀을 때
@@ -121,7 +132,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
     override fun onStart() {
         super.onStart()
         if (presenter.mGoogleApiClient == null) {
-            presenter.mGoogleApiClient = GoogleApiClient.Builder(applicationContext).addApi(LocationServices.API).build()
+            presenter.mGoogleApiClient = GoogleApiClient.Builder(this).addApi(LocationServices.API).build()
         }
         presenter.mGoogleApiClient!!.connect()
     }
@@ -144,7 +155,6 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             hourOfDay < 12 -> timeCapsuleFromTime.setText(String.format(amTimeFormat, hourOfDay, minute))
         }
     }
-
 
 
     override fun updateToTimeView(hourOfDay: Int, minute: Int) {
@@ -264,7 +274,18 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         }
 
     }
-    fun showDialog() { timeCapsuleLoding.visibility = View.VISIBLE }
-    fun hideDialog() { timeCapsuleLoding.visibility = View.INVISIBLE }
+
+    fun showDialog() {
+        timeCapsuleLoding.visibility = View.VISIBLE
+    }
+
+    fun hideDialog() {
+        timeCapsuleLoding.visibility = View.INVISIBLE
+    }
+
+    fun hideKey() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(timeCapsuleTitleEditText.windowToken, 0)
+    }
 
 }

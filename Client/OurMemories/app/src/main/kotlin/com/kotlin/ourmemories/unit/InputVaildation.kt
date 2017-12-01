@@ -53,7 +53,7 @@ class InputVaildation(context:Context) {
         val cursor = DBManagerMemory.getMemoryAllWithCursor()
         cursor.moveToFirst()
         if(cursor.count !=0) {
-            for (title in cursor.getString(1)) {
+            for (title in 0 until cursor.count) {
                 if (mTitle == cursor.getString(1)) {
                     textInputLayout.error = message
                     return false

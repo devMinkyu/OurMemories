@@ -24,6 +24,7 @@ class MemoryPinViewHolder(parent: ViewGroup?):RecyclerView.ViewHolder(LayoutInfl
             memoryPinTitle.text = item.title
             memoryPinTitle.typeface = canaroExtraBold
             memoryPinSubTitle.text = item.subTitle
+            memoryPinTitle.tag = item.id
         }
     }
 }
