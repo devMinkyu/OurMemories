@@ -41,6 +41,8 @@
     <string name="kakao_login">Kakao Login</string>
 
     <string name="date_format" formatted="false">%d/%d/%d</string>
+    <string name="am_format" formatted="false">AM</string>
+    <string name="pm_format" formatted="false">PM</string>
     <string name="am_time_format" formatted="false">AM %d:%d</string>
     <string name="pm_time_format" formatted="false">PM %d:%d</string>
     <string name="db_memory_am_format" formatted="false">%d/%d/%d AM %d:%d</string>

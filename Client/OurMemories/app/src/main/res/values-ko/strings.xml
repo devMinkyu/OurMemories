@@ -41,6 +41,8 @@
     <string name="kakao_login">카카오톡 로그인</string>
 
     <string name="date_format" formatted="false">%d년 %d월 %d일</string>
+    <string name="am_format" formatted="false">오전</string>
+    <string name="pm_format" formatted="false">오후</string>
     <string name="am_time_format" formatted="false">오전 %d:%d</string>
     <string name="pm_time_format" formatted="false">오후 %d:%d</string>
     <string name="db_memory_am_format" formatted="false">%d년 %d월 %d일 오전 %d:%d</string>
