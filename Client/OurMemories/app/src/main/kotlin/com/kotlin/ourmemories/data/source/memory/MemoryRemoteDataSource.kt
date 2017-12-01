@@ -77,6 +77,6 @@ object MemoryRemoteDataSource:MemorySource {
 
     }
 
-    override fun getMemory(classification: Int, isLocal: Boolean, lat:Double, lon:Double) {
+    override fun getLocalMemory(classification: Int, lat:Double, lon:Double) {
     }
 }

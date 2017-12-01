@@ -33,15 +33,8 @@ class MemoryRepository(context: Context) : MemorySource {
         }
     }
 
-    override fun getMemory(classification: Int, isLocal: Boolean, lat: Double, lon: Double) {
-        when (isLocal) {
-            true -> {
-                memoryLocalDataSource.memoryPinPresenter = memoryPinPresenter
-                memoryLocalDataSource.getMemory(classification, isLocal, lat, lon)
-            }
-            false -> {
-                memoryRemoteDataSource.getMemory(classification, isLocal, lat, lon)
-            }
-        }
+    override fun getLocalMemory(classification: Int, lat: Double, lon: Double) {
+            memoryLocalDataSource.memoryPinPresenter = memoryPinPresenter
+            memoryLocalDataSource.getLocalMemory(classification, lat, lon)
     }
 }

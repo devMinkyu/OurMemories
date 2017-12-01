@@ -9,12 +9,14 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
+import com.kotlin.ourmemories.view.memoryview.MemoryViewActivity
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.source.memory.Memory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.view.memorypin.MemoryPinFragment
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.selector
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.yesButton
 
 /**
@@ -42,16 +44,8 @@ class MemoryPinPresenter:MemoryPinContract.Presenter {
             } else {
                 // 나중에 해결
                 val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
-                // 거리 테스트
-//                val currentLocation = Location("current")
-//                val cursorLocation = Location("cursor")
-//                currentLocation.latitude = location.latitude
-//                currentLocation.longitude = location.longitude
-//                cursorLocation.latitude = 37.222164
-//                cursorLocation.longitude = 127.188459
-//                val i = currentLocation.distanceTo(cursorLocation)
-//                Log.d("hoho", i.toInt().toString())
-                memoryData.getMemory(classification,true, location.latitude, location.longitude)
+                // 내장 디비에 있는지 검사
+                memoryData.getLocalMemory(classification, location.latitude, location.longitude)
             }
         }
     }
@@ -63,7 +57,7 @@ class MemoryPinPresenter:MemoryPinContract.Presenter {
                 memories.add(i, items[i].title)
             }
             fragment.activity.selector("Memories", memories, { dialogInterface, i ->
-
+                fragment.activity.startActivity<MemoryViewActivity>("id" to items[i].id)
             })
         }else {
             fragment.activity.alert(fragment.activity.resources.getString(R.string.error_message_memory), "Memories") {

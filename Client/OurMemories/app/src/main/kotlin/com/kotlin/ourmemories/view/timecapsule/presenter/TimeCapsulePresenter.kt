@@ -336,7 +336,6 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.CAMERA), REQ_PERMISSON_CAMERA_VIDEO)
         } else {
             val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-            intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT,(1024*1024*4).toLong())
             activity.startActivityForResult(intent, PICK_VIDEO)
         }
     }

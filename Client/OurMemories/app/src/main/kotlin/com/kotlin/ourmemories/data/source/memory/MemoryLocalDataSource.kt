@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.location.Location
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
@@ -34,7 +33,7 @@ object MemoryLocalDataSource : MemorySource {
     }
 
     // 내부 디비에서 받아온 정보와 비교후 유저에게 존재하면 알려줘서 선택 후 서버로 보내게 한다
-    override fun getMemory(classification: Int, isLocal: Boolean, lat: Double, lon: Double) {
+    override fun getLocalMemory(classification: Int, lat: Double, lon: Double) {
         when (classification) {
             0 -> { // timeCapsule
                 val calendar = Calendar.getInstance()

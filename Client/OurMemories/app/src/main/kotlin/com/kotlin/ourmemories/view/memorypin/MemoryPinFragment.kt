@@ -1,8 +1,14 @@
 package com.kotlin.ourmemories.view.memorypin
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.support.v4.app.ActivityCompat
 
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,7 +32,7 @@ import kotlinx.android.synthetic.main.fragment_memorypin.*
 class MemoryPinFragment : Fragment(), View.OnClickListener, MemoryPinContract.View {
     var adapter: MemoryPinAdapter? = null
     lateinit var presenter: MemoryPinContract.Presenter
-
+    var classification:Int = -1
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fragment_memorypin, container, false)
 
@@ -63,7 +69,7 @@ class MemoryPinFragment : Fragment(), View.OnClickListener, MemoryPinContract.Vi
 
     override fun onClick(p0: View?) {
         val id = p0?.findViewById<TextView>(R.id.memoryPinTitle)?.tag
-        val classification: Int = id as Int
+        classification = id as Int
         presenter.isMemoryCheck(classification)
     }
 
@@ -75,11 +81,33 @@ class MemoryPinFragment : Fragment(), View.OnClickListener, MemoryPinContract.Vi
         }
         super.onStop()
     }
+
     override fun onStart() {
         super.onStart()
         if (presenter.mGoogleApiClient == null) {
             presenter.mGoogleApiClient = GoogleApiClient.Builder(context).addApi(LocationServices.API).build()
         }
         presenter.mGoogleApiClient!!.connect()
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        for (i in 0 until permissions.size) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                val rationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[i])
+                if (rationale) {
+                    val dialogBuild = AlertDialog.Builder(context).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
+                            .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
+                        showSetting()
+                    }
+                    dialogBuild.create().show()
+                    return
+                }
+            }
+        }
+        presenter.isMemoryCheck(classification)
+    }
+    private fun showSetting() {
+        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", activity.packageName, null)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        })
     }
 }

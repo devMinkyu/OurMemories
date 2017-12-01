@@ -18,9 +18,9 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <!--allowBackup 나중에 true 로-->
+    <!-- allowBackup 나중에 true 로 -->
     <application
         android:name=".manager.MyApplication"
         android:allowBackup="false"
@@ -55,6 +55,8 @@
             android:name=".view.review.ReviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity android:name=".view.memoryview.MemoryViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
 
         <!-- facebook Login -->
         <meta-data
@@ -110,6 +112,7 @@
             android:exported="false" />
         <!-- [END gcm_registration_service] -->
 
+
         <!-- Alarm receiver -->
         <receiver
             android:name=".service.alarm.AlarmReceiver"
@@ -125,13 +128,13 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".view.memorylist.MemoryListActivity"></activity>
+        <activity android:name=".view.memorylist.MemoryListActivity" />
     </application>
 
 </manifest>

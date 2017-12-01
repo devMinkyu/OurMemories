@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/memoryviewbackground">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/memoryViewCardView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/memory_35size"
+        android:layout_marginLeft="@dimen/memory_5size"
+        android:layout_marginRight="@dimen/memory_5size"
+        android:layout_marginTop="@dimen/memory_35size"
+        card_view:cardBackgroundColor="@color/transparent"
+        card_view:cardCornerRadius="@dimen/memory_5size">
+
+        <RelativeLayout
+            android:id="@+id/memoryView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/memoryViewContents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/memory_5size"/>
+
+            <TextView
+                android:id="@+id/memoryViewText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/memoryViewContents"
+                android:layout_marginLeft="@dimen/memory_15size"
+                android:layout_marginRight="@dimen/memory_15size"
+                android:layout_marginTop="@dimen/memory_15size"
+                android:background="@color/transparent"
+                android:padding="@dimen/memory_5size"
+                android:text="@string/memory_title"
+                android:textSize="@dimen/font_title_small_size" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
