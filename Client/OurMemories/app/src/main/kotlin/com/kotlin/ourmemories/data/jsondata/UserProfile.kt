@@ -8,4 +8,4 @@ data class UserProfileResult(val userId:String, val userName:String, val userEma
 data class UserProfileMemoryResult(val _id:String, val memoryTitle:String,val memoryFromDate:String, val memoryToDate:String?, val memoryLatitude:String,
                                  val memoryLongitude:String, val memoryNation:String, val memoryClassification:String)
 
-data class UserProfile(val isSuccess:String, val userProfileResult:UserProfileResult, val userProfileMemoryResult: UserProfileMemoryResult)
+data class UserProfile(val isSuccess:String, val userProfileResult:UserProfileResult, val userProfileMemoryResult: ArrayList<UserProfileMemoryResult>?)

@@ -53,18 +53,19 @@ dependencies {
     // picasso library
     implementation 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation 'jp.wasabeef:picasso-transformations:2.1.0'
     // lottie library
     implementation 'com.airbnb.android:lottie:2.1.0'
     //FCM
     implementation 'com.google.android.gms:play-services:11.4.2'
     // GuillotineMenu(Memory 부분)
     implementation 'com.github.Yalantis:GuillotineMenu-Android:1.2'
-    implementation 'jp.wasabeef:picasso-transformations:2.1.0'
-    implementation 'org.jetbrains.anko:anko:0.10.1'
-    implementation 'org.jetbrains.anko:anko-commons:0.10.1'
+    // calendar library
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
     // anko library
     compile 'org.jetbrains.anko:anko-sqlite:0.10.1'
+    implementation 'org.jetbrains.anko:anko:0.10.1'
+    implementation 'org.jetbrains.anko:anko-commons:0.10.1'
 }
 repositories {
     mavenCentral()

@@ -23,6 +23,8 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.gson.Gson
+import com.kotlin.ourmemories.DB.DBManagerMemory
+import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.UserLogin
 import com.kotlin.ourmemories.data.source.login.LoginRepository
@@ -80,9 +82,6 @@ class LoginPresenter: LoginContract.Presenter{
                 "true/insert"->{
                     activity.runOnUiThread {
                         userSave(loginRequest)
-
-                        // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
-
                         activity.startActivity<MainActivity>()
                         activity.finish()
                     }
@@ -90,9 +89,6 @@ class LoginPresenter: LoginContract.Presenter{
                 "true/update"->{
                     activity.runOnUiThread {
                         userSave(loginRequest)
-
-                        // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
-
                         activity.startActivity<MainActivity>()
                         activity.finish()
                     }
@@ -208,6 +204,21 @@ class LoginPresenter: LoginContract.Presenter{
         PManager.setUserName(loginRequest.userLoginResult.userName)
         PManager.setUserFacebookId(accessToken)
         PManager.setUserProfileImageUrl(loginRequest.userLoginResult.userProfileImageUrl)
+
+        // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
+        if(loginRequest.userLoginMemoryResult != null) {
+            DBManagerMemory.init(activity.applicationContext)
+            val item = arrayOfNulls<MemoryData>(loginRequest.userLoginMemoryResult.size)
+            for (i in 0 until loginRequest.userLoginMemoryResult.size) {
+                item[i] = MemoryData(loginRequest.userLoginMemoryResult[i]._id, loginRequest.userLoginMemoryResult[i].memoryTitle, loginRequest.userLoginMemoryResult[i].memoryLatitude.toDouble(),
+                        loginRequest.userLoginMemoryResult[i].memoryLongitude.toDouble(), loginRequest.userLoginMemoryResult[i].memoryNation, loginRequest.userLoginMemoryResult[i].memoryFromDate,
+                        loginRequest.userLoginMemoryResult[i].memoryToDate, loginRequest.userLoginMemoryResult[i].memoryClassification.toInt())
+            }
+            DBManagerMemory.deleteTable()
+            (0 until item.size).forEach { i ->
+                DBManagerMemory.addMemory(item[i]!!)
+            }
+        }
     }
 
     // 애니메이션

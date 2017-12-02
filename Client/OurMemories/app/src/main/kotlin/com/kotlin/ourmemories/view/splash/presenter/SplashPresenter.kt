@@ -5,6 +5,7 @@ import android.os.Looper
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import com.google.gson.Gson
+import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.MainActivity
@@ -69,13 +70,19 @@ class SplashPresenter: SplashContract.Presenter {
                         PManager.setUserId(profileRequest.userProfileResult.userId)
 
                         // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
-                        val items: ArrayList<MemoryData> = ArrayList()
-                        val item = arrayOfNulls<MemoryData>(profileRequest.userProfileMemoryResult.)
-                        profileRequest.userProfileMemoryResult?.let {
-                            item[0] = MemoryData(it._id)
+                        if(profileRequest.userProfileMemoryResult != null) {
+                            DBManagerMemory.init(activity.applicationContext)
+                            val item = arrayOfNulls<MemoryData>(profileRequest.userProfileMemoryResult.size)
+                            for (i in 0 until profileRequest.userProfileMemoryResult.size) {
+                                item[i] = MemoryData(profileRequest.userProfileMemoryResult[i]._id, profileRequest.userProfileMemoryResult[i].memoryTitle, profileRequest.userProfileMemoryResult[i].memoryLatitude.toDouble(),
+                                        profileRequest.userProfileMemoryResult[i].memoryLongitude.toDouble(), profileRequest.userProfileMemoryResult[i].memoryNation, profileRequest.userProfileMemoryResult[i].memoryFromDate,
+                                        profileRequest.userProfileMemoryResult[i].memoryToDate, profileRequest.userProfileMemoryResult[i].memoryClassification.toInt())
+                            }
+                            DBManagerMemory.deleteTable()
+                            (0 until item.size).forEach { i ->
+                                DBManagerMemory.addMemory(item[i]!!)
+                            }
                         }
-
-
                         activity.startActivity<MainActivity>()
                         activity.finish()
                     } else if(loginAuth == "0") // 로그아웃한 경우

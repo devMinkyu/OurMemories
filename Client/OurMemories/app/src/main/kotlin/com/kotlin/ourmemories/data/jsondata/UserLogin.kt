@@ -9,4 +9,4 @@ data class UserLoginResult(val userId:String, val userName:String, val userEmail
 data class UserLoginMemoryResult(val _id:String, val memoryTitle:String,val memoryFromDate:String, val memoryToDate:String?, val memoryLatitude:String,
                                  val memoryLongitude:String, val memoryNation:String, val memoryClassification:String)
 
-data class UserLogin(val isSuccess:String, val userLoginResult: UserLoginResult, val userLoginMemoryResult: UserLoginMemoryResult)
+data class UserLogin(val isSuccess:String, val userLoginResult: UserLoginResult, val userLoginMemoryResult: ArrayList<UserLoginMemoryResult>?)
