@@ -189,9 +189,9 @@ def multyData():
     # memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
 
     info = images.find({"userId" : userId})
-    for info in info:
-        if info['memoryTitle'] == memoryTitle:
-            mId = info['_id']
+    for doc in info:
+        if doc['memoryTitle'] == memoryTitle:
+            mId = doc['_id']
             str(mId)
             print(mId)
             break
