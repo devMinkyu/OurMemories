@@ -1,5 +1,7 @@
 package com.kotlin.ourmemories.view.memorylist
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,16 +14,17 @@ import android.widget.TextView
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.DBManagerNation
 import com.kotlin.ourmemories.R
+import com.willowtreeapps.spruce.Spruce
+import com.willowtreeapps.spruce.animation.DefaultAnimations
+import com.willowtreeapps.spruce.sort.DefaultSort
 
 /**
  * Created by kimmingyu on 2017. 11. 5..
  */
 
 class MemoryListFragment : Fragment() , View.OnClickListener {
-//    fun init(context : Context = activity){
-//        DBManagerMemory.init(context)
-//        DBManagerMemory.defaultAddTimeCapesule()
-//    }
+    private lateinit var spruceAnimator : Animator
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fragment_memorylist, container, false)
 
@@ -34,11 +37,29 @@ class MemoryListFragment : Fragment() , View.OnClickListener {
         var recycleListView = view.findViewById(R.id.nation_list) as RecyclerView
         recycleListView.layoutManager = LinearLayoutManager(activity)
 
+
+        //애니메이션
+        val linearLayoutManager = object : LinearLayoutManager(context) {
+            override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
+                super.onLayoutChildren(recycler, state)
+                initSpruce(recycleListView)
+            }
+        }
         //데이터베이스를 리사이클 뷰에 뿌려줌.
         var adapter = NationAdapter(activity, DBManagerMemory.getMemoryAllNationWithCursor())
         adapter.setOnItemClickListener(this)
         recycleListView.adapter = adapter
+        recycleListView.layoutManager = linearLayoutManager
     }
+
+    private fun initSpruce(recycleListView : RecyclerView) {
+        spruceAnimator = Spruce.SpruceBuilder(recycleListView)
+                .sortWith(DefaultSort(100))
+                .animateWith(DefaultAnimations.shrinkAnimator(recycleListView, 800),
+                        ObjectAnimator.ofFloat(recycleListView, "translationX", -recycleListView.width.toFloat(), 0f).setDuration(800))
+                .start()
+    }
+
 
     override fun onStop() {
         super.onStop()

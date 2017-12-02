@@ -32,13 +32,16 @@ class MemoryListMapFragment : SupportMapFragment(), OnMapReadyCallback {
             //context.toast(nationName)
             if (nationName == "대한민국") {
                 val kor = LatLng(37.574515, 126.976930)
-                moveToMapCameraPosition(kor,10.0f)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kor,5.0f))
             } else if (nationName == "일본") {
                 val jpn = LatLng(35.709261, 139.731070)
-                moveToMapCameraPosition(jpn,10.0f)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jpn,5.0f))
             } else if (nationName == "미국") {
                 val usa = LatLng(38.906414, -77.040912)
-                moveToMapCameraPosition(usa,10.0f)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(usa,5.0f))
+            } else {
+                val sydney = LatLng(-33.867, 151.206)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 5.0f))
             }
 
             //지도에 마커 생성을 위한 데이터베이스 쿼리

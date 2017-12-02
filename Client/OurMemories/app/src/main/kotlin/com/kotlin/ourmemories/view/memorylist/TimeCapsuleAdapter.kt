@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.kotlin.ourmemories.R
 import com.kotlin.phonebook.adapter.CursorRecyclerViewAdapter
@@ -26,8 +27,7 @@ class TimeCapsuleAdapter (context:Context, cursor:Cursor) : CursorRecyclerViewAd
         val tv_longitude : TextView = view.findViewById(R.id.tv_longitude) as TextView
         val tv_location : TextView = view.findViewById(R.id.tv_location) as TextView
         val tv_content : TextView = view.findViewById(R.id.tv_content) as TextView
-        val tv_tag : TextView = view.findViewById(R.id.tv_tag) as TextView
-
+        val iv_tag : ImageView = view.findViewById(R.id.tv_tag) as ImageView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
@@ -42,7 +42,12 @@ class TimeCapsuleAdapter (context:Context, cursor:Cursor) : CursorRecyclerViewAd
         holder.tv_location.text = address[0].getAddressLine(0).toString()
         holder.tv_latitude.text =  cursor.getString(2)
         holder.tv_longitude.text = cursor.getString(3)
-        holder.tv_tag.text = cursor.getString(0)
+//        holder.iv_tag.text = cursor.getString(0)
+        if(cursor.getString(5).toInt() == 1){
+            holder.iv_tag.setImageResource(R.drawable.review)
+        } else {
+            holder.iv_tag.setImageResource(R.drawable.timecapsule)
+        }
     }
 
 //    override fun getItemCount(): Int = cursor.columnCount

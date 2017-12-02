@@ -1,5 +1,7 @@
 package com.kotlin.ourmemories.view.memorylist
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +13,13 @@ import android.widget.TextView
 import com.google.android.gms.maps.model.LatLng
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.manager.MyApplication.Companion.context
+import com.willowtreeapps.spruce.Spruce
+import com.willowtreeapps.spruce.animation.DefaultAnimations
+import com.willowtreeapps.spruce.sort.DefaultSort
 
 class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
+    private lateinit var spruceAnimator : Animator
     fun init(context: Context = this){
         DBManagerMemory.init(context)
     }
@@ -33,7 +40,13 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         //엑티비티에 리사이클 뷰 달아주는 로직
         var recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
         recycleListView.layoutManager = LinearLayoutManager(this)
-
+        //애니메이션
+        val linearLayoutManager = object : LinearLayoutManager(context) {
+            override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
+                super.onLayoutChildren(recycler, state)
+                initSpruce(recycleListView)
+            }
+        }
 
         //DBManagerMemory.init(this)
         //DBManagerMemory.defaultAddTimeCapesule()
@@ -41,7 +54,16 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         //리사이클 뷰에 DB내용 넣어주는 로직
         var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesWithCursor(nationName))
         recycleListView.adapter = adapter
+        //애니메이션 셋팅
+        recycleListView.layoutManager = linearLayoutManager
 
+    }
+    private fun initSpruce(recycleListView : RecyclerView) {
+        spruceAnimator = Spruce.SpruceBuilder(recycleListView)
+                .sortWith(DefaultSort(100))
+                .animateWith(DefaultAnimations.shrinkAnimator(recycleListView, 800),
+                        ObjectAnimator.ofFloat(recycleListView, "translationX", -recycleListView.width.toFloat(), 0f).setDuration(800))
+                .start()
     }
 
     override fun onStart() {
