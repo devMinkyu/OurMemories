@@ -191,8 +191,8 @@ def multyData():
     info = images.find({"userId" : userId})
     for doc in info:
         if doc['memoryTitle'] == memoryTitle:
-            mId = doc['_id']
-            str(mId)
+            mId = ObjectId(doc['_id']).valueOf()
+            # str(mId)
             print(mId)
             break
 
