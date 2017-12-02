@@ -207,12 +207,12 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                 activity.startActivity(intent)
             } else {
                 // 나중에 해결
-                val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
-                lat = location.latitude
-                lon = location.longitude
-                val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
-                nation = address[0].countryName
-                mView.updateAddressView(address[0].getAddressLine(0))
+                val location: Location? = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
+                location?.let { lat = location!!.latitude
+                    lon = location!!.longitude
+                    val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
+                    nation = address[0].countryName
+                    mView.updateAddressView(address[0].getAddressLine(0)) } ?: activity.toast("why!!")
             }
         }
     }

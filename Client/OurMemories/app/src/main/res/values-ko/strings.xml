@@ -61,6 +61,7 @@
     <string name="permission_setting">권한 설정</string>
     <string name="permission_message">컨텐츠를 만들기 위해서 여러 권한들이 필요합니다. 이러한 권한을 주지 않으면 컨텐츠를 만들 수가 없습니다.</string>
     <string name="permission_button">설정하러 가기</string>
+    <string name="permission_gps_message">GPS를 사용하기 위해서는 GPS를 켜야합니다.</string>
 
     <string name="memory_pin_timecapsule_subtitle">잊고 있던 좋은 추억을 찾으세요</string>
     <string name="memory_pin_review_subtitle">당신의 발자취를 찾아보세요</string>

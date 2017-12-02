@@ -9,9 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AlertDialog
 import android.text.InputType
-import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -26,6 +24,8 @@ import com.kotlin.ourmemories.view.review.presenter.ReviewContract
 import com.kotlin.ourmemories.view.review.presenter.ReviewPresenter
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_review.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
 import java.io.File
 import java.util.*
 
@@ -146,11 +146,10 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
                 if (rationale) {
-                    val dialogBuild = AlertDialog.Builder(this).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
-                            .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
-                        showSetting()
-                    }
-                    dialogBuild.create().show()
+                    alert(this.resources.getString(R.string.permission_message), this.resources.getString(R.string.permission_setting)){
+                        positiveButton(resources.getString(R.string.permission_button)){showSetting()}
+                        noButton {  }
+                    }.show()
                     return
                 }
             }

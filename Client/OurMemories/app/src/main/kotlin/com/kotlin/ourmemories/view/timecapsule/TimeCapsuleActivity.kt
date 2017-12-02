@@ -25,6 +25,9 @@ import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsuleContract
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_timecapsule.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.yesButton
 import java.io.File
 import java.util.*
 
@@ -222,11 +225,10 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
                 if (rationale) {
-                    val dialogBuild = AlertDialog.Builder(this).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
-                            .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
-                        showSetting()
-                    }
-                    dialogBuild.create().show()
+                    alert(this.resources.getString(R.string.permission_message), this.resources.getString(R.string.permission_setting)){
+                        positiveButton(resources.getString(R.string.permission_button)){showSetting()}
+                        noButton {  }
+                    }.show()
                     return
                 }
             }

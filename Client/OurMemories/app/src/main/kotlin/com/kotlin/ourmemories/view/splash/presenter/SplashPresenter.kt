@@ -5,6 +5,7 @@ import android.os.Looper
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import com.google.gson.Gson
+import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.data.source.profile.ProfileRepository
@@ -41,7 +42,6 @@ class SplashPresenter: SplashContract.Presenter {
         // 실패 했을 경우
         override fun onFailure(call: Call?, e: IOException?) {
             activity.runOnUiThread{
-                val alertDialog = AlertDialog.Builder(activity)
                 activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
                     yesButton { activity.finish() }
                 }.show()
@@ -69,6 +69,12 @@ class SplashPresenter: SplashContract.Presenter {
                         PManager.setUserId(profileRequest.userProfileResult.userId)
 
                         // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
+                        val items: ArrayList<MemoryData> = ArrayList()
+                        val item = arrayOfNulls<MemoryData>(profileRequest.userProfileMemoryResult.)
+                        profileRequest.userProfileMemoryResult?.let {
+                            item[0] = MemoryData(it._id)
+                        }
+
 
                         activity.startActivity<MainActivity>()
                         activity.finish()

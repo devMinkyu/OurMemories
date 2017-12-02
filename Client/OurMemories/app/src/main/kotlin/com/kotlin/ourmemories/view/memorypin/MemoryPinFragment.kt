@@ -8,9 +8,7 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 
 import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +22,8 @@ import com.kotlin.ourmemories.view.memorypin.adapter.MemoryPinAdapter
 import com.kotlin.ourmemories.view.memorypin.presenter.MemoryPinContract
 import com.kotlin.ourmemories.view.memorypin.presenter.MemoryPinPresenter
 import kotlinx.android.synthetic.main.fragment_memorypin.*
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.support.v4.alert
 
 
 /**
@@ -94,11 +94,10 @@ class MemoryPinFragment : Fragment(), View.OnClickListener, MemoryPinContract.Vi
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 val rationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[i])
                 if (rationale) {
-                    val dialogBuild = AlertDialog.Builder(context).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
-                            .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
-                        showSetting()
-                    }
-                    dialogBuild.create().show()
+                    alert(this.resources.getString(R.string.permission_message), this.resources.getString(R.string.permission_setting)){
+                        positiveButton(resources.getString(R.string.permission_button)){showSetting()}
+                        noButton {  }
+                    }.show()
                     return
                 }
             }

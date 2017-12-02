@@ -108,12 +108,14 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
                 activity.startActivity(intent)
             } else {
                 // 다시
-                val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
-                lat = location.latitude
-                lon = location.longitude
-                val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat,lon,2)
-                nation = address[0].countryName
-                mView.updateAddressView(address[0].getAddressLine(0))
+                val location: Location? = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
+                location?.let {
+                    lat = location!!.latitude
+                    lon = location!!.longitude
+                    val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat,lon,2)
+                    nation = address[0].countryName
+                    mView.updateAddressView(address[0].getAddressLine(0))
+                } ?: activity.toast("why!!")
             }
         }
     }

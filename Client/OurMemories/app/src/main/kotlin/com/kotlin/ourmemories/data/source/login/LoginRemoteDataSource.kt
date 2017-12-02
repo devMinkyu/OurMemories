@@ -24,6 +24,7 @@ object LoginRemoteDataSource: LoginSource {
 
             // Body 설정
             val formBuilder = FormBody.Builder().add("accessToken", accessToken)
+            formBuilder.add("userId", accessToken)
 
             // RequestBody 설정(파일 설정 시 Multipart로 설정)
             val body: RequestBody = formBuilder.build()

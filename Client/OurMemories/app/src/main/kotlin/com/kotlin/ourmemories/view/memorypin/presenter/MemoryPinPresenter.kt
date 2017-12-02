@@ -17,6 +17,8 @@ import com.kotlin.ourmemories.data.source.memory.Memory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.view.memorypin.MemoryPinFragment
 import org.jetbrains.anko.*
+import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.toast
 
 /**
  * Created by kimmingyu on 2017. 11. 12..
@@ -37,25 +39,31 @@ class MemoryPinPresenter:MemoryPinContract.Presenter {
         } else {
             // GPS 가 꺼져있는지 검사후 꺼있으면 켜는 화면으로 전환
             if (!locationManger.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                intent.addCategory(Intent.CATEGORY_DEFAULT)
-                fragment.startActivity(intent)
+                fragment.alert(fragment.resources.getString(R.string.permission_gps_message), fragment.resources.getString(R.string.permission_setting)){
+                    positiveButton(fragment.resources.getString(R.string.permission_button)){
+                        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        intent.addCategory(Intent.CATEGORY_DEFAULT)
+                        fragment.startActivity(intent)
+                    }
+                    noButton {  }
+                }.show()
             } else {
                 fragment.showDialog()
                 // GPS 좀더 찾기
                 val handler = Handler()
                 handler.postDelayed({
-                    val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
-                    // 내장 디비에 있는지 검사
-                    memoryData.getLocalMemory(classification, location.latitude, location.longitude)
-                },4000)
+                    Log.d("hoho", mGoogleApiClient.toString())
+                    val location: Location? = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
+                    location?.let{
+                        memoryData.getLocalMemory(classification, location!!.latitude, location!!.longitude)} ?:fragment.toast("why")
+                },2000)
 
             }
         }
     }
     fun userChooseDialog(items:List<Memory>?){
         fragment.hideDialog()
-        if(items != null){
+        items?.let{
             val memories = mutableListOf<String>()
             for(i in 0 until items!!.size){
                 memories.add(i, items[i].title)
@@ -63,7 +71,7 @@ class MemoryPinPresenter:MemoryPinContract.Presenter {
             fragment.activity.selector("Memories", memories, { dialogInterface, i ->
                 fragment.activity.startActivity<MemoryViewActivity>("id" to items[i].id)
             })
-        }else {
+        }.let {
             fragment.activity.alert(fragment.activity.resources.getString(R.string.error_message_memory), "Memories") {
                 yesButton { }
             }.show()
