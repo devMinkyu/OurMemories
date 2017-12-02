@@ -188,16 +188,13 @@ def multyData():
     # memory 데이터를 JSON으로
     # memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
 
-    mId = ""
-
     info = images.find({"userId" : userId})
     for info in info:
         if info['memoryTitle'] == memoryTitle:
-            mId = info['_id']
+            mId = ObjectId(info['_id']).toString()
             print(mId)
             break
 
-    print(mId)
     sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", mId)))
 
     return jsonify(sendToAndroid)
