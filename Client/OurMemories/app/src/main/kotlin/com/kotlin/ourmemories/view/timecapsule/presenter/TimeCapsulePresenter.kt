@@ -16,7 +16,6 @@ import android.location.LocationManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.widget.EditText
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
@@ -390,17 +389,17 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         }
 
         // 테스트
-//        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
-//        activity.finish()
+        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
+        activity.finish()
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
-        activity.showDialog()
-        if (uploadFile == null) {
-            val timeCapsuleText: EditText = activity.timeCapsuleContents.getChildAt(0) as EditText
-            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
-        } else {
-            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
-        }
+//        activity.showDialog()
+//        if (uploadFile == null) {
+//            val timeCapsuleText: EditText = activity.timeCapsuleContents.getChildAt(0) as EditText
+//            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
+//        } else {
+//            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
+//        }
     }
 
 

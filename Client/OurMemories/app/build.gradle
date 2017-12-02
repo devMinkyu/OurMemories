@@ -63,6 +63,8 @@ dependencies {
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
     // anko library
     compile 'org.jetbrains.anko:anko-sqlite:0.10.1'
+    //리사이클 뷰 디자인
+    compile 'com.willowtreeapps.spruce:spruce-android:1.0.1'
 }
 repositories {
     mavenCentral()
