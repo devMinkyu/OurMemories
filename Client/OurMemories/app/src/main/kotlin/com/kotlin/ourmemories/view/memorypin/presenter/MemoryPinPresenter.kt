@@ -5,8 +5,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.os.Handler
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.util.Log
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.kotlin.ourmemories.view.memoryview.MemoryViewActivity
@@ -14,10 +16,7 @@ import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.source.memory.Memory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.view.memorypin.MemoryPinFragment
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.selector
-import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.yesButton
+import org.jetbrains.anko.*
 
 /**
  * Created by kimmingyu on 2017. 11. 12..
@@ -42,15 +41,20 @@ class MemoryPinPresenter:MemoryPinContract.Presenter {
                 intent.addCategory(Intent.CATEGORY_DEFAULT)
                 fragment.startActivity(intent)
             } else {
-                // 나중에 해결
-                val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
-                // 내장 디비에 있는지 검사
-                memoryData.getLocalMemory(classification, location.latitude, location.longitude)
+                fragment.showDialog()
+                // GPS 좀더 찾기
+                val handler = Handler()
+                handler.postDelayed({
+                    val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
+                    // 내장 디비에 있는지 검사
+                    memoryData.getLocalMemory(classification, location.latitude, location.longitude)
+                },4000)
+
             }
         }
     }
-
     fun userChooseDialog(items:List<Memory>?){
+        fragment.hideDialog()
         if(items != null){
             val memories = mutableListOf<String>()
             for(i in 0 until items!!.size){

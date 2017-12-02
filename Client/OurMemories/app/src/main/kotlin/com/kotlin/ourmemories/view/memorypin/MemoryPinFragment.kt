@@ -110,4 +110,12 @@ class MemoryPinFragment : Fragment(), View.OnClickListener, MemoryPinContract.Vi
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         })
     }
+
+    fun showDialog() {
+        animationLoading_view.visibility = View.VISIBLE
+    }
+
+    fun hideDialog() {
+        animationLoading_view.visibility = View.INVISIBLE
+    }
 }

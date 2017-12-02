@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.location.Location
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
@@ -34,6 +35,7 @@ object MemoryLocalDataSource : MemorySource {
 
     // 내부 디비에서 받아온 정보와 비교후 유저에게 존재하면 알려줘서 선택 후 서버로 보내게 한다
     override fun getLocalMemory(classification: Int, lat: Double, lon: Double) {
+        val items: ArrayList<Memory> = ArrayList()
         when (classification) {
             0 -> { // timeCapsule
                 val calendar = Calendar.getInstance()
@@ -47,7 +49,6 @@ object MemoryLocalDataSource : MemorySource {
                         val amFormat = mContext.resources.getString(R.string.am_format)
                         val pmFormat = mContext.resources.getString(R.string.pm_format)
 
-                        val items: ArrayList<Memory> = ArrayList()
                         val item = arrayOfNulls<Memory>(cursor.count)
                         loop@ for (i in 0 until cursor.count) {
                             val distance = distanceResult(lat, lon, cursor)
@@ -90,8 +91,7 @@ object MemoryLocalDataSource : MemorySource {
                             }
                             cursor.moveToNext()
                         }
-                        memoryPinPresenter.userChooseDialog(items)
-                        return
+
                     }
                 }
             }
@@ -99,7 +99,6 @@ object MemoryLocalDataSource : MemorySource {
                 val cursor = DBManagerMemory.getMemoryClassificationWithCursor(classification)
                 cursor.moveToFirst()
                 if (cursor.count != 0) {
-                    val items: ArrayList<Memory> = ArrayList()
                     val item = arrayOfNulls<Memory>(cursor.count)
                     for (i in 0 until cursor.count) {
                         val distance = distanceResult(lat,lon,cursor)
@@ -111,13 +110,19 @@ object MemoryLocalDataSource : MemorySource {
                         }
                         cursor.moveToNext()
                     }
-                    memoryPinPresenter.userChooseDialog(items)
-                    return
                 }
             }
         }
-        memoryPinPresenter.userChooseDialog(null)
+        if(items.size == 0){
+            memoryPinPresenter.userChooseDialog(null)
+            return
+        }else {
+            memoryPinPresenter.userChooseDialog(items)
+            return
+        }
     }
+
+    override fun getRemoteMemory(id: String, requestMemoryCallback: Callback, activity: AppCompatActivity) {}
 }
 
 fun distanceResult(lat:Double, lon:Double, cursor: Cursor):Float{

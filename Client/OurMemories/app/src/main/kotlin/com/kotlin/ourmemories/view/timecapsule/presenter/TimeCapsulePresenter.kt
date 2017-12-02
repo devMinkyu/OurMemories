@@ -123,15 +123,6 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     // 아직은 고려중
                 }
             }
-//            activity.runOnUiThread {
-//                activity.hideDialog()
-//                val responseData = response?.body()!!.string()
-//                val memoryRequest:MemoryItem = Gson().fromJson(responseData, MemoryItem::class.java)
-//
-//                Log.d("hoho", memoryRequest.mediaMemory)
-//
-//                mView.ex(memoryRequest.mediaMemory)
-//            }
         }
 
     }

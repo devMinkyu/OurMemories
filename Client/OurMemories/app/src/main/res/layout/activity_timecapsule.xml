@@ -305,7 +305,7 @@
     </android.support.v4.widget.NestedScrollView>
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/timeCapsuleLoding"
+        android:id="@+id/timeCapsuleLoading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"

@@ -37,4 +37,8 @@ class MemoryRepository(context: Context) : MemorySource {
             memoryLocalDataSource.memoryPinPresenter = memoryPinPresenter
             memoryLocalDataSource.getLocalMemory(classification, lat, lon)
     }
+
+    override fun getRemoteMemory(id: String, requestMemoryCallback: Callback, activity: AppCompatActivity) {
+        memoryRemoteDataSource.getRemoteMemory(id,requestMemoryCallback, activity)
+    }
 }

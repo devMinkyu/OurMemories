@@ -192,8 +192,8 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         }
     }
 
-    fun showDialog() { reviewLoding.visibility = View.VISIBLE }
-    fun hideDialog() { reviewLoding.visibility = View.INVISIBLE }
+    fun showDialog() { reviewLoading.visibility = View.VISIBLE }
+    fun hideDialog() { reviewLoading.visibility = View.INVISIBLE }
     fun hideKey(){
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(reviewTitleEditText.windowToken, 0)
