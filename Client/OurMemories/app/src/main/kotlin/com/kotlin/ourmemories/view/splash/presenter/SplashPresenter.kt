@@ -33,6 +33,9 @@ class SplashPresenter: SplashContract.Presenter {
     val userId:String by lazy {
         PManager.getUserId()
     }
+    val isLogin:String by lazy {
+        PManager.getUserIsLogin()
+    }
 
     init {
         PManager.init()
@@ -68,6 +71,7 @@ class SplashPresenter: SplashContract.Presenter {
                         PManager.setUserProfileImageUrl(profileRequest.userProfileResult.userProfileImageUrl)
                         PManager.setUserEmail(profileRequest.userProfileResult.userEmail)
                         PManager.setUserId(profileRequest.userProfileResult.userId)
+                        PManager.setUserIsLogin(profileRequest.userProfileResult.authLogin)
 
                         // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
                         if(profileRequest.userProfileMemoryResult != null) {
@@ -113,7 +117,15 @@ class SplashPresenter: SplashContract.Presenter {
                 loginPageIntent()
             }
             else->{
-                profileData.getProfile(userId, requestProfileCallback, activity)
+                when(isLogin){
+                    "0"->
+                        loginPageIntent()
+                    "1"->
+                        profileData.getProfile(userId, requestProfileCallback, activity)
+                    else->
+                        loginPageIntent()
+                }
+
             }
         }
     }

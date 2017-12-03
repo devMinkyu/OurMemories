@@ -94,6 +94,7 @@ object MemoryLocalDataSource : MemorySource {
 
                     }
                 }
+                cursor.close()
             }
             1 -> { // review
                 val cursor = DBManagerMemory.getMemoryClassificationWithCursor(classification)
@@ -111,6 +112,7 @@ object MemoryLocalDataSource : MemorySource {
                         cursor.moveToNext()
                     }
                 }
+                cursor.close()
             }
         }
         if(items.size == 0){

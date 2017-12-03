@@ -39,6 +39,12 @@ object PManager{
         pManager?.mEditor!!.putString(PropertyManager.KEY_USEREMAIL, userEmail)
         pManager?.mEditor!!.commit()
     }
+    // 로그인 여부 0-> 로그아웃 상태 1-> 로그인 상태
+    fun getUserIsLogin():String = pManager?.mProfile!!.getString(PropertyManager.KEY_ISLOGIN,"0")
+    fun setUserIsLogin(userIsLogin: String){
+        pManager?.mEditor!!.putString(PropertyManager.KEY_FACEBOOK_ID, userIsLogin)
+        pManager?.mEditor!!.commit()
+    }
     // 페이스북 토큰
     fun getUserFacebookId():String = pManager?.mProfile!!.getString(PropertyManager.KEY_FACEBOOK_ID,"")
     fun setUserFacebookId(userFacebookId: String){
@@ -68,6 +74,7 @@ class PropertyManager {
         val KEY_PROFILEIMAGEURL = "userProfileImageUrl"
         val KEY_USEREMAIL = "userEmail"
         val KEY_USERID = "userId"
+        val KEY_ISLOGIN = "isLogin"
 
         // SNS 토큰
         val KEY_FACEBOOK_ID = "facebookId"

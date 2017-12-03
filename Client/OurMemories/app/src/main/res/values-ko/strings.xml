@@ -23,6 +23,9 @@
     <string name="memory_address">주소</string>
     <string name="memory_add">추가</string>
 
+    <string name="setting_logout">로그아웃</string>
+    <string name="setting_profile">프로필 보기</string>
+
     <string name="error_message_title">제목을 채워주세요.</string>
     <string name="error_message_date">날짜를 선택해주세요.</string>
     <string name="error_message_start">시작시간을 선택해주세요.</string>

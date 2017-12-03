@@ -37,7 +37,7 @@ class MyFirebaseMessagingService : com.google.firebase.messaging.FirebaseMessagi
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this).setSmallIcon(R.mipmap.ic_launcher)
+        val notificationBuilder = NotificationCompat.Builder(this).setSmallIcon(R.mipmap.ourmemory_logo)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)

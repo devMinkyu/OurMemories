@@ -71,10 +71,9 @@ class MemoryPinPresenter:MemoryPinContract.Presenter {
             fragment.activity.selector("Memories", memories, { dialogInterface, i ->
                 fragment.activity.startActivity<MemoryViewActivity>("id" to items[i].id)
             })
-        }.let {
-            fragment.activity.alert(fragment.activity.resources.getString(R.string.error_message_memory), "Memories") {
+        }?: fragment.activity.alert(fragment.activity.resources.getString(R.string.error_message_memory), "Memories") {
                 yesButton { }
             }.show()
-        }
+
     }
 }

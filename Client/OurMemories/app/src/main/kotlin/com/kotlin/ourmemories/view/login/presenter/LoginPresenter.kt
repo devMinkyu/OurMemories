@@ -168,6 +168,7 @@ class LoginPresenter: LoginContract.Presenter{
         PManager.setUserName("")
         PManager.setUserFacebookId("")
         PManager.setUserProfileImageUrl("")
+        PManager.setUserIsLogin("0")
 
         // 서버로 부터 온 데이터 공유저장소에 저장
         PManager.setUserId(loginRequest.userLoginResult.userId)
@@ -175,6 +176,7 @@ class LoginPresenter: LoginContract.Presenter{
         PManager.setUserName(loginRequest.userLoginResult.userName)
         PManager.setUserFacebookId(accessToken)
         PManager.setUserProfileImageUrl(loginRequest.userLoginResult.userProfileImageUrl)
+        PManager.setUserIsLogin("1")
 
         // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
         if(loginRequest.userLoginMemoryResult != null) {

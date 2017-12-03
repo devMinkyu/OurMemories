@@ -23,6 +23,9 @@
     <string name="memory_address">Address</string>
     <string name="memory_add">ADD</string>
 
+    <string name="setting_logout">LOG OUT</string>
+    <string name="setting_profile">Profile</string>
+
     <string name="error_message_title">Enter Full Title</string>
     <string name="error_message_date">Enter Date</string>
     <string name="error_message_start">Enter Start Time</string>
