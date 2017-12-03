@@ -44,7 +44,7 @@ def login():
     me = facebook.get('/me?fields=id,name,email,picture')
 
     # Json 파싱을 통해 값을 가져온다
-    # 키 값으로 가져온다
+    # 키 값으로 유저 정보를 가져온다
     user_id = (me.data['id'])
     name = (me.data['name'])
     email = (me.data['email'])
@@ -67,6 +67,18 @@ def login():
         # isSuccess와 userLoginResult를 Json으로
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
         user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken})
+
+        # image collection에 있는 id값을 가져온다.
+        memoryArray = [] # 메모리 배열
+        memoryId = images.find_one({"userId" : user_id})
+        if memoryId != None:
+            memories = images.find({"userId" : memoryId})
+            for docs in memories:
+                # memory 데이터를 JSON으로
+                memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
+                memoryArray.append(memory_object)
+                lastSendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
+
     else:
         # isSuccess
         isSuccess = 'false'
@@ -75,7 +87,7 @@ def login():
         # isSuccess와 userLoginResult를 Json으로
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
 
-    return jsonify(sendToAndroid)
+    return jsonify(lastSendToAndroid)
 
 
 # 자동로그인
