@@ -191,8 +191,7 @@ def multyData():
     info = images.find({"userId" : userId})
     for doc in info:
         if doc['memoryTitle'] == memoryTitle:
-            mId = doc['_id']
-            bson.ObjectId(mId)
+            mId = doc['_id'].str
             # str(mId)
             print(mId)
             break
