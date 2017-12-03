@@ -19,8 +19,6 @@ interface LoginContract {
 
         fun animation()
         fun facebookLogin()
-        fun getInstanceIdToken()
-        fun registBroadcastReceiver()
         fun checkPlayServices(): Boolean
         fun isLogin(): Boolean
     }

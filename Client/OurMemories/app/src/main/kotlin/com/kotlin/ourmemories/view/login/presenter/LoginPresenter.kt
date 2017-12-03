@@ -29,8 +29,6 @@ import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.UserLogin
 import com.kotlin.ourmemories.data.source.login.LoginRepository
 import com.kotlin.ourmemories.manager.PManager
-import com.kotlin.ourmemories.service.fcm.QuickstartPreferences
-import com.kotlin.ourmemories.service.fcm.RegistrationIntentService
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -108,33 +106,6 @@ class LoginPresenter: LoginContract.Presenter{
             }
         }
 
-    }
-
-    override fun getInstanceIdToken() {
-        if(checkPlayServices())
-            activity.startService<RegistrationIntentService>()
-    }
-
-    override fun registBroadcastReceiver() {
-        mRegistrationBroadcastReceiver = object :BroadcastReceiver(){
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val action = intent?.action
-
-                when(action){
-                    QuickstartPreferences.REGISTRATION_READY->{ } // 액션이 READY  경우
-                    QuickstartPreferences.REGISTRATION_GENERATING->{} // 액션이 GENERATING 일 경우
-                    QuickstartPreferences.REGISTRATION_COMPLETE->{
-                        // 액션이 COMPLETE 일 경우
-                        val token = intent.getStringExtra("token")
-                        registerId = token
-
-                        //토큰을 받은 이 후 로그인을 진행한다.//
-                        //토큰을 받지 못하면 로그인 과정을 진행하지 않는다.//
-                        facebookLogin()
-                    }
-                }
-            }
-        }
     }
 
     /**
