@@ -1,4 +1,4 @@
-package com.kotlin.ourmemories.data.source.profile
+package com.kotlin.ourmemories.data.source.autologin
 
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.networkmanager.NManager
@@ -9,7 +9,7 @@ import okhttp3.*
  * Created by kimmingyu on 2017. 11. 3..
  */
 // 서버로 접속하여 데이터를 가져오고 callback변수로 반환해주는 곳
-object ProfileRemoteDataSource:ProfileSource {
+object AutoLoginRemoteDataSource : AutoLoginSource {
     override fun getProfile(userId: String, requestProfileCallback: Callback, activity: SplashActivity) {
         // 네트워크 설정
         NManager.init()

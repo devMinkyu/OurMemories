@@ -55,8 +55,9 @@
             android:name=".view.review.ReviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".view.memoryview.MemoryViewActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity
+            android:name=".view.memoryview.MemoryViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
 
         <!-- facebook Login -->
         <meta-data
@@ -72,13 +73,12 @@
 
         <service android:name=".service.fcm.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".service.fcm.MyFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
@@ -104,6 +104,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".view.memorylist.MemoryListActivity" />
+        <activity android:name=".view.profile.ProfileActivity"></activity>
     </application>
 
 </manifest>

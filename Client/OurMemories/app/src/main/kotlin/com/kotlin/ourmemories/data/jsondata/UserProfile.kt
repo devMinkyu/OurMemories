@@ -1,4 +1,4 @@
-package com.kotlin.ourmemories.data.source.profile
+package com.kotlin.ourmemories.data.source.autologin
 
 /**
  * Created by kimmingyu on 2017. 11. 3..

@@ -2,15 +2,13 @@ package com.kotlin.ourmemories.view.splash.presenter
 
 import android.os.Handler
 import android.os.Looper
-import android.support.v7.app.AlertDialog
-import android.util.Log
 import com.google.gson.Gson
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.MainActivity
-import com.kotlin.ourmemories.data.source.profile.ProfileRepository
-import com.kotlin.ourmemories.data.source.profile.UserProfile
+import com.kotlin.ourmemories.data.source.autologin.AutoLoginRepository
+import com.kotlin.ourmemories.data.source.autologin.UserProfile
 import com.kotlin.ourmemories.manager.PManager
 import com.kotlin.ourmemories.view.login.LoginActivity
 import com.kotlin.ourmemories.view.splash.SplashActivity
@@ -24,7 +22,7 @@ import java.io.IOException
  * Created by kimmingyu on 2017. 11. 2..
  */
 class SplashPresenter: SplashContract.Presenter {
-    lateinit override var profileData: ProfileRepository
+    lateinit override var profileData: AutoLoginRepository
     lateinit override var activity:SplashActivity
 
     override val mHandler: Handler by lazy {

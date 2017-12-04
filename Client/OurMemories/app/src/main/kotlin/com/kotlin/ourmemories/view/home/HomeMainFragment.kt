@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.view.home
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -20,6 +21,11 @@ class HomeMainFragment : Fragment() {
             inflater?.inflate(R.layout.fragment_home_main, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        // 폰트 변경
+        val canaroExtraBold = Typeface.createFromAsset(activity.assets, MainActivity.CANARO_EXTRA_BOLD_PATH)
+        titleText.typeface = canaroExtraBold
+        pinText.typeface = canaroExtraBold
+
         val main = activity as MainActivity
         mainPin.setOnClickListener {
             main.changeFragment(0,MemoryPinFragment())
