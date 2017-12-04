@@ -17,14 +17,55 @@
             android:name="com.kotlin.ourmemories.view.memorylist.MemoryListMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin = "10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="3"
             tools:context=".view.memorylist.MemoryListActivity" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="5"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <RadioButton
+                    android:id="@+id/rb_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:onClick="isCheckAll"
+                    android:text="모두보기" />
+                <RadioButton
+                    android:id="@+id/rb_timecapsule"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="isCheckTimecapsule"
+                    android:text="타임캡슐" />
+                <RadioButton
+                    android:id="@+id/rb_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="isCheckReview"
+                    android:text="리뷰" />
+
+
+            </RadioGroup>
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="3">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/timecapsule_list"

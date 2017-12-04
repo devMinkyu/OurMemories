@@ -56,7 +56,7 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.CLASSIFICATION),
                     "from_date Like ?", arrayOf(day+"%"), null, null, MemoryData.MemoryTable._ID)
 
-    fun getMemoriesWithCursor(nationName: String) : Cursor =
+    fun getMemoriesNationWithCursor(nationName: String) : Cursor =
             mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
                     arrayOf(MemoryData.MemoryTable._ID,
                             MemoryData.MemoryTable.TITLE,
@@ -65,7 +65,15 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.NATION_NAME,
                             MemoryData.MemoryTable.CLASSIFICATION),
                     MemoryData.MemoryTable.NATION_NAME+"=?", arrayOf(nationName), null, null, MemoryData.MemoryTable._ID)
-
+    fun getMemoriesclassificationWithCursor(classification: Int) : Cursor =
+            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
+                    arrayOf(MemoryData.MemoryTable._ID,
+                            MemoryData.MemoryTable.TITLE,
+                            MemoryData.MemoryTable.LATITUDE,
+                            MemoryData.MemoryTable.LONGITUDE,
+                            MemoryData.MemoryTable.NATION_NAME,
+                            MemoryData.MemoryTable.CLASSIFICATION),
+                    MemoryData.MemoryTable.CLASSIFICATION+"=?", arrayOf(classification.toString()), null, null, MemoryData.MemoryTable._ID)
     // 추억 추가
     fun addMemory(memoryData: MemoryData) {
         val cv = ContentValues()

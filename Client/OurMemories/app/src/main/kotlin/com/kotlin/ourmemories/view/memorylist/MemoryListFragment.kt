@@ -67,7 +67,7 @@ class MemoryListFragment : Fragment() , View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val tv : TextView = v?.findViewById(R.id.tv_tag) as TextView
+        //val tv : TextView = v?.findViewById(R.id.tv_tag) as TextView
         val tvName : TextView = v?.findViewById(R.id.tv_name) as TextView
         //context.toast(tv.text.toString() + ", " + tvName.text.toString() + " Clicked")
         val intent = Intent(context, MemoryListActivity::class.java)

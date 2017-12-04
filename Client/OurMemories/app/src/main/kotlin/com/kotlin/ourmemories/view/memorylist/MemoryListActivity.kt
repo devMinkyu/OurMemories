@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.RadioButton
 import android.widget.TextView
 import com.google.android.gms.maps.model.LatLng
 import com.kotlin.ourmemories.DB.DBManagerMemory
@@ -17,9 +18,11 @@ import com.kotlin.ourmemories.manager.MyApplication.Companion.context
 import com.willowtreeapps.spruce.Spruce
 import com.willowtreeapps.spruce.animation.DefaultAnimations
 import com.willowtreeapps.spruce.sort.DefaultSort
+import org.jetbrains.anko.toast
 
 class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var spruceAnimator : Animator
+    private lateinit var recycleListView : RecyclerView
     fun init(context: Context = this){
         DBManagerMemory.init(context)
     }
@@ -38,8 +41,9 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 
 
         //엑티비티에 리사이클 뷰 달아주는 로직
-        var recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
+        recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
         recycleListView.layoutManager = LinearLayoutManager(this)
+
         //애니메이션
         val linearLayoutManager = object : LinearLayoutManager(context) {
             override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
@@ -52,11 +56,38 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         //DBManagerMemory.defaultAddTimeCapesule()
 
         //리사이클 뷰에 DB내용 넣어주는 로직
-        var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesWithCursor(nationName))
+        var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesNationWithCursor(nationName))
         recycleListView.adapter = adapter
         //애니메이션 셋팅
         recycleListView.layoutManager = linearLayoutManager
 
+
+
+    }
+
+    fun isCheckAll(v: View?){
+        val rb_all = v?.findViewById(R.id.rb_all) as RadioButton
+        if (rb_all.isChecked) {
+            toast(rb_all.text.toString())
+            var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesNationWithCursor(nationName))
+            recycleListView.adapter = adapter
+        }
+    }
+    fun isCheckTimecapsule (v: View?) {
+        val rb_timecapsule = v?.findViewById(R.id.rb_timecapsule) as RadioButton
+        if (rb_timecapsule.isChecked) {
+            toast(rb_timecapsule.text.toString())
+            var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesclassificationWithCursor(0))
+            recycleListView.adapter = adapter
+        }
+    }
+    fun isCheckReview (v: View?) {
+        val rb_reView = v?.findViewById(R.id.rb_review) as RadioButton
+        if (rb_reView.isChecked) {
+            toast(rb_reView.text.toString())
+            var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesclassificationWithCursor(1))
+            recycleListView.adapter = adapter
+        }
     }
     private fun initSpruce(recycleListView : RecyclerView) {
         spruceAnimator = Spruce.SpruceBuilder(recycleListView)

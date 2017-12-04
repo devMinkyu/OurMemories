@@ -44,19 +44,25 @@ class MemoryListMapFragment : SupportMapFragment(), OnMapReadyCallback {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 5.0f))
             }
 
-            //지도에 마커 생성을 위한 데이터베이스 쿼리
-            var cursor: Cursor = DBManagerMemory.getMemoriesWithCursor(nationName)
 
-            //지도에 마커 생성
-            if (cursor.moveToFirst()) {
-                for (n in 0..cursor.columnCount - 1) {
-                    val spot = LatLng(cursor.getString(2).toDouble(), cursor.getString(3).toDouble())
-                    mMap.addMarker(MarkerOptions().position(spot).title(cursor.getString(1)))
-                    cursor.moveToNext()
-                }
+            viewAllMemoryInMap()
+        }
+    }
+
+    //모든 메모리 지도에 마커 생성
+    fun viewAllMemoryInMap(){
+        var cursor: Cursor = DBManagerMemory.getMemoriesNationWithCursor(nationName)
+
+        //지도에 마커 생성
+        if (cursor.moveToFirst()) {
+            for (n in 0..cursor.columnCount - 1) {
+                val spot = LatLng(cursor.getString(2).toDouble(), cursor.getString(3).toDouble())
+                mMap.addMarker(MarkerOptions().position(spot).title(cursor.getString(1)))
+                cursor.moveToNext()
             }
         }
     }
+
 
     //해당 latLng로 카메라 확대 및 이동
     fun moveToMapCameraPosition(latLng: LatLng, f : Float){
