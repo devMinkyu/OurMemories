@@ -52,6 +52,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     // lottie library
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
     implementation 'com.airbnb.android:lottie:2.1.0'
     //FCM
     implementation 'com.google.android.gms:play-services:11.4.2'
