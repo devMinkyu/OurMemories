@@ -52,6 +52,7 @@ def login():
     picture = (me.data['picture']['data']['url'])
 
     is_user = user.find_one({"id" : user_id})
+    # 로그인 할때 유저 아이디가 없는 경우
     if is_user == None:
         # isSuccess
         isSuccess = 'true/insert'
@@ -60,13 +61,14 @@ def login():
         # isSuccess와 userLoginResult를 Json으로
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
         user.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken})
+    # 로그인 할때 유저 아이디가 있는 경우
     elif is_user != None:
         # isSuccess
         isSuccess = 'true/update'
         # transform user data to json
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
         # isSuccess와 userLoginResult를 Json으로
-        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+        # sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
         user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken})
 
         # image collection에 있는 id값을 가져온다.
@@ -74,12 +76,18 @@ def login():
         memoryId = images.find_one({"userId" : user_id})
         if memoryId != None:
             memories = images.find({"userId" : memoryId})
-            for docs in memories:
-                # memory 데이터를 JSON으로
-                memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
-                memoryArray.append(memory_object)
-                lastSendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
 
+            if memories != None:
+                for docs in memories:
+                    # memory 데이터를 JSON으로
+                    memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
+                    memoryArray.append(memory_object)
+
+            lastSendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
+            print(jsonify(lastSendToAndroid))
+            return jsonify(lastSendToAndroid)
+
+            sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
     else:
         # isSuccess
         isSuccess = 'false'
@@ -88,7 +96,7 @@ def login():
         # isSuccess와 userLoginResult를 Json으로
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
 
-    return jsonify(lastSendToAndroid)
+    return jsonify(sendToAndroid)
 
 
 # 자동로그인
@@ -112,7 +120,7 @@ def profile():
                 memoryArray.append(memory_object)
                 lastSendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
                 print(jsonify(lastSendToAndroid))
-                
+
                 return jsonify(lastSendToAndroid)
 
     else :
@@ -212,8 +220,6 @@ def multyData():
     memoryNation = request.form['memoryNation']
     memoryClassification = request.form['memoryClassification']
     text = request.form['text']
-    # 정보들 DB에 저장
-    images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text})
 
     # memory 데이터를 JSON으로
     # memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
@@ -238,7 +244,8 @@ def multyData():
     path = SENDING_IMAGE_PATH + 'uploads/' + imageName # android에 보낼 image URL
     print(path)
 
-    images.insert({'imageURL' : path})
+    # 정보들 DB에 저장
+    images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text, 'media' : path})
 
     sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", mId)))
 
@@ -251,7 +258,7 @@ def memoryView():
 
     # image collection에 있는 id값을 가져온다.
     memoryArray = [] # 메모리 배열
-    memoryId = images.find_one({"userId" : user_id})
+    memoryId = images.find_one({"userId" : userId})
     if memoryId != None:
         memories = images.find({"userId" : memoryId})
         for docs in memories:
@@ -259,7 +266,7 @@ def memoryView():
             text = docs['text']
             break;
 
-    memoryItemResult = dict(zip( ('mediaMemory', 'textMemory'), (midia,text) ))
+    memoryItemResult = dict(zip( ('mediaMemory', 'textMemory'), (midia, text) ))
     memoryItem = dict(zip( ('isSuccess', 'memoryItemResult'), ("true", memoryItemResult) ))
 
     return jsonify(memoryItem)
