@@ -42,7 +42,7 @@ object PManager{
     // 로그인 여부 0-> 로그아웃 상태 1-> 로그인 상태
     fun getUserIsLogin():String = pManager?.mProfile!!.getString(PropertyManager.KEY_ISLOGIN,"0")
     fun setUserIsLogin(userIsLogin: String){
-        pManager?.mEditor!!.putString(PropertyManager.KEY_FACEBOOK_ID, userIsLogin)
+        pManager?.mEditor!!.putString(PropertyManager.KEY_ISLOGIN, userIsLogin)
         pManager?.mEditor!!.commit()
     }
     // 페이스북 토큰

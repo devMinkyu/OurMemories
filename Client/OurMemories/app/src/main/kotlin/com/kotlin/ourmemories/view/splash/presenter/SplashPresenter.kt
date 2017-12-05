@@ -2,6 +2,7 @@ package com.kotlin.ourmemories.view.splash.presenter
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.google.gson.Gson
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
@@ -52,6 +53,7 @@ class SplashPresenter: SplashContract.Presenter {
         // 성공 했을 경우
         override fun onResponse(call: Call?, response: Response?) {
             val responseData:String = response?.body()!!.string()
+            Log.d("hoho", responseData)
             //현재 보안을 위해서 우선은 공유저장소에 들어있는 값(현재 스마트폰의 저장 정보)과 서버에 저장되어 있는 값을 비교//
             //만약 다를 시 해커가 우회에서 들어올 수 있으므로 로그인 화면으로 이동하여 다시 정상적으로 토큰등을 발급받게 함.//
 
@@ -80,7 +82,6 @@ class SplashPresenter: SplashContract.Presenter {
                                         profileRequest.userProfileMemoryResult[i].memoryLongitude.toDouble(), profileRequest.userProfileMemoryResult[i].memoryNation, profileRequest.userProfileMemoryResult[i].memoryFromDate,
                                         profileRequest.userProfileMemoryResult[i].memoryToDate, profileRequest.userProfileMemoryResult[i].memoryClassification.toInt())
                             }
-                            DBManagerMemory.deleteTable()
                             (0 until item.size).forEach { i ->
                                 DBManagerMemory.addMemory(item[i]!!)
                             }
@@ -116,12 +117,15 @@ class SplashPresenter: SplashContract.Presenter {
             }
             else->{
                 when(isLogin){
-                    "0"->
+                    "0"-> {
                         loginPageIntent()
-                    "1"->
+                    }
+                    "1"-> {
                         profileData.getProfile(userId, requestProfileCallback, activity)
-                    else->
+                    }
+                    else-> {
                         loginPageIntent()
+                    }
                 }
 
             }
