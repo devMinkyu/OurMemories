@@ -72,15 +72,15 @@ def login():
         user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken})
 
         # image collection에 있는 id값을 가져온다.
-        memoryArray = [] # 메모리 배열
         memoryId = images.find({"userId" : user_id})
+        memoryArray = [] # 메모리 배열
         if memoryId != None:
             for docs in memoryId:
                 # memory 데이터를 JSON으로
                 memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
                 memoryArray.append(memory_object)
-                print(memoryArray)
-            sendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
+            print(memoryArray)
+            sendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), (isSuccess, user_object, memoryArray) ))
         else:
             sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
     else:
