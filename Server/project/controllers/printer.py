@@ -253,17 +253,19 @@ def multyData():
     return jsonify(sendToAndroid)
 
 
+# 앱의 review를 눌렀을 때
 @app.route('/memory/view', methods=['GET', 'POST'])
 def memoryView():
     string_id = request.form['id']
 
     # image collection에 있는 id값을 가져온다.
     memoryId = images.find_one({"_id" : ObjectId(string_id)})
+    print(memoryId)
     if memoryId != None:
         # memories = images.find({"_id" : ObjectId(string_id)})
         # for docs in memories:
         isSuccess = "true"
-        media = memoryId['imageURL']
+        media = memoryId['media']
         text = memoryId['text']
     else:
         isSuccess = "false"
