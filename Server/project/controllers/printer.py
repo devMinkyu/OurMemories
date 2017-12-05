@@ -267,10 +267,10 @@ def memoryView():
     if memoryId != None:
         # memories = images.find({"_id" : ObjectId(string_id)})
         # for docs in memories:
-            isSuccess = "true"
-            media = memoryId['imageURL']
-            text = memoryId['text']
-            break
+        isSuccess = "true"
+        media = memoryId['imageURL']
+        text = memoryId['text']
+        break
     else:
         isSuccess = "false"
 
