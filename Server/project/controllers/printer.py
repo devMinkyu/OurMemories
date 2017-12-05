@@ -266,7 +266,7 @@ def memoryView():
             text = docs['text']
             break;
 
-    memoryItemResult = dict(zip( ('mediaMemory', 'textMemory'), (midia, text) ))
+    memoryItemResult = dict(zip( ('mediaMemory', 'textMemory'), (media, text) ))
     memoryItem = dict(zip( ('isSuccess', 'memoryItemResult'), ("true", memoryItemResult) ))
 
     return jsonify(memoryItem)
