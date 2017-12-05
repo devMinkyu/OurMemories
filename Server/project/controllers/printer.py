@@ -86,8 +86,7 @@ def login():
                 lastSendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
                 print(jsonify(lastSendToAndroid))
                 return jsonify(lastSendToAndroid)
-
-            sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
+        sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
     else:
         # isSuccess
         isSuccess = 'false'
