@@ -55,6 +55,7 @@ dependencies {
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'jp.wasabeef:picasso-transformations:2.1.0'
     // lottie library
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
     implementation 'com.airbnb.android:lottie:2.1.0'
     //FCM
     implementation 'com.google.android.gms:play-services:11.4.2'
@@ -67,6 +68,8 @@ dependencies {
     compile 'org.jetbrains.anko:anko-sqlite:0.10.1'
     implementation 'org.jetbrains.anko:anko:0.10.1'
     implementation 'org.jetbrains.anko:anko-commons:0.10.1'
+    //리사이클 뷰 디자인
+    compile 'com.willowtreeapps.spruce:spruce-android:1.0.1'
 }
 repositories {
     mavenCentral()

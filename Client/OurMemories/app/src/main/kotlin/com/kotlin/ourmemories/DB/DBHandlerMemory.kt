@@ -26,80 +26,80 @@ object DBManagerMemory {
         db.execSQL(SQL_DELETE_TIMECAPSULE_ENTRIES)
     }
 
-    // 디비에 있는 내용 다 가져오기
-    fun getMemoryAllWithCursor(): Cursor =
-            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
-                    arrayOf(MemoryData.MemoryTable._ID,
-                            MemoryData.MemoryTable.TITLE,
-                            MemoryData.MemoryTable.LATITUDE,
-                            MemoryData.MemoryTable.LONGITUDE,
-                            MemoryData.MemoryTable.NATION_NAME,
-                            MemoryData.MemoryTable.FROM_DATE,
-                            MemoryData.MemoryTable.TO_DATE,
-                            MemoryData.MemoryTable.CLASSIFICATION),
-                    null, null, null, null, MemoryData.MemoryTable._ID)
+        // 디비에 있는 내용 다 가져오기
+        fun getMemoryAllWithCursor(): Cursor =
+                mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
+                        arrayOf(MemoryData.MemoryTable._ID,
+                                MemoryData.MemoryTable.TITLE,
+                                MemoryData.MemoryTable.LATITUDE,
+                                MemoryData.MemoryTable.LONGITUDE,
+                                MemoryData.MemoryTable.NATION_NAME,
+                                MemoryData.MemoryTable.FROM_DATE,
+                                MemoryData.MemoryTable.TO_DATE,
+                                MemoryData.MemoryTable.CLASSIFICATION),
+                        null, null, null, null, MemoryData.MemoryTable._ID)
 
-    fun getMemoryDayWithCursor(day: String): Cursor =
-            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
-                    arrayOf(MemoryData.MemoryTable._ID,
-                            MemoryData.MemoryTable.TITLE,
-                            MemoryData.MemoryTable.LATITUDE,
-                            MemoryData.MemoryTable.LONGITUDE,
-                            MemoryData.MemoryTable.NATION_NAME,
-                            MemoryData.MemoryTable.FROM_DATE,
-                            MemoryData.MemoryTable.TO_DATE,
-                            MemoryData.MemoryTable.CLASSIFICATION),
-                    "from_date Like ?", arrayOf(day + "%"), null, null, MemoryData.MemoryTable._ID)
+        fun getMemoryDayWithCursor(day: String): Cursor =
+                mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
+                        arrayOf(MemoryData.MemoryTable._ID,
+                                MemoryData.MemoryTable.TITLE,
+                                MemoryData.MemoryTable.LATITUDE,
+                                MemoryData.MemoryTable.LONGITUDE,
+                                MemoryData.MemoryTable.NATION_NAME,
+                                MemoryData.MemoryTable.FROM_DATE,
+                                MemoryData.MemoryTable.TO_DATE,
+                                MemoryData.MemoryTable.CLASSIFICATION),
+                        "from_date Like ?", arrayOf(day + "%"), null, null, MemoryData.MemoryTable._ID)
 
-    fun getMemoryClassificationWithCursor(clssification: Int): Cursor =
-            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
-                    arrayOf(MemoryData.MemoryTable._ID,
-                            MemoryData.MemoryTable.TITLE,
-                            MemoryData.MemoryTable.LATITUDE,
-                            MemoryData.MemoryTable.LONGITUDE,
-                            MemoryData.MemoryTable.FROM_DATE,
-                            MemoryData.MemoryTable.TO_DATE,
-                            MemoryData.MemoryTable.CLASSIFICATION),
-                    "classification=?", arrayOf(clssification.toString()), null, null, MemoryData.MemoryTable._ID)
+        fun getMemoryClassificationWithCursor(clssification: Int): Cursor =
+                mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
+                        arrayOf(MemoryData.MemoryTable._ID,
+                                MemoryData.MemoryTable.TITLE,
+                                MemoryData.MemoryTable.LATITUDE,
+                                MemoryData.MemoryTable.LONGITUDE,
+                                MemoryData.MemoryTable.FROM_DATE,
+                                MemoryData.MemoryTable.TO_DATE,
+                                MemoryData.MemoryTable.CLASSIFICATION),
+                        "classification=?", arrayOf(clssification.toString()), null, null, MemoryData.MemoryTable._ID)
 
 
-    fun getMemoriesWithCursor(nationName: String): Cursor =
-            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
-                    arrayOf(MemoryData.MemoryTable._ID,
-                            MemoryData.MemoryTable.TITLE,
-                            MemoryData.MemoryTable.LATITUDE,
-                            MemoryData.MemoryTable.LONGITUDE,
-                            MemoryData.MemoryTable.NATION_NAME,
-                            MemoryData.MemoryTable.CLASSIFICATION),
-                    MemoryData.MemoryTable.NATION_NAME + "=?", arrayOf(nationName), null, null, MemoryData.MemoryTable._ID)
+        fun getMemoriesWithCursor(nationName: String): Cursor =
+                mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
+                        arrayOf(MemoryData.MemoryTable._ID,
+                                MemoryData.MemoryTable.TITLE,
+                                MemoryData.MemoryTable.LATITUDE,
+                                MemoryData.MemoryTable.LONGITUDE,
+                                MemoryData.MemoryTable.NATION_NAME,
+                                MemoryData.MemoryTable.CLASSIFICATION),
+                        MemoryData.MemoryTable.NATION_NAME + "=?", arrayOf(nationName), null, null, MemoryData.MemoryTable._ID)
 
-    // 추억 추가
-    fun addMemory(memoryData: MemoryData) {
-        val cv = ContentValues()
-        cv.put(MemoryData.MemoryTable._ID, memoryData.id)
-        cv.put(MemoryData.MemoryTable.TITLE, memoryData.title)
-        cv.put(MemoryData.MemoryTable.LATITUDE, memoryData.latitude)
-        cv.put(MemoryData.MemoryTable.LONGITUDE, memoryData.longitude)
-        cv.put(MemoryData.MemoryTable.NATION_NAME, memoryData.nationName)
-        cv.put(MemoryData.MemoryTable.FROM_DATE, memoryData.fromDate)
-        cv.put(MemoryData.MemoryTable.TO_DATE, memoryData.toDate)
-        cv.put(MemoryData.MemoryTable.CLASSIFICATION, memoryData.classification)
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.insert(MemoryData.MemoryTable.TABLE_NAME, null, cv)
+        // 추억 추가
+        fun addMemory(memoryData: MemoryData) {
+            val cv = ContentValues()
+            cv.put(MemoryData.MemoryTable._ID, memoryData.id)
+            cv.put(MemoryData.MemoryTable.TITLE, memoryData.title)
+            cv.put(MemoryData.MemoryTable.LATITUDE, memoryData.latitude)
+            cv.put(MemoryData.MemoryTable.LONGITUDE, memoryData.longitude)
+            cv.put(MemoryData.MemoryTable.NATION_NAME, memoryData.nationName)
+            cv.put(MemoryData.MemoryTable.FROM_DATE, memoryData.fromDate)
+            cv.put(MemoryData.MemoryTable.TO_DATE, memoryData.toDate)
+            cv.put(MemoryData.MemoryTable.CLASSIFICATION, memoryData.classification)
+            mDBHandler?.writableDatabase.use {
+                mDBHandler?.writableDatabase?.insert(MemoryData.MemoryTable.TABLE_NAME, null, cv)
+            }
+
         }
 
-    }
-
-    // 추억 삭제
-    fun deleteMemory(id: String) {
-        mDBHandler?.writableDatabase.use {
-            mDBHandler?.writableDatabase?.delete(MemoryData.MemoryTable.TABLE_NAME, "_id=?", arrayOf(id))
+        // 추억 삭제
+        fun deleteMemory(id: String) {
+            mDBHandler?.writableDatabase.use {
+                mDBHandler?.writableDatabase?.delete(MemoryData.MemoryTable.TABLE_NAME, "_id=?", arrayOf(id))
+            }
         }
-    }
 
-    fun close() {
-        mDBHandler?.close()
-    }
+        fun close() {
+            mDBHandler?.close()
+        }
 
 //    // 테스트용
 //    fun defaultAddTimeCapesule() {
@@ -117,7 +117,7 @@ object DBManagerMemory {
 //        memoryData = MemoryData("6", "여의나루 데이트",37.528145,126.934022,"대한민국", "0","0",1)
 //        addMemory(memoryData)
 //    }
-}
+    }
 
 class DBHandlerMemory(context: Context) : SQLiteOpenHelper(context, MemoryData.DB_NAME, null, MemoryData.DB_VERSION) {
 

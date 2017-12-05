@@ -16,7 +16,6 @@ import android.location.LocationManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.widget.EditText
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
