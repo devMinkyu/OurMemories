@@ -254,13 +254,12 @@ def multyData():
 
 @app.route('/memory/view', methods=['GET', 'POST'])
 def memoryView():
-    userId = request.form['id']
+    string_id = request.form['id']
 
     # image collection에 있는 id값을 가져온다.
-    memoryArray = [] # 메모리 배열
-    memoryId = images.find_one({"userId" : userId})
+    memoryId = images.find_one({"_id" : ObjectId(string_id)})
     if memoryId != None:
-        memories = images.find({"userId" : memoryId})
+        memories = images.find({"_id" : ObjectId(string_id)})
         for docs in memories:
             media = docs['imageURL']
             text = docs['text']
