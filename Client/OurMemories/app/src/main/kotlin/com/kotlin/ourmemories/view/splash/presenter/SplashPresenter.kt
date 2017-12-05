@@ -2,13 +2,14 @@ package com.kotlin.ourmemories.view.splash.presenter
 
 import android.os.Handler
 import android.os.Looper
-import android.support.v7.app.AlertDialog
 import android.util.Log
 import com.google.gson.Gson
+import com.kotlin.ourmemories.DB.DBManagerMemory
+import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.MainActivity
-import com.kotlin.ourmemories.data.source.profile.ProfileRepository
-import com.kotlin.ourmemories.data.source.profile.UserProfile
+import com.kotlin.ourmemories.data.source.autologin.AutoLoginRepository
+import com.kotlin.ourmemories.data.source.autologin.UserProfile
 import com.kotlin.ourmemories.manager.PManager
 import com.kotlin.ourmemories.view.login.LoginActivity
 import com.kotlin.ourmemories.view.splash.SplashActivity
@@ -22,7 +23,7 @@ import java.io.IOException
  * Created by kimmingyu on 2017. 11. 2..
  */
 class SplashPresenter: SplashContract.Presenter {
-    lateinit override var profileData: ProfileRepository
+    lateinit override var profileData: AutoLoginRepository
     lateinit override var activity:SplashActivity
 
     override val mHandler: Handler by lazy {
@@ -30,6 +31,9 @@ class SplashPresenter: SplashContract.Presenter {
     }
     val userId:String by lazy {
         PManager.getUserId()
+    }
+    val isLogin:String by lazy {
+        PManager.getUserIsLogin()
     }
 
     init {
@@ -41,7 +45,6 @@ class SplashPresenter: SplashContract.Presenter {
         // 실패 했을 경우
         override fun onFailure(call: Call?, e: IOException?) {
             activity.runOnUiThread{
-                val alertDialog = AlertDialog.Builder(activity)
                 activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
                     yesButton { activity.finish() }
                 }.show()
@@ -50,6 +53,7 @@ class SplashPresenter: SplashContract.Presenter {
         // 성공 했을 경우
         override fun onResponse(call: Call?, response: Response?) {
             val responseData:String = response?.body()!!.string()
+            Log.d("hoho", responseData)
             //현재 보안을 위해서 우선은 공유저장소에 들어있는 값(현재 스마트폰의 저장 정보)과 서버에 저장되어 있는 값을 비교//
             //만약 다를 시 해커가 우회에서 들어올 수 있으므로 로그인 화면으로 이동하여 다시 정상적으로 토큰등을 발급받게 함.//
 
@@ -67,7 +71,21 @@ class SplashPresenter: SplashContract.Presenter {
                         PManager.setUserProfileImageUrl(profileRequest.userProfileResult.userProfileImageUrl)
                         PManager.setUserEmail(profileRequest.userProfileResult.userEmail)
                         PManager.setUserId(profileRequest.userProfileResult.userId)
+                        PManager.setUserIsLogin(profileRequest.userProfileResult.authLogin)
 
+                        // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
+                        if(profileRequest.userProfileMemoryResult != null) {
+                            DBManagerMemory.init(activity.applicationContext)
+                            val item = arrayOfNulls<MemoryData>(profileRequest.userProfileMemoryResult.size)
+                            for (i in 0 until profileRequest.userProfileMemoryResult.size) {
+                                item[i] = MemoryData(profileRequest.userProfileMemoryResult[i]._id, profileRequest.userProfileMemoryResult[i].memoryTitle, profileRequest.userProfileMemoryResult[i].memoryLatitude.toDouble(),
+                                        profileRequest.userProfileMemoryResult[i].memoryLongitude.toDouble(), profileRequest.userProfileMemoryResult[i].memoryNation, profileRequest.userProfileMemoryResult[i].memoryFromDate,
+                                        profileRequest.userProfileMemoryResult[i].memoryToDate, profileRequest.userProfileMemoryResult[i].memoryClassification.toInt())
+                            }
+                            (0 until item.size).forEach { i ->
+                                DBManagerMemory.addMemory(item[i]!!)
+                            }
+                        }
                         activity.startActivity<MainActivity>()
                         activity.finish()
                     } else if(loginAuth == "0") // 로그아웃한 경우
@@ -98,7 +116,18 @@ class SplashPresenter: SplashContract.Presenter {
                 loginPageIntent()
             }
             else->{
-                profileData.getProfile(userId, requestProfileCallback, activity)
+                when(isLogin){
+                    "0"-> {
+                        loginPageIntent()
+                    }
+                    "1"-> {
+                        profileData.getProfile(userId, requestProfileCallback, activity)
+                    }
+                    else-> {
+                        loginPageIntent()
+                    }
+                }
+
             }
         }
     }

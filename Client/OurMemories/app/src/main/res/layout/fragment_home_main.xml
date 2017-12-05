@@ -1,27 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.v7.widget.Toolbar
-    android:id="@+id/toolBar"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?attr/actionBarSize"
-    android:background="#1A000000"
-    android:layout_marginTop="30dp"
-    android:layout_marginLeft = "10dp"
-    android:layout_marginRight = "10dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:elevation="1dp">
+    android:layout_height="match_parent"
+    android:background="@drawable/mainbackground">
+
+    <View
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="top"
+        android:background="@color/transparent" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top"
+        android:background="@color/transparent"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetStart="0dp">
+
         <TextView
             android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-            android:textColor="@android:color/black"
-            android:text="메인화면"
-        />
+            android:layout_gravity="center"
+            android:text="@string/app_title"
+            android:textSize="@dimen/font_title_Large_ize" />
     </android.support.v7.widget.Toolbar>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/mainPin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/memory_20size"
+                android:layout_marginTop="@dimen/memory_35size"
+                app:cardBackgroundColor="@color/colorSubPrimary"
+                app:cardCornerRadius="@dimen/memory_5size">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/memory_5size" >
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/pinAnimation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        app:lottie_autoPlay="true"
+                        app:lottie_fileName="memory_search.json"
+                        app:lottie_loop="true"/>
+                    <TextView
+                        android:id="@+id/pinText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/memory_5size"
+                        android:layout_toEndOf="@+id/pinAnimation"
+                        android:background="@color/transparent"
+                        android:padding="@dimen/memory_5size"
+                        android:text="내가 남겨둔 추억을 찾으로 가보세요."
+                        android:textSize="@dimen/font_title_Large_ize" />
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/mainEnroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/memory_20size"
+                android:layout_marginLeft="@dimen/memory_5size"
+                android:layout_marginRight="@dimen/memory_5size"
+                app:cardBackgroundColor="@android:color/holo_green_light"
+                app:cardCornerRadius="@dimen/memory_5size">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/memory_5size" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/memoryViewContents"
+                    android:layout_margin="@dimen/memory_5size"
+                    android:background="@color/transparent"
+                    android:padding="@dimen/memory_5size"
+                    android:text="@string/memory_title"
+                    android:textSize="@dimen/font_title_small_size" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/mainList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/memory_20size"
+                android:layout_marginLeft="@dimen/memory_5size"
+                android:layout_marginRight="@dimen/memory_5size"
+                app:cardBackgroundColor="@android:color/holo_blue_light"
+                app:cardCornerRadius="@dimen/memory_5size">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/memory_5size" >
+
+                    <FrameLayout
+                        android:id="@+id/listMap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/map"/>
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="@dimen/memory_35size"
+                            android:layout_height="@dimen/memory_35size"
+                            android:adjustViewBounds = "true"
+                            android:layout_gravity="center"
+                            app:lottie_autoPlay="true"
+                            app:lottie_fileName="bouncy_mapmaker.json"
+                            app:lottie_loop="true"/>
+                    </FrameLayout>
+
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/listMap"
+                        android:layout_margin="@dimen/memory_5size"
+                        android:background="@color/transparent"
+                        android:padding="@dimen/memory_5size"
+                        android:text="내가 저장해둔 추억들을 한눈에 보세요"
+                        android:textSize="@dimen/font_title_medium_size" />
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
 
 </RelativeLayout>

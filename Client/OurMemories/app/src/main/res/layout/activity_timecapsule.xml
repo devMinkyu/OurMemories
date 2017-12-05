@@ -219,6 +219,26 @@
                     android:src="@drawable/ic_alarm_black_24dp" />
             </RelativeLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/timeCapsuleTextLayoutText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/memory_15size"
+                android:layout_marginRight="@dimen/memory_15size"
+                android:layout_marginTop="@dimen/memory_15size"
+                app:errorTextAppearance="@style/error">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/timeCapsuleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/memory_5size"
+                    android:inputType="textMultiLine"
+                    android:lines="6"
+                    android:background="@drawable/border"
+                    android:hint="@string/memory_text" />
+            </android.support.design.widget.TextInputLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -226,14 +246,6 @@
                 android:layout_marginLeft="@dimen/memory_20size"
                 android:layout_marginRight="@dimen/memory_20size"
                 android:layout_marginTop="@dimen/memory_15size">
-
-                <android.support.v7.widget.AppCompatImageButton
-                    android:id="@+id/timeCapsuleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/memory_text"
-                    android:src="@drawable/ic_text_black_24dp" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/timeCapsulePhoto"
@@ -293,7 +305,7 @@
     </android.support.v4.widget.NestedScrollView>
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/timeCapsuleLoding"
+        android:id="@+id/timeCapsuleLoading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"

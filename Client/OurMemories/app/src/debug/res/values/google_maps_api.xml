@@ -4,7 +4,7 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=42:D2:D2:2D:E8:AA:E3:F7:83:6F:DF:AB:77:DF:67:1C:57:8F:20:CB%3Bcom.kotlin.ourmemories
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=70:54:33:F1:2B:01:E4:0B:18:1C:B1:6A:74:B2:37:0D:90:86:7B:31;com.kotlin.ourmemories
 
     You can also add your credentials to an existing key, using these values:
 
@@ -20,5 +20,5 @@
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCghjbD6I7GiavYCJml8P-HFAUuho6yrFM</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDVlRc0ubvNAHHSngqOPChxVrq5n04Lx_E</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.view.timecapsule
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
@@ -10,8 +11,8 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
-import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -24,8 +25,11 @@ import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsuleContract
 import com.kotlin.ourmemories.view.timecapsule.presenter.TimeCapsulePresenter
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_timecapsule.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
 import java.io.File
 import java.util.*
+
 
 class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
     private lateinit var presenter: TimeCapsuleContract.Presenter
@@ -40,7 +44,8 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             memoryData = MemoryRepository(this@TimeCapsuleActivity)
         }
 
-        updateFromTimeView(Calendar.getInstance().get(Calendar.HOUR_OF_DAY),Calendar.getInstance().get(Calendar.MINUTE))
+
+        updateFromTimeView(Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE))
         // 폰트 변경
         val canaroExtraBold = Typeface.createFromAsset(this.assets, MainActivity.CANARO_EXTRA_BOLD_PATH)
         timeCapsuleTitleText.typeface = canaroExtraBold
@@ -58,37 +63,36 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         timeCapsuleLocation.inputType = InputType.TYPE_NULL
 
         // 날짜 버튼 눌렀을 때
-        timeCapsuleDateText.setOnClickListener { presenter.dateTimeCapsule() }
-        // 시간 버튼 눌렀을 때
-        timeCapsuleFromTime.setOnClickListener { presenter.fromTimeTimeCapsule() }
-        timeCapsuleToTime.setOnClickListener { presenter.toTimeTimeCapsule() }
-
-        // 텍스트 버튼 눌렀을 때 EditText 생성
-        timeCapsuleText.setOnClickListener {
-            timeCapsuleContents.removeAllViews()
-            val paddingSize: Int = this.resources.getDimension(R.dimen.memory_5size).toInt()
-            val timeCapsuleText = EditText(this)
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            timeCapsuleText.layoutParams = params
-            timeCapsuleText.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
-            timeCapsuleText.gravity = Gravity.TOP and Gravity.START
-            timeCapsuleText.setLines(6)
-            timeCapsuleText.background = this.resources.getDrawable(R.drawable.border)
-            timeCapsuleText.setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
-            timeCapsuleContents.addView(timeCapsuleText)
+        timeCapsuleDateText.setOnClickListener {
+            hideKey()
+            presenter.dateTimeCapsule()
         }
+        // 시간 버튼 눌렀을 때
+        timeCapsuleFromTime.setOnClickListener {
+            hideKey()
+            presenter.fromTimeTimeCapsule()
+        }
+        timeCapsuleToTime.setOnClickListener {
+            hideKey()
+            presenter.toTimeTimeCapsule()
+        }
+
         // 위치
         timeCapsuleLocation.setOnClickListener {
+            hideKey()
             presenter.currentAddress()
         }
         timeCapsuleAddress.setOnClickListener {
+            hideKey()
             presenter.currentAddress()
         }
         //알람
         timeCapsuleAlarm.setOnClickListener {
+            hideKey()
             presenter.alarmTimeCapsule()
         }
         timeCapsuleAlarmImage.setOnClickListener {
+            hideKey()
             presenter.alarmTimeCapsule()
         }
         // 사진 버튼 눌렀을 때
@@ -130,7 +134,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
     override fun onStart() {
         super.onStart()
         if (presenter.mGoogleApiClient == null) {
-            presenter.mGoogleApiClient = GoogleApiClient.Builder(applicationContext).addApi(LocationServices.API).build()
+            presenter.mGoogleApiClient = GoogleApiClient.Builder(this).addApi(LocationServices.API).build()
         }
         presenter.mGoogleApiClient!!.connect()
     }
@@ -153,6 +157,7 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             hourOfDay < 12 -> timeCapsuleFromTime.setText(String.format(amTimeFormat, hourOfDay, minute))
         }
     }
+
 
     override fun updateToTimeView(hourOfDay: Int, minute: Int) {
         val amTimeFormat = this.resources.getString(R.string.am_time_format)
@@ -219,11 +224,10 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
                 if (rationale) {
-                    val dialogBuild = AlertDialog.Builder(this).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
-                            .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
-                        showSetting()
-                    }
-                    dialogBuild.create().show()
+                    alert(this.resources.getString(R.string.permission_message), this.resources.getString(R.string.permission_setting)){
+                        positiveButton(resources.getString(R.string.permission_button)){showSetting()}
+                        noButton {  }
+                    }.show()
                     return
                 }
             }
@@ -255,7 +259,18 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         }
 
     }
-    fun showDialog() { timeCapsuleLoding.visibility = View.VISIBLE }
-    fun hideDialog() { timeCapsuleLoding.visibility = View.INVISIBLE }
+
+    fun showDialog() {
+        timeCapsuleLoading.visibility = View.VISIBLE
+    }
+
+    fun hideDialog() {
+        timeCapsuleLoading.visibility = View.INVISIBLE
+    }
+
+    fun hideKey() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(timeCapsuleTitleEditText.windowToken, 0)
+    }
 
 }

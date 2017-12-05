@@ -1,11 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <View
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="top"
+        android:background="@color/colorPrimary" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="setting"/>
-</RelativeLayout>
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetStart="0dp">
+
+        <TextView
+            android:id="@+id/settingTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Setting"
+            android:textSize="@dimen/font_title_Large_ize" />
+    </android.support.v7.widget.Toolbar>
+
+    <Button
+        android:id="@+id/profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/memory_20size"
+        android:text="@string/setting_profile"
+        android:layout_gravity="center"/>
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/memory_5size"
+        android:text="@string/setting_logout"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

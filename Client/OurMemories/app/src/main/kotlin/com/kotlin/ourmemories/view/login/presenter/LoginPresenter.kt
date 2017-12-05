@@ -23,12 +23,12 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.gson.Gson
+import com.kotlin.ourmemories.DB.DBManagerMemory
+import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.UserLogin
 import com.kotlin.ourmemories.data.source.login.LoginRepository
 import com.kotlin.ourmemories.manager.PManager
-import com.kotlin.ourmemories.service.fcm.QuickstartPreferences
-import com.kotlin.ourmemories.service.fcm.RegistrationIntentService
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -79,31 +79,14 @@ class LoginPresenter: LoginContract.Presenter{
             when(isSuccess){
                 "true/insert"->{
                     activity.runOnUiThread {
-                        activity.hideDialog()
-                        // 공유저장소에 저장전 한번 초기화 시켜준다
-                        PManager.setUserId("")
-                        PManager.setUserEmail("")
-                        PManager.setUserName("")
-                        PManager.setUserFacebookId("")
-                        PManager.setUserProfileImageUrl("")
-
-                        // 서버로 부터 온 데이터 공유저장소에 저장
-                        PManager.setUserId(loginRequest.userLoginResult.userId)
-                        PManager.setUserEmail(loginRequest.userLoginResult.userEmail)
-                        PManager.setUserName(loginRequest.userLoginResult.userName)
-                        PManager.setUserFacebookId(accessToken)
-                        PManager.setUserProfileImageUrl(loginRequest.userLoginResult.userProfileImageUrl)
-
+                        userSave(loginRequest)
                         activity.startActivity<MainActivity>()
                         activity.finish()
                     }
                 }
                 "true/update"->{
                     activity.runOnUiThread {
-                        activity.hideDialog()
-                        //(이미 정보 존재 시 수정만 해준다.)공유저장소에 등록될 수정될 내용은 토큰값만 바꾸어 준다.
-                        PManager.setUserFacebookId(accessToken)
-
+                        userSave(loginRequest)
                         activity.startActivity<MainActivity>()
                         activity.finish()
                     }
@@ -123,33 +106,6 @@ class LoginPresenter: LoginContract.Presenter{
             }
         }
 
-    }
-
-    override fun getInstanceIdToken() {
-        if(checkPlayServices())
-            activity.startService<RegistrationIntentService>()
-    }
-
-    override fun registBroadcastReceiver() {
-        mRegistrationBroadcastReceiver = object :BroadcastReceiver(){
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val action = intent?.action
-
-                when(action){
-                    QuickstartPreferences.REGISTRATION_READY->{ } // 액션이 READY  경우
-                    QuickstartPreferences.REGISTRATION_GENERATING->{} // 액션이 GENERATING 일 경우
-                    QuickstartPreferences.REGISTRATION_COMPLETE->{
-                        // 액션이 COMPLETE 일 경우
-                        val token = intent.getStringExtra("token")
-                        registerId = token
-
-                        //토큰을 받은 이 후 로그인을 진행한다.//
-                        //토큰을 받지 못하면 로그인 과정을 진행하지 않는다.//
-                        facebookLogin()
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -204,6 +160,40 @@ class LoginPresenter: LoginContract.Presenter{
         return token != null
     }
 
+    fun userSave(loginRequest:UserLogin){
+        Log.d("hoho", "들어온다")
+        activity.hideDialog()
+        // 공유저장소에 저장전 한번 초기화 시켜준다
+        PManager.setUserId("")
+        PManager.setUserEmail("")
+        PManager.setUserName("")
+        PManager.setUserFacebookId("")
+        PManager.setUserProfileImageUrl("")
+        PManager.setUserIsLogin("0")
+
+        // 서버로 부터 온 데이터 공유저장소에 저장
+        PManager.setUserId(loginRequest.userLoginResult.userId)
+        PManager.setUserEmail(loginRequest.userLoginResult.userEmail)
+        PManager.setUserName(loginRequest.userLoginResult.userName)
+        PManager.setUserFacebookId(accessToken)
+        PManager.setUserProfileImageUrl(loginRequest.userLoginResult.userProfileImageUrl)
+        PManager.setUserIsLogin("1")
+
+        // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
+        if(loginRequest.userLoginMemoryResult != null) {
+            DBManagerMemory.init(activity.applicationContext)
+            val item = arrayOfNulls<MemoryData>(loginRequest.userLoginMemoryResult.size)
+            for (i in 0 until loginRequest.userLoginMemoryResult.size) {
+                item[i] = MemoryData(loginRequest.userLoginMemoryResult[i]._id, loginRequest.userLoginMemoryResult[i].memoryTitle, loginRequest.userLoginMemoryResult[i].memoryLatitude.toDouble(),
+                        loginRequest.userLoginMemoryResult[i].memoryLongitude.toDouble(), loginRequest.userLoginMemoryResult[i].memoryNation, loginRequest.userLoginMemoryResult[i].memoryFromDate,
+                        loginRequest.userLoginMemoryResult[i].memoryToDate, loginRequest.userLoginMemoryResult[i].memoryClassification.toInt())
+            }
+            //DBManagerMemory.deleteTable()
+            (0 until item.size).forEach { i ->
+                DBManagerMemory.addMemory(item[i]!!)
+            }
+        }
+    }
 
     // 애니메이션
     override fun animation() {

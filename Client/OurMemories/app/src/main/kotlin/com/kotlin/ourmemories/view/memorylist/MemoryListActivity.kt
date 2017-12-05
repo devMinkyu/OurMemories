@@ -28,6 +28,7 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
     var nationName : String
     init {
         nationName = ""
+        DBManagerMemory.init(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +42,6 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 
         //엑티비티에 리사이클 뷰 달아주는 로직
         timecapsule_list.layoutManager = LinearLayoutManager(this)
-
         //애니메이션
         val linearLayoutManager = object : LinearLayoutManager(context) {
             override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
@@ -56,21 +56,19 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         //리사이클 뷰에 DB내용 넣어주는 로직
         //애니메이션 셋팅
         timecapsule_list.layoutManager = linearLayoutManager
-        val cursor = DBManagerMemory.getMemoriesNationWithCursor(nationName)
+        val cursor = DBManagerMemory.getMemoriesWithCursor(nationName)
         if(cursor?.count != 0){
             var adapter = TimeCapsuleAdapter(this, cursor!!)
             timecapsule_list.adapter = adapter
         }
 
-
-
     }
 
     fun isCheckAll(v: View?){
-        val rb_all = v?.findViewById(R.id.rb_all) as RadioButton
+        val rb_all = v?.findViewById<View>(R.id.rb_all) as RadioButton
         if (rb_all.isChecked) {
             toast(rb_all.text.toString())
-            val cursor = DBManagerMemory.getMemoriesNationWithCursor(nationName)
+            val cursor = DBManagerMemory.getMemoriesWithCursor(nationName)
             if(cursor?.count != 0){
                 var adapter = TimeCapsuleAdapter(this, cursor!!)
                 timecapsule_list.adapter = adapter
@@ -78,10 +76,10 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
     fun isCheckTimecapsule (v: View?) {
-        val rb_timecapsule = v?.findViewById(R.id.rb_timecapsule) as RadioButton
+        val rb_timecapsule = v?.findViewById<View>(R.id.rb_timecapsule) as RadioButton
         if (rb_timecapsule.isChecked) {
             toast(rb_timecapsule.text.toString())
-            val cursor = DBManagerMemory.getMemoriesclassificationWithCursor(0)
+            val cursor = DBManagerMemory.getMemoryClassificationWithCursor(0)
             if(cursor?.count != 0){
                 var adapter = TimeCapsuleAdapter(this, cursor!!)
                 timecapsule_list.adapter = adapter
@@ -89,10 +87,10 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
     fun isCheckReview (v: View?) {
-        val rb_reView = v?.findViewById(R.id.rb_review) as RadioButton
+        val rb_reView = v?.findViewById<View>(R.id.rb_review) as RadioButton
         if (rb_reView.isChecked) {
             toast(rb_reView.text.toString())
-            val cursor = DBManagerMemory.getMemoriesclassificationWithCursor(1)
+            val cursor = DBManagerMemory.getMemoryClassificationWithCursor(1)
             if(cursor?.count != 0){
                 var adapter = TimeCapsuleAdapter(this, cursor!!)
                 timecapsule_list.adapter = adapter
@@ -123,8 +121,8 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 
     //리사이클뷰 아이템 클릭 이벤트
     fun onClickTimeCapsual(v: View?){
-        val tv_latitude = v?.findViewById(R.id.tv_latitude) as TextView
-        val tv_longitude = v?.findViewById(R.id.tv_longitude) as TextView
+        val tv_latitude = v?.findViewById<View>(R.id.tv_latitude) as TextView
+        val tv_longitude = v?.findViewById<View>(R.id.tv_longitude) as TextView
         //지도 카메라를 해당 아이템 좌표로 옮김.
         var mapFragment = supportFragmentManager.findFragmentById(R.id.memoryMap) as MemoryListMapFragment
         mapFragment.moveToMapCameraPosition(LatLng(tv_latitude.text.toString().toDouble(), tv_longitude.text.toString().toDouble()),

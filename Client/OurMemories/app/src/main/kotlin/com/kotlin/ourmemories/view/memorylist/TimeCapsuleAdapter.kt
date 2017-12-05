@@ -7,10 +7,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.kotlin.ourmemories.R
 import com.kotlin.phonebook.adapter.CursorRecyclerViewAdapter
+import kotlinx.android.synthetic.main.layout_memorylist_timecapsule_item.view.*
 import java.util.*
 
 /**
@@ -22,35 +21,35 @@ class TimeCapsuleAdapter (context:Context, cursor:Cursor) : CursorRecyclerViewAd
     private var onItemClick:View.OnClickListener? = null
     val mContext : Context = context
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tv_latitude : TextView = view.findViewById(R.id.tv_latitude) as TextView
-        val tv_longitude : TextView = view.findViewById(R.id.tv_longitude) as TextView
-        val tv_location : TextView = view.findViewById(R.id.tv_location) as TextView
-        val tv_content : TextView = view.findViewById(R.id.tv_content) as TextView
-        val iv_tag : ImageView = view.findViewById(R.id.tv_tag) as ImageView
+    class ViewHolder(view: View, context: Context) : RecyclerView.ViewHolder(view) {
+        val mView= view
+        val mContext = context
+        fun bindView(cursor: Cursor) {
+            val address = Geocoder(this.mContext, Locale.KOREAN).
+                    getFromLocation(cursor.getString(2).toDouble(), cursor.getString(3).toDouble(), 2)
+            with(mView){
+                tv_content.text = cursor.getString(1)
+                tv_location.text = "("+cursor.getString(2) + ", " +cursor.getString(3)+")"
+                tv_latitude.text = cursor.getString(2)
+                tv_longitude.text = address[0].getAddressLine(0).toString()
+                when(cursor.getString(5).toInt()){
+                    0-> {tv_tag.setImageResource(R.drawable.timecapsule)}
+                    1->{tv_tag.setImageResource(R.drawable.review)}
+                }
+
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val mainView : View = mInflater.inflate(R.layout.layout_memorylist_timecapsule_item, parent, false)
-        mainView.setOnClickListener(onItemClick)
-        return ViewHolder(mainView)
+        return ViewHolder(mainView, mContext)
     }
     override fun onBindViewHolder(holder: ViewHolder, cursor: Cursor) {
-        val address = Geocoder(mContext, Locale.KOREAN).
-                getFromLocation(cursor.getString(2).toDouble(), cursor.getString(3).toDouble(), 2)
-        holder.tv_content.text = cursor.getString(1)
-        holder.tv_location.text = address[0].getAddressLine(0).toString()
-        holder.tv_latitude.text =  cursor.getString(2)
-        holder.tv_longitude.text = cursor.getString(3)
-//        holder.iv_tag.text = cursor.getString(0)
-        if(cursor.getString(5).toInt() == 1){
-            holder.iv_tag.setImageResource(R.drawable.review)
-        } else {
-            holder.iv_tag.setImageResource(R.drawable.timecapsule)
-        }
+        holder.itemView.setOnClickListener(onItemClick)
+        holder.bindView(cursor)
     }
 
-//    override fun getItemCount(): Int = cursor.columnCount
 
     fun setOnItemClickListener(l:View.OnClickListener)
     {

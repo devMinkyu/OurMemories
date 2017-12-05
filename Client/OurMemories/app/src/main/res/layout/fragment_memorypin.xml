@@ -2,10 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/memoryPin"
+    android:background="@drawable/memorypinbackground">
+
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="camera.json"
+        app:lottie_loop="true"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/memoryPinRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/animation_view"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationLoading_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
@@ -13,6 +30,4 @@
         app:lottie_autoPlay="true"
         app:lottie_fileName="bouncy_mapmaker.json"
         app:lottie_loop="true"/>
-
-    
 </RelativeLayout>

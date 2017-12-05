@@ -16,12 +16,15 @@
     <string name="memory_to_time">종료시간</string>
     <string name="memory_location">위치</string>
     <string name="memory_alarm">알람</string>
-    <string name="memory_text">텍스트</string>
+    <string name="memory_text">내용</string>
     <string name="memory_photo">사진</string>
     <string name="memory_video">동영상</string>
     <string name="memory_camera">카메라</string>
     <string name="memory_address">주소</string>
     <string name="memory_add">추가</string>
+
+    <string name="setting_logout">로그아웃</string>
+    <string name="setting_profile">프로필 보기</string>
 
     <string name="error_message_title">제목을 채워주세요.</string>
     <string name="error_message_date">날짜를 선택해주세요.</string>
@@ -29,8 +32,11 @@
     <string name="error_message_end">종료시간을 선택해주세요.</string>
     <string name="error_message_location">주소를 채워주세요</string>
     <string name="error_message_alarm">알람을 선택해주세요.</string>
+    <string name="error_message_text">내용을 채워주세요.</string>
     <string name="error_message_contents">컨턴츠를 만들어주세요.</string>
     <string name="error_message_network">요청에러 (네트워크 상태를 점검해주세요)</string>
+    <string name="error_message_same_title">같은 제목이 존재하고 있습니다.</string>
+    <string name="error_message_memory">메모리들이 존재하지 않거나, 조건에 맞지 않습니다.</string>
 
     <string name="success_message_memory">성공적으로 등록되었습니다.</string>
 
@@ -38,6 +44,8 @@
     <string name="kakao_login">카카오톡 로그인</string>
 
     <string name="date_format" formatted="false">%d년 %d월 %d일</string>
+    <string name="am_format" formatted="false">오전</string>
+    <string name="pm_format" formatted="false">오후</string>
     <string name="am_time_format" formatted="false">오전 %d:%d</string>
     <string name="pm_time_format" formatted="false">오후 %d:%d</string>
     <string name="db_memory_am_format" formatted="false">%d년 %d월 %d일 오전 %d:%d</string>
@@ -56,5 +64,9 @@
     <string name="permission_setting">권한 설정</string>
     <string name="permission_message">컨텐츠를 만들기 위해서 여러 권한들이 필요합니다. 이러한 권한을 주지 않으면 컨텐츠를 만들 수가 없습니다.</string>
     <string name="permission_button">설정하러 가기</string>
+    <string name="permission_gps_message">GPS를 사용하기 위해서는 GPS를 켜야합니다.</string>
+
+    <string name="memory_pin_timecapsule_subtitle">잊고 있던 좋은 추억을 찾으세요</string>
+    <string name="memory_pin_review_subtitle">당신의 발자취를 찾아보세요</string>
 
 </resources>
