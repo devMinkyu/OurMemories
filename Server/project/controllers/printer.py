@@ -83,9 +83,9 @@ def login():
                     memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
                     memoryArray.append(memory_object)
 
-            lastSendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
-            print(jsonify(lastSendToAndroid))
-            return jsonify(lastSendToAndroid)
+                lastSendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
+                print(jsonify(lastSendToAndroid))
+                return jsonify(lastSendToAndroid)
 
             sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
     else:
@@ -225,7 +225,7 @@ def multyData():
     # memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
 
     image = request.files['uploadFile'] # android에서 보낸 사진 받기
-    print(image)
+    # print(image)
 
     imageName = (secure_filename(image.filename)) # 사진 이름만 변수에 저장
     # print(imageName)
@@ -235,7 +235,7 @@ def multyData():
     redirect(url_for('uploaded_file', filename=imageName)) # 웹페이지에 사진을 띄위기 위해
 
     path = SENDING_IMAGE_PATH + 'uploads/' + imageName # android에 보낼 image URL
-    print(path)
+    # print(path)
 
     # 정보들 DB에 저장
     images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text, 'media' : path})
@@ -244,10 +244,16 @@ def multyData():
     for doc in info:
         if doc['memoryTitle'] == memoryTitle:
             mId = str(doc['_id'])
+            isSuccess = "true"
             # print(mId)
             break
+        
+    if isSuccess != "true":
+        isSuccess = "false"
 
-    sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", mId)))
+
+    sendToAndroid = dict(zip(('isSuccess', 'id'), (isSuccess, mId)))
+    print(jsonify(sendToAndroid))
 
     return jsonify(sendToAndroid)
 
@@ -259,14 +265,17 @@ def memoryView():
     # image collection에 있는 id값을 가져온다.
     memoryId = images.find_one({"_id" : ObjectId(string_id)})
     if memoryId != None:
-        memories = images.find({"_id" : ObjectId(string_id)})
-        for docs in memories:
-            media = docs['imageURL']
-            text = docs['text']
+        # memories = images.find({"_id" : ObjectId(string_id)})
+        # for docs in memories:
+            isSuccess = "true"
+            media = memoryId['imageURL']
+            text = memoryId['text']
             break;
+    else:
+        isSuccess = "false"
 
     memoryItemResult = dict(zip( ('mediaMemory', 'textMemory'), (media, text) ))
-    memoryItem = dict(zip( ('isSuccess', 'memoryItemResult'), ("true", memoryItemResult) ))
+    memoryItem = dict(zip( ('isSuccess', 'memoryItemResult'), (isSuccess, memoryItemResult) ))
 
     return jsonify(memoryItem)
 
