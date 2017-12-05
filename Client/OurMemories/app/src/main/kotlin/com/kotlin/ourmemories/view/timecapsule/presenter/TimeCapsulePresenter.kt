@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.data.jsondata.MemoryItem
 import com.kotlin.ourmemories.data.jsondata.UserMemory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.unit.InputVaildation
@@ -73,6 +74,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     private val calendar = Calendar.getInstance()
 
     lateinit var title: String
+    lateinit var text: String
     lateinit var fromDate: String
     lateinit var toDate: String
 
@@ -98,12 +100,12 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             activity.runOnUiThread {
                 activity.hideDialog()
                 val responseData = response?.body()!!.string()
-                val memoryRequest:UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
+                val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
 
                 val isSuccess = memoryRequest.isSuccess
                 // 서버 디비에 저장된 후 로컬 디비 저장
-                if(isSuccess == "true") {
-                    memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
+                if (isSuccess == "true") {
+                    memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation, text, null, 0, null, activity)
                     // 알람 설정
                     val intent = Intent("com.kotlin.ourmemories.ALARM_START")
                     val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -116,7 +118,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
                         yesButton { activity.finish() }
                     }.show()
-                }else if(isSuccess == "false"){
+                } else if (isSuccess == "false") {
                     // 아직은 고려중
                 }
             }
@@ -204,12 +206,14 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                 activity.startActivity(intent)
             } else {
                 // 나중에 해결
-                val location: Location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
-                lat = location.latitude
-                lon = location.longitude
-                val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
-                nation = address[0].countryName
-                mView.updateAddressView(address[0].getAddressLine(0))
+                val location: Location? = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
+                location?.let {
+                    lat = location!!.latitude
+                    lon = location!!.longitude
+                    val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
+                    nation = address[0].countryName
+                    mView.updateAddressView(address[0].getAddressLine(0))
+                } ?: activity.toast("why!!")
             }
         }
     }
@@ -366,43 +370,41 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         val inputValidation = InputVaildation(mContext)
         if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_title), activity.timeCapsuleTitleEditText, activity.timeCapsuleTitleLayoutText)) return
         if (!inputValidation.isInputDate(mContext.resources.getString(R.string.error_message_date), activity.timeCapsuleDateText, activity.timeCapsuleDateLayoutText)) return
+        if (!inputValidation.isInputDate(mContext.resources.getString(R.string.error_message_text), activity.timeCapsuleText, activity.timeCapsuleTextLayoutText)) return
         if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_start), activity.timeCapsuleFromTime, activity.timeCapsuleFromTimeLayoutText)) return
         if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_end), activity.timeCapsuleToTime, activity.timeCapsuleToTimeLayoutText)) return
         if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.timeCapsuleLocation, activity.timeCapsuleLocationLayoutText)) return
         if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_alarm), activity.timeCapsuleAlarm, activity.timeCapsuleAlarmLayoutText)) return
         if (!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.timeCapsuleContents, activity.timeCapsuleContentsLayoutText)) return
+        if (!inputValidation.isSameTitle(mContext.resources.getString(R.string.error_message_same_title), activity.timeCapsuleTitleEditText, activity.timeCapsuleTitleLayoutText)) return
 
         title = activity.timeCapsuleTitleEditText.text.toString()
+        text = activity.timeCapsuleText.text.toString()
         val amDBDATEFormat = activity.resources.getString(R.string.db_memory_am_format)
         val pmDBDATEFormat = activity.resources.getString(R.string.db_memory_pm_format)
         fromDate = when {
-            fromHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, fromHour, fromMinute)
-            fromHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, fromHour, fromMinute)
-            fromHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth+1, mDay, fromHour, fromMinute)
+            fromHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, fromHour, fromMinute)
+            fromHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, fromHour, fromMinute)
+            fromHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth + 1, mDay, fromHour, fromMinute)
             else -> "0"
         }
         toDate = when {
-            toHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, toHour, toMinute)
-            toHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, toHour, toMinute)
-            toHour == 24 -> String.format(pmDBDATEFormat, mYear, mMonth+1, mDay, 23, 59)
-            toHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth+1, mDay, toHour, toMinute)
+            toHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, toHour, toMinute)
+            toHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, toHour, toMinute)
+            toHour == 24 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, 23, 59)
+            toHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth + 1, mDay, toHour, toMinute)
             else -> "0"
         }
 
         // 테스트
 //        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
 //        activity.finish()
+
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
         activity.showDialog()
-        if (uploadFile == null) {
-            val timeCapsuleText: EditText = activity.timeCapsuleContents.getChildAt(0) as EditText
-            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, timeCapsuleText.text.toString(), null, 0, requestTimeCapsuleCallback, activity)
-        } else {
-            memoryData.memorySave("0",title, fromDate, toDate, lat, lon, nation, null, uploadFile, 0, requestTimeCapsuleCallback, activity)
-        }
+        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
     }
-
 
     private fun print(text: String) {
         activity.toast(text)

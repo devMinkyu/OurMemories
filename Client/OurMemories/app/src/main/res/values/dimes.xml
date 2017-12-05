@@ -10,8 +10,11 @@
 
     <dimen name="memory_editText_width">150dp</dimen>
 
+    <dimen name="cardview_height">100dp</dimen>
+
     <dimen name="memory_contents_width">65dp</dimen>
     <dimen name="memory_contents_height">60dp</dimen>
+    <dimen name="font_title_small_size">15sp</dimen>
     <dimen name="font_title_medium_size">25sp</dimen>
     <dimen name="font_title_Large_ize">30sp</dimen>
 

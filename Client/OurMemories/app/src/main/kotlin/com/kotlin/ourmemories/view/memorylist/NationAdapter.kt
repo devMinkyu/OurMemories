@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.kotlin.ourmemories.R
 import com.kotlin.phonebook.adapter.CursorRecyclerViewAdapter
+import kotlinx.android.synthetic.main.layout_nation_list_item.view.*
 
 /**
  * Created by nyoun_000 on 2017-11-13.
@@ -28,8 +29,13 @@ class NationAdapter (context: Context, cursor: Cursor): CursorRecyclerViewAdapte
     private var onItemClick:View.OnClickListener? = null
 
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        val tv_name : TextView = view.findViewById(R.id.tv_name) as TextView
-        val tv_tag : TextView = view.findViewById(R.id.tv_tag) as TextView
+        val mView = view
+        fun bindView(cursor: Cursor){
+            with(mView){
+                tv_name.text = cursor.getString(1)
+                tv_tag.text = cursor.getString(0)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
@@ -38,8 +44,7 @@ class NationAdapter (context: Context, cursor: Cursor): CursorRecyclerViewAdapte
         return ViewHolder(mainView)
     }
     override fun onBindViewHolder(holder: ViewHolder, cursor: Cursor) {
-        holder.tv_name.text = cursor.getString(1)
-        holder.tv_tag.text = cursor.getString(0)
+        holder.bindView(cursor)
     }
 
 //    override fun getItemCount(): Int = cursor.columnCount

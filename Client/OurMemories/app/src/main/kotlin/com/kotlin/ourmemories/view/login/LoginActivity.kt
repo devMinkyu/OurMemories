@@ -13,11 +13,13 @@ import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.login.presenter.LoginContract
 import com.kotlin.ourmemories.view.login.presenter.LoginPresenter
 import kotlinx.android.synthetic.main.activity_login.*
-import android.content.IntentFilter
 import android.graphics.Typeface
-import android.support.v4.content.LocalBroadcastManager
+import android.util.Log
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.kotlin.ourmemories.data.source.login.LoginRepository
-import com.kotlin.ourmemories.service.fcm.QuickstartPreferences
+import com.kotlin.ourmemories.service.fcm.MyFirebaseInstanceIDService
+import com.kotlin.ourmemories.service.fcm.MyFirebaseMessagingService
 import com.kotlin.ourmemories.view.MainActivity
 
 
@@ -54,7 +56,6 @@ class LoginActivity : AppCompatActivity(){
             callbackManager = CallbackManager.Factory.create()
             loginData = LoginRepository()
         }
-        presenter.registBroadcastReceiver()
 
         presenter.mLoginManager.logOut()
 
@@ -66,7 +67,7 @@ class LoginActivity : AppCompatActivity(){
                 finish()
             }else{
                 showDialog()
-                presenter.getInstanceIdToken()
+                presenter.facebookLogin()
             }
         }
 
@@ -76,23 +77,12 @@ class LoginActivity : AppCompatActivity(){
             finish()
         }
 
+        FirebaseMessaging.getInstance().subscribeToTopic("news")
+        FirebaseInstanceId.getInstance().token
     }
-    /**
-     * 앱이 화면에서 나타나면 LocalBoardcast를 모두 등록한다.
-     */
+
     override fun onResume() {
         super.onResume()
-        hideDialog()
-        LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_READY))
-        LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_GENERATING))
-        LocalBroadcastManager.getInstance(this).registerReceiver(presenter.mRegistrationBroadcastReceiver, IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE))
-    }
-    /**
-     * 앱이 화면에서 사라지면 등록된 LocalBoardcast를 모두 삭제한다.
-     */
-    override fun onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(presenter.mRegistrationBroadcastReceiver)
-        super.onPause()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

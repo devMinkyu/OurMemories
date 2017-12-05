@@ -4,12 +4,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.kotlin.ourmemories"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -32,14 +32,16 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:25.3.1'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:cardview-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     // recyclerview library
-    implementation 'com.android.support:recyclerview-v7:25.3.1'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
     // toolbar, tab desing
-    implementation 'com.android.support:design:25.3.1'
+    implementation 'com.android.support:design:26.1.0'
     // gson
     implementation 'com.google.code.gson:gson:2.8.2'
     // okHttp library
@@ -51,18 +53,20 @@ dependencies {
     // picasso library
     implementation 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation 'jp.wasabeef:picasso-transformations:2.1.0'
     // lottie library
     implementation 'com.airbnb.android:lottie:2.1.0'
     //FCM
     implementation 'com.google.android.gms:play-services:11.4.2'
+    implementation 'com.google.firebase:firebase-messaging:11.4.2'
     // GuillotineMenu(Memory 부분)
     implementation 'com.github.Yalantis:GuillotineMenu-Android:1.2'
-    implementation 'jp.wasabeef:picasso-transformations:2.1.0'
-    implementation 'org.jetbrains.anko:anko:0.10.1'
-    implementation 'org.jetbrains.anko:anko-commons:0.10.1'
+    // calendar library
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
     // anko library
     compile 'org.jetbrains.anko:anko-sqlite:0.10.1'
+    implementation 'org.jetbrains.anko:anko:0.10.1'
+    implementation 'org.jetbrains.anko:anko-commons:0.10.1'
 }
 repositories {
     mavenCentral()

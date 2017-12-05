@@ -18,14 +18,15 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- allowBackup 나중에 true 로 -->
     <application
         android:name=".manager.MyApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:icon="@mipmap/ourmemory_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ourmemory_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -54,6 +55,9 @@
             android:name=".view.review.ReviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name=".view.memoryview.MemoryViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
 
         <!-- facebook Login -->
         <meta-data
@@ -67,47 +71,16 @@
             android:theme="@style/Theme.Design.NoActionBar"
             tools:replace="android:theme" />
 
-        <!-- [START gcm_receiver] -->
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
+        <service android:name=".service.fcm.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-                <category android:name="com.example.gcm" />
-            </intent-filter>
-        </receiver>
-        <!-- [END gcm_receiver] -->
-
-
-        <!-- [START gcm_listener_service] -->
-        <service
-            android:name=".service.fcm.MyGcmListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- [END gcm_listener_service] -->
-
-
-        <!-- [START instanceId_listener_service] -->
-        <service
-            android:name=".service.fcm.MyInstanceIDListenerService"
-            android:exported="false">
+        <service android:name=".service.fcm.MyFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <!-- [END instanceId_listener_service] -->
-
-
-        <!-- [START gcm_registration_service] -->
-        <service
-            android:name=".service.fcm.RegistrationIntentService"
-            android:exported="false" />
-        <!-- [END gcm_registration_service] -->
 
         <!-- Alarm receiver -->
         <receiver
@@ -124,13 +97,14 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".view.memorylist.MemoryListActivity"></activity>
+        <activity android:name=".view.memorylist.MemoryListActivity" />
+        <activity android:name=".view.profile.ProfileActivity"></activity>
     </application>
 
 </manifest>

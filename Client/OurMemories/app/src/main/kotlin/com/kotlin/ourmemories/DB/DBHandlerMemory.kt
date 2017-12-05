@@ -20,6 +20,7 @@ object DBManagerMemory {
             mDBHandler = DBHandlerMemory(context)
         }
     }
+
     val SQL_DELETE_TIMECAPSULE_ENTRIES = "drop table if exists " + MemoryData.MemoryTable.TABLE_NAME
     fun deleteTable(db: SQLiteDatabase) {
         db.execSQL(SQL_DELETE_TIMECAPSULE_ENTRIES)
@@ -38,7 +39,7 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.CLASSIFICATION),
                     null, null, null, null, MemoryData.MemoryTable._ID)
 
-    fun getMemoryDayWithCursor(day:String): Cursor =
+    fun getMemoryDayWithCursor(day: String): Cursor =
             mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
                     arrayOf(MemoryData.MemoryTable._ID,
                             MemoryData.MemoryTable.TITLE,
@@ -48,9 +49,21 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.FROM_DATE,
                             MemoryData.MemoryTable.TO_DATE,
                             MemoryData.MemoryTable.CLASSIFICATION),
-                    "from_date Like ?", arrayOf(day+"%"), null, null, MemoryData.MemoryTable._ID)
+                    "from_date Like ?", arrayOf(day + "%"), null, null, MemoryData.MemoryTable._ID)
 
-    fun getMemoriesWithCursor(nationName: String) : Cursor =
+    fun getMemoryClassificationWithCursor(clssification: Int): Cursor =
+            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
+                    arrayOf(MemoryData.MemoryTable._ID,
+                            MemoryData.MemoryTable.TITLE,
+                            MemoryData.MemoryTable.LATITUDE,
+                            MemoryData.MemoryTable.LONGITUDE,
+                            MemoryData.MemoryTable.FROM_DATE,
+                            MemoryData.MemoryTable.TO_DATE,
+                            MemoryData.MemoryTable.CLASSIFICATION),
+                    "classification=?", arrayOf(clssification.toString()), null, null, MemoryData.MemoryTable._ID)
+
+
+    fun getMemoriesWithCursor(nationName: String): Cursor =
             mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
                     arrayOf(MemoryData.MemoryTable._ID,
                             MemoryData.MemoryTable.TITLE,
@@ -58,12 +71,12 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.LONGITUDE,
                             MemoryData.MemoryTable.NATION_NAME,
                             MemoryData.MemoryTable.CLASSIFICATION),
-                    MemoryData.MemoryTable.NATION_NAME+"=?", arrayOf(nationName), null, null, MemoryData.MemoryTable._ID)
+                    MemoryData.MemoryTable.NATION_NAME + "=?", arrayOf(nationName), null, null, MemoryData.MemoryTable._ID)
 
     // 추억 추가
     fun addMemory(memoryData: MemoryData) {
         val cv = ContentValues()
-        //cv.put(MemoryData.MemoryTable._ID, memoryData.id)
+        cv.put(MemoryData.MemoryTable._ID, memoryData.id)
         cv.put(MemoryData.MemoryTable.TITLE, memoryData.title)
         cv.put(MemoryData.MemoryTable.LATITUDE, memoryData.latitude)
         cv.put(MemoryData.MemoryTable.LONGITUDE, memoryData.longitude)
@@ -74,6 +87,7 @@ object DBManagerMemory {
         mDBHandler?.writableDatabase.use {
             mDBHandler?.writableDatabase?.insert(MemoryData.MemoryTable.TABLE_NAME, null, cv)
         }
+
     }
 
     // 추억 삭제
@@ -82,6 +96,7 @@ object DBManagerMemory {
             mDBHandler?.writableDatabase?.delete(MemoryData.MemoryTable.TABLE_NAME, "_id=?", arrayOf(id))
         }
     }
+
     fun close() {
         mDBHandler?.close()
     }
@@ -107,7 +122,6 @@ object DBManagerMemory {
 class DBHandlerMemory(context: Context) : SQLiteOpenHelper(context, MemoryData.DB_NAME, null, MemoryData.DB_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
-        //db?.dropTable(MemoryData.MemoryTable.TABLE_NAME, true)
 
         db?.createTable(MemoryData.MemoryTable.TABLE_NAME, true,
                 Pair(MemoryData.MemoryTable._ID, TEXT + PRIMARY_KEY),

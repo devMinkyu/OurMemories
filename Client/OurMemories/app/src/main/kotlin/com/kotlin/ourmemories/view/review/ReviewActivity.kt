@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.view.review
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
@@ -8,10 +9,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AlertDialog
 import android.text.InputType
-import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -24,6 +24,8 @@ import com.kotlin.ourmemories.view.review.presenter.ReviewContract
 import com.kotlin.ourmemories.view.review.presenter.ReviewPresenter
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.activity_review.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
 import java.io.File
 import java.util.*
 
@@ -55,22 +57,8 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         // editText 를 눌러도 키보드가 안나오게 하기 위함
         reviewLocation.inputType = InputType.TYPE_NULL
 
-        // 텍스트 버튼 눌렀을 때 EditText 생성
-        reviewText.setOnClickListener {
-            reviewContents.removeAllViews()
-            val paddingSize: Int = this.resources.getDimension(R.dimen.memory_5size).toInt()
-            val reviewText = EditText(this)
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            reviewText.layoutParams = params
-            reviewText.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
-            reviewText.gravity = Gravity.TOP and Gravity.START
-            reviewText.setLines(6)
-            reviewText.background = this.resources.getDrawable(R.drawable.border)
-            reviewText.setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
-            reviewContents.addView(reviewText)
-        }
-
         reviewLocation.setOnClickListener {
+            hideKey()
             presenter.currentAddress()
         }
 
@@ -158,11 +146,10 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 val rationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
                 if (rationale) {
-                    val dialogBuild = AlertDialog.Builder(this).setTitle(this.resources.getString(R.string.permission_setting)).setMessage(this.resources.getString(R.string.permission_message))
-                            .setCancelable(true).setPositiveButton(this.resources.getString(R.string.permission_button)) { dialog, whichButton ->
-                        showSetting()
-                    }
-                    dialogBuild.create().show()
+                    alert(this.resources.getString(R.string.permission_message), this.resources.getString(R.string.permission_setting)){
+                        positiveButton(resources.getString(R.string.permission_button)){showSetting()}
+                        noButton {  }
+                    }.show()
                     return
                 }
             }
@@ -204,6 +191,10 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         }
     }
 
-    fun showDialog() { reviewLoding.visibility = View.VISIBLE }
-    fun hideDialog() { reviewLoding.visibility = View.INVISIBLE }
+    fun showDialog() { reviewLoading.visibility = View.VISIBLE }
+    fun hideDialog() { reviewLoading.visibility = View.INVISIBLE }
+    fun hideKey(){
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(reviewTitleEditText.windowToken, 0)
+    }
 }
