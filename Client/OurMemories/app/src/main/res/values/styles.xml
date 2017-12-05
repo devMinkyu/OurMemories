@@ -10,7 +10,6 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
-
     </style>
 
     <!--splash 효과-->
@@ -22,6 +21,11 @@
         <item name="android:windowBackground">@drawable/ll_face_logo</item>
     </style>
 
+    <!--버튼 테마-->
+    <style name="Button" parent="Theme.AppCompat">
+        <item name="colorControlHighlight">@color/indigo_500</item>
+        <item name="colorButtonNormal">@color/pink_200</item>
+    </style>
     <style name="FacebookButton" parent="Theme.AppCompat">
         <item name="colorControlHighlight">#0000FF</item>
         <item name="colorButtonNormal">#3b5998</item>
@@ -29,5 +33,9 @@
     <style name="KakaoButton" parent="Theme.AppCompat">
         <item name="colorControlHighlight">#FFBB00</item>
         <item name="colorButtonNormal">#FDED07</item>
+    </style>
+
+    <style name="error" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 </resources>

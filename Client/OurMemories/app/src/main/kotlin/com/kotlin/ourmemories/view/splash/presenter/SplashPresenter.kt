@@ -1,11 +1,11 @@
 package com.kotlin.ourmemories.view.splash.presenter
 
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import com.google.gson.Gson
+import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.data.source.profile.ProfileRepository
 import com.kotlin.ourmemories.data.source.profile.UserProfile
@@ -13,6 +13,9 @@ import com.kotlin.ourmemories.manager.PManager
 import com.kotlin.ourmemories.view.login.LoginActivity
 import com.kotlin.ourmemories.view.splash.SplashActivity
 import okhttp3.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.yesButton
 import java.io.IOException
 
 /**
@@ -39,12 +42,9 @@ class SplashPresenter: SplashContract.Presenter {
         override fun onFailure(call: Call?, e: IOException?) {
             activity.runOnUiThread{
                 val alertDialog = AlertDialog.Builder(activity)
-                alertDialog.setTitle("Login")
-                        .setMessage("요청에러 (네트워크 상태를 점검해주세요)")
-                        .setCancelable(false)
-                        .setPositiveButton("확인") { dialog, which -> activity.finish() }
-                val alert = alertDialog.create()
-                alert.show()
+                activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
+                    yesButton { activity.finish() }
+                }.show()
             }
         }
         // 성공 했을 경우
@@ -68,7 +68,7 @@ class SplashPresenter: SplashContract.Presenter {
                         PManager.setUserEmail(profileRequest.userProfileResult.userEmail)
                         PManager.setUserId(profileRequest.userProfileResult.userId)
 
-                        activity.startActivity(Intent(activity,MainActivity::class.java))
+                        activity.startActivity<MainActivity>()
                         activity.finish()
                     } else if(loginAuth == "0") // 로그아웃한 경우
                     {
@@ -95,7 +95,6 @@ class SplashPresenter: SplashContract.Presenter {
         when(userId){
             // 유저가 현재공유저장소에 값이 있는지를 비교
             ""->{
-                //profileData.getProfile(userId, requestProfileCallback, activity)
                 loginPageIntent()
             }
             else->{
@@ -105,7 +104,7 @@ class SplashPresenter: SplashContract.Presenter {
     }
 
     fun loginPageIntent(){
-        activity.startActivity(Intent(activity,LoginActivity::class.java))
+        activity.startActivity<LoginActivity>()
         activity.finish()
     }
 

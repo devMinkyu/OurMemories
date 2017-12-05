@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_title">Our Memories</string>
+    <string name="app_subtitle">Make beautiful memories</string>
+
+    <string name="bottom_home">Home</string>
+    <string name="bottom_memory">Memory</string>
+    <string name="bottom_memory_pin">MemoryPin</string>
+    <string name="bottom_memory_list">MemoryList</string>
+    <string name="bottom_setting">Setting</string>
+
+    <string name="memory_timecapsule">TimeCapsule</string>
+    <string name="memory_review">Review</string>
+    <string name="memory_title">Title</string>
+    <string name="memory_date">Date</string>
+    <string name="memory_from_time">Start</string>
+    <string name="memory_to_time">End</string>
+    <string name="memory_location">Location</string>
+    <string name="memory_alarm">Alarm</string>
+    <string name="memory_text">Text</string>
+    <string name="memory_photo">Photo</string>
+    <string name="memory_video">Video</string>
+    <string name="memory_camera">Camera</string>
+    <string name="memory_address">Address</string>
+    <string name="memory_add">ADD</string>
+
+    <string name="error_message_title">Enter Full Title</string>
+    <string name="error_message_date">Enter Date</string>
+    <string name="error_message_start">Enter Start Time</string>
+    <string name="error_message_end">Enter End Time</string>
+    <string name="error_message_location">Enter Location</string>
+    <string name="error_message_alarm">Enter Alarm</string>
+    <string name="error_message_contents">Enter Contents</string>
+    <string name="error_message_network">Check your connection(Network error)</string>
+
+    <string name="success_message_memory">Successfully registered</string>
+
+    <string name="facebook_login">Facebook Login</string>
+    <string name="kakao_login">Kakao Login</string>
+
+    <string name="date_format" formatted="false">%d/%d/%d</string>
+    <string name="am_time_format" formatted="false">AM %d:%d</string>
+    <string name="pm_time_format" formatted="false">PM %d:%d</string>
+    <string name="db_memory_am_format" formatted="false">%d/%d/%d AM %d:%d</string>
+    <string name="db_memory_pm_format" formatted="false">%d/%d/%d PM %d:%d</string>
+
+    <string name="alarm_day_ago">A day ago</string>
+    <string name="alarm_half_ago">12 hours ago</string>
+    <string name="alarm_half_half_ago">6 hours ago</string>
+    <string name="alarm_hour_ago">A hour ago</string>
+
+    <string name="year_error_message">The selected year must not be later than the current year.</string>
+    <string name="month_error_message">The selected month must not be later than the current month.</string>
+    <string name="day_error_message">The selected day must not be later than the current day.</string>
+    <string name="same_day_error_message">Please choose another day instead of today.</string>
+    <string name="time_error_message">The selected time must not be later than the start time.</string>
+    <string name="permission_setting">Set permissions</string>
+    <string name="permission_message">Multiple permissions are required to make contents. If you do not give these permissions, you can not make contents.</string>
+    <string name="permission_button">Go to Settings</string>
+</resources>

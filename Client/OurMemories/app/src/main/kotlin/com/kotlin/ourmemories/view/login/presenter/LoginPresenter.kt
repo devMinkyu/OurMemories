@@ -1,6 +1,7 @@
 package com.kotlin.ourmemories.view.login.presenter
 
-import android.content.DialogInterface
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
@@ -19,16 +20,25 @@ import com.facebook.login.DefaultAudience
 import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.gson.Gson
+import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.UserLogin
 import com.kotlin.ourmemories.data.source.login.LoginRepository
 import com.kotlin.ourmemories.manager.PManager
+import com.kotlin.ourmemories.service.fcm.QuickstartPreferences
+import com.kotlin.ourmemories.service.fcm.RegistrationIntentService
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.startService
+import org.jetbrains.anko.yesButton
 import java.io.IOException
 import java.util.*
 
@@ -38,30 +48,25 @@ import java.util.*
 
 class LoginPresenter: LoginContract.Presenter{
     lateinit override var activity: LoginActivity
-
     lateinit override var mLoginManager: LoginManager
+    lateinit override var mRegistrationBroadcastReceiver: BroadcastReceiver
     lateinit override var callbackManager: CallbackManager
     lateinit override var loginData: LoginRepository
+
     lateinit var accessToken:String
+    lateinit var registerId:String
     init {
         PManager.init()
     }
-
-    private var requestloginCallback:Callback = object :Callback{
+    // 네트워크 콜백받는 부분
+    private val requestloginCallback:Callback = object :Callback{
         override fun onFailure(call: Call?, e: IOException?) {
             // 네트워크 에러
-            Log.d("hoho", "error message: ${e?.message}")
-
             activity.runOnUiThread {
-                activity.hidepDialog()
-
-                val alertDialog = AlertDialog.Builder(activity)
-                alertDialog.setTitle("Login")
-                        .setMessage("요청에러 (네트워크 상태를 점검해주세요)")
-                        .setCancelable(false)
-                        .setPositiveButton("확인") { dialog, which -> mLoginManager.logOut()}
-                val alert = alertDialog.create()
-                alert.show()
+                activity.hideDialog()
+                activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
+                    yesButton { mLoginManager.logOut() }
+                }.show()
             }
         }
 
@@ -69,12 +74,12 @@ class LoginPresenter: LoginContract.Presenter{
             val responseData = response?.body()!!.string()
             val loginRequest:UserLogin = Gson().fromJson(responseData, UserLogin::class.java)
 
-            val isSuccess = loginRequest.IsSuccess
+            val isSuccess = loginRequest.isSuccess
 
-            activity.hidepDialog()
             when(isSuccess){
                 "true/insert"->{
                     activity.runOnUiThread {
+                        activity.hideDialog()
                         // 공유저장소에 저장전 한번 초기화 시켜준다
                         PManager.setUserId("")
                         PManager.setUserEmail("")
@@ -89,22 +94,23 @@ class LoginPresenter: LoginContract.Presenter{
                         PManager.setUserFacebookId(accessToken)
                         PManager.setUserProfileImageUrl(loginRequest.userLoginResult.userProfileImageUrl)
 
-                        activity.startActivity(Intent(activity,MainActivity::class.java))
+                        activity.startActivity<MainActivity>()
                         activity.finish()
                     }
                 }
                 "true/update"->{
                     activity.runOnUiThread {
+                        activity.hideDialog()
                         //(이미 정보 존재 시 수정만 해준다.)공유저장소에 등록될 수정될 내용은 토큰값만 바꾸어 준다.
                         PManager.setUserFacebookId(accessToken)
 
-                        activity.startActivity(Intent(activity,MainActivity::class.java))
+                        activity.startActivity<MainActivity>()
                         activity.finish()
                     }
                 }
                 "false"->{
                     activity.runOnUiThread {
-
+                        activity.hideDialog()
                         val alertDialog = AlertDialog.Builder(activity)
                         alertDialog.setTitle("Login")
                                 .setMessage("로그인 실패 (다시 접속해주세)")
@@ -119,6 +125,50 @@ class LoginPresenter: LoginContract.Presenter{
 
     }
 
+    override fun getInstanceIdToken() {
+        if(checkPlayServices())
+            activity.startService<RegistrationIntentService>()
+    }
+
+    override fun registBroadcastReceiver() {
+        mRegistrationBroadcastReceiver = object :BroadcastReceiver(){
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val action = intent?.action
+
+                when(action){
+                    QuickstartPreferences.REGISTRATION_READY->{ } // 액션이 READY  경우
+                    QuickstartPreferences.REGISTRATION_GENERATING->{} // 액션이 GENERATING 일 경우
+                    QuickstartPreferences.REGISTRATION_COMPLETE->{
+                        // 액션이 COMPLETE 일 경우
+                        val token = intent.getStringExtra("token")
+                        registerId = token
+
+                        //토큰을 받은 이 후 로그인을 진행한다.//
+                        //토큰을 받지 못하면 로그인 과정을 진행하지 않는다.//
+                        facebookLogin()
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Google Play Service를 사용할 수 있는 환경이지를 체크한다.
+     */
+    override fun checkPlayServices():Boolean {
+        val resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity)
+        if(resultCode != ConnectionResult.SUCCESS){
+            if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)){
+                GooglePlayServicesUtil.getErrorDialog(resultCode, activity, LoginActivity.PLAY_SERVICES_RESOLUTION_REQUEST).show()
+            }else{
+                activity.finish()
+            }
+            return false
+        }
+        return true
+    }
+
+    // 페이스북 로그인
     override fun facebookLogin() {
         mLoginManager.defaultAudience = DefaultAudience.FRIENDS
         mLoginManager.loginBehavior = LoginBehavior.NATIVE_WITH_FALLBACK
@@ -130,7 +180,7 @@ class LoginPresenter: LoginContract.Presenter{
 
                 accessToken = facebookAccessToken.token
 
-                Log.d("hoho", "token: ${accessToken}")
+                Log.d("LoginToken", "facebook token: ${accessToken}")
 
                 loginData.loginServer(accessToken,requestloginCallback,activity)
 
@@ -148,17 +198,16 @@ class LoginPresenter: LoginContract.Presenter{
         mLoginManager.logInWithReadPermissions(activity, Arrays.asList("email"))
     }
 
+    // 로그인 되어있는지 검사
     override fun isLogin():Boolean{
         val token:AccessToken? = AccessToken.getCurrentAccessToken()
-
-
         return token != null
     }
 
 
     // 애니메이션
     override fun animation() {
-        ViewCompat.animate(activity.img_logo).translationY((-250).toFloat()).setStartDelay((LoginActivity.START_DELAY).toLong()).setDuration((LoginActivity.ANIM_ITME_DURATION).toLong()).setInterpolator (
+        ViewCompat.animate(activity.img_logo).translationY((-250).toFloat()).setStartDelay((LoginActivity.START_DELAY).toLong()).setDuration((LoginActivity.ANIM_TIME_DURATION).toLong()).setInterpolator (
                 DecelerateInterpolator(1.2f)).start()
 
         for(i in 0..activity.container.childCount){

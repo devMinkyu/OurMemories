@@ -2,7 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kotlin.ourmemories">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- gcm Receive를 받는 권한 -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!-- 화면이 꺼져있어도 알림이나 진동이나 기타 이벤트 처 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name=".manager.MyApplication"
@@ -12,7 +28,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".view.splash.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -22,26 +37,101 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.place.detail.RecomActivity">
-
-        </activity>
-        <activity android:name=".view.MainActivity"/>
-        <!--화면 회전을 해도 activity가 다시 시작하는 것을 막는다-->
-        <activity android:name=".view.login.LoginActivity"
-            android:theme="@style/AppTheme.CenterAnimation"
+        <activity android:name=".view.place.detail.RecomActivity"/>
+        <activity
+            android:name=".view.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!-- 화면 회전을 해도 activity가 다시 시작하는 것을 막는다 -->
+        <activity
+            android:name=".view.login.LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.CenterAnimation" />
+        <activity
+            android:name=".view.timecapsule.TimeCapsuleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name=".view.review.ReviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
-        <!--facebook Login-->
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-        <activity android:name="com.facebook.FacebookActivity"
+        <!-- facebook Login -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@style/Theme.Design.NoActionBar"
-            tools:replace="android:theme"/>
+            tools:replace="android:theme" />
+
+        <!-- [START gcm_receiver] -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.example.gcm" />
+            </intent-filter>
+        </receiver>
+        <!-- [END gcm_receiver] -->
+
+
+        <!-- [START gcm_listener_service] -->
+        <service
+            android:name=".service.fcm.MyGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener_service] -->
+
+
+        <!-- [START instanceId_listener_service] -->
+        <service
+            android:name=".service.fcm.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <!-- [END instanceId_listener_service] -->
+
+
+        <!-- [START gcm_registration_service] -->
+        <service
+            android:name=".service.fcm.RegistrationIntentService"
+            android:exported="false" />
+        <!-- [END gcm_registration_service] -->
+
+        <!-- Alarm receiver -->
+        <receiver
+            android:name=".service.alarm.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.kotlin.ourmemories.ALARM_START" />
+            </intent-filter>
+        </receiver>
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity android:name=".view.memorylist.MemoryListActivity"></activity>
     </application>
-
-
 
 </manifest>

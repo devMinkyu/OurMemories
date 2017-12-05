@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/memoryRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/memory_35size"
+        android:layout_gravity="top"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/memory_35size"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/timeCapsuleToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize">
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/timeCapsuleBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_chevron_left_white_24dp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/timeCapsuleTitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/memory_timecapsule"
+                android:textSize="@dimen/font_title_Large_ize" />
+        </android.support.v7.widget.Toolbar>
+    </LinearLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/timeCapsuleTitleLayoutText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/memory_15size"
+                android:layout_marginRight="@dimen/memory_15size"
+                android:layout_marginTop="@dimen/memory_15size"
+                app:errorTextAppearance="@style/error">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/timeCapsuleTitleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/memory_title" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/timeCapsuleFromTimeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/timeCapsuleDateLayoutText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/memory_20size"
+                        android:layout_marginTop="@dimen/memory_15size"
+                        app:errorTextAppearance="@style/error">
+
+                        <TextView
+                            android:id="@+id/timeCapsuleDateText"
+                            android:layout_width="@dimen/memory_editText_width"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/memory_date" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/timeCapsuleFromTimeLayoutText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/memory_15size"
+                        app:errorTextAppearance="@style/error">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/timeCapsuleFromTime"
+                            android:layout_width="@dimen/memory_editText_width"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/memory_from_time" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/FromTo"
+                    android:layout_width="@dimen/memory_right_chevron"
+                    android:layout_height="@dimen/memory_right_chevron"
+                    android:layout_marginTop="@dimen/memory_35size"
+                    android:layout_toEndOf="@+id/timeCapsuleFromTimeView"
+                    android:src="@drawable/ic_chevron_right_black_24dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/timeCapsuleToTimeLayoutText"
+                    android:layout_width="@dimen/memory_editText_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="33dp"
+                    android:layout_toEndOf="@+id/FromTo"
+                    app:errorTextAppearance="@style/error">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/timeCapsuleToTime"
+                        android:layout_width="@dimen/memory_editText_width"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/memory_to_time" />
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/timeCapsuleLocationLayoutText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/memory_15size"
+                    android:layout_marginRight="@dimen/memory_15size"
+                    android:layout_marginTop="@dimen/memory_15size"
+                    app:errorTextAppearance="@style/error">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/timeCapsuleLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/memory_location" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/timeCapsuleAddress"
+                    android:layout_width="@dimen/memory_30size"
+                    android:layout_height="@dimen/memory_30size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/memory_15size"
+                    android:layout_marginTop="@dimen/memory_20size"
+                    android:background="@color/transparent"
+                    android:contentDescription="@string/memory_address"
+                    android:src="@drawable/ic_room_black_24dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/timeCapsuleMapRoot"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/video_height"
+                android:layout_marginLeft="@dimen/memory_15size"
+                android:layout_marginRight="@dimen/memory_15size"
+                android:visibility="gone">
+
+                <fragment
+                    android:id="@+id/timeCapsuleMap"
+                    android:name="com.kotlin.ourmemories.view.memory.MemoryMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    tools:context=".view.timecapsule.TimeCapsuleActivity" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/timeCapsuleAlarmLayoutText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/memory_15size"
+                    android:layout_marginRight="@dimen/memory_15size"
+                    android:layout_marginTop="@dimen/memory_15size"
+                    app:errorTextAppearance="@style/error">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/timeCapsuleAlarm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/memory_alarm" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/timeCapsuleAlarmImage"
+                    android:layout_width="@dimen/memory_30size"
+                    android:layout_height="@dimen/memory_30size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/memory_15size"
+                    android:layout_marginTop="@dimen/memory_20size"
+                    android:contentDescription="@string/memory_alarm"
+                    android:src="@drawable/ic_alarm_black_24dp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/memory_20size"
+                android:layout_marginRight="@dimen/memory_20size"
+                android:layout_marginTop="@dimen/memory_15size">
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/timeCapsuleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/memory_text"
+                    android:src="@drawable/ic_text_black_24dp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/timeCapsulePhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/memory_photo"
+                    android:src="@drawable/ic_photo_black_24dp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/timeCapsuleVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/memory_video"
+                    android:src="@drawable/ic_video_black_24dp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/timeCapsuleCameraPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/memory_camera"
+                    android:src="@drawable/ic_camera_alt_black_24dp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/timeCapsuleCameraVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/memory_camera"
+                    android:src="@drawable/ic_video_call_black_24dp" />
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/timeCapsuleContentsLayoutText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/memory_15size"
+                app:errorTextAppearance="@style/error">
+
+                <RelativeLayout
+                    android:id="@+id/timeCapsuleContents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/timeCapsuleSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/memory_15size"
+                android:text="@string/memory_add"
+                android:theme="@style/Button" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/timeCapsuleLoding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="loading_animation.json"
+        app:lottie_loop="true"/>
+
+</FrameLayout>

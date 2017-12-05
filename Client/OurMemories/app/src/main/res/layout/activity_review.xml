@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/memoryRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/memory_35size"
+        android:layout_gravity="top"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/memory_35size"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/reviewToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize">
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/reviewBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_chevron_left_white_24dp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/reviewTitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/memory_review"
+                android:textSize="@dimen/font_title_Large_ize" />
+        </android.support.v7.widget.Toolbar>
+    </LinearLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/reviewDateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/memory_20size"
+                    android:layout_marginTop="@dimen/memory_15size"
+                    android:hint="@string/memory_date"
+                    android:textSize="@dimen/font_title_Large_ize" />
+            </RelativeLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/reviewTitleLayoutText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/memory_15size"
+                android:layout_marginRight="@dimen/memory_15size"
+                android:layout_marginTop="@dimen/memory_15size"
+                app:errorTextAppearance="@style/error">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/reviewTitleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/memory_title" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/reviewLocationLayoutText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/memory_15size"
+                    android:layout_marginRight="@dimen/memory_15size"
+                    android:layout_marginTop="@dimen/memory_15size"
+                    app:errorTextAppearance="@style/error">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/reviewLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/memory_location" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/reviewAddress"
+                    android:layout_width="@dimen/memory_30size"
+                    android:layout_height="@dimen/memory_30size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/memory_15size"
+                    android:layout_marginTop="@dimen/memory_20size"
+                    android:background="@color/transparent"
+                    android:contentDescription="@string/memory_address"
+                    android:src="@drawable/ic_room_black_24dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/reviewMapRoot"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/video_height"
+                android:layout_marginLeft="@dimen/memory_15size"
+                android:layout_marginRight="@dimen/memory_15size"
+                android:visibility="gone">
+
+                <fragment
+                    android:id="@+id/reviewMap"
+                    android:name="com.kotlin.ourmemories.view.memorylist.MemoryListMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    tools:context=".view.review.ReviewActivity" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/memory_20size"
+                android:layout_marginRight="@dimen/memory_20size"
+                android:layout_marginTop="@dimen/memory_15size">
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/reviewText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/memory_text"
+                    android:src="@drawable/ic_text_black_24dp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/reviewPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_toEndOf="@+id/reviewText"
+                    android:contentDescription="@string/memory_photo"
+                    android:src="@drawable/ic_photo_black_24dp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/reviewVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_toEndOf="@+id/reviewPhoto"
+                    android:contentDescription="@string/memory_video"
+                    android:src="@drawable/ic_video_black_24dp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/reviewCameraPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_toEndOf="@+id/reviewVideo"
+                    android:contentDescription="@string/memory_camera"
+                    android:src="@drawable/ic_camera_alt_black_24dp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/reviewCameraVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_toEndOf="@+id/reviewCameraPhoto"
+                    android:contentDescription="@string/memory_camera"
+                    android:src="@drawable/ic_video_call_black_24dp" />
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/reviewContentsLayoutText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/memory_15size"
+                app:errorTextAppearance="@style/error">
+
+                <RelativeLayout
+                    android:id="@+id/reviewContents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/reviewSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/memory_15size"
+                android:text="@string/memory_add"
+                android:theme="@style/Button" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/reviewLoding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="loading_animation.json"
+        app:lottie_loop="true"/>
+
+
+</FrameLayout>

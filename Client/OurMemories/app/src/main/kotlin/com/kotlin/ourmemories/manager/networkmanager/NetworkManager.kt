@@ -25,11 +25,12 @@ object NManager{
     }
 
     fun getClinet() = nManager?.client
+    fun gatPicasso() = nManager?.picasso
 }
 
 class NetworkManager {
     var client:OkHttpClient
-    lateinit var picasso:Picasso
+    var picasso:Picasso
 
     init {
         val builder = OkHttpClient.Builder()
