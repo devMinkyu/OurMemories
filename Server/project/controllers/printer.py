@@ -247,7 +247,7 @@ def multyData():
             isSuccess = "true"
             # print(mId)
             break
-        
+
     if isSuccess != "true":
         isSuccess = "false"
 
@@ -270,7 +270,7 @@ def memoryView():
             isSuccess = "true"
             media = memoryId['imageURL']
             text = memoryId['text']
-            break;
+            break
     else:
         isSuccess = "false"
 
