@@ -224,13 +224,6 @@ def multyData():
     # memory 데이터를 JSON으로
     # memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
 
-    info = images.find({"userId" : userId})
-    for doc in info:
-        if doc['memoryTitle'] == memoryTitle:
-            mId = str(doc['_id'])
-            # print(mId)
-            break
-
     image = request.files['uploadFile'] # android에서 보낸 사진 받기
     print(image)
 
@@ -246,6 +239,13 @@ def multyData():
 
     # 정보들 DB에 저장
     images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text, 'media' : path})
+
+    info = images.find({"userId" : userId})
+    for doc in info:
+        if doc['memoryTitle'] == memoryTitle:
+            mId = str(doc['_id'])
+            # print(mId)
+            break
 
     sendToAndroid = dict(zip(('isSuccess', 'id'), ("true", mId)))
 
