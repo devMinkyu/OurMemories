@@ -103,7 +103,7 @@ def profile():
 
         # image collection에 있는 id값을 가져온다.
         memoryArray = [] # 메모리 배열
-        memoryId = images.find_one({"userId" : user_id})
+        memoryId = images.find_one({"userId" : is_user})
         if memoryId != None:
             memories = images.find({"userId" : memoryId})
             for docs in memories:
