@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.gson.Gson
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.place.AddressBook.makeAddress
 import com.kotlin.ourmemories.view.place.detail.RecomActivity
 import com.kotlin.ourmemories.view.place.expand.SiDoAdapter
 import kotlinx.android.synthetic.main.fragment_place_list.*
+import java.io.InputStreamReader
 
 
 /**
@@ -37,6 +40,10 @@ class PlaceListFragment : Fragment(), View.OnClickListener{
         if (animator is DefaultItemAnimator) {
             (animator as DefaultItemAnimator).setSupportsChangeAnimations(false)
         }
+        val inputStream = InputStreamReader(activity.assets.open("korea_administrative_district"))
+        val admin: AdministrativeDistrict = Gson().fromJson(inputStream, AdministrativeDistrict::class.java)
+
+        Log.d("hoho", admin.data[0])
         adapter = SiDoAdapter(makeAddress())
         recycler_view.setLayoutManager(layoutManager)
         recycler_view.setAdapter(adapter)
