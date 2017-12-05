@@ -112,11 +112,13 @@ def profile():
                 memoryArray.append(memory_object)
                 lastSendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
 
+                return jsonify(lastSendToAndroid)
+
     else :
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(0,0,0,0,"0")))
         sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), ("false", user_object)))
 
-    return jsonify(lastSendToAndroid)
+    return jsonify(sendToAndroid)
 
 
 # 웹에서 페이스북 로그인을 위한
