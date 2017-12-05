@@ -396,13 +396,13 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         }
 
         // 테스트
-//        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, null, null, 0, null, activity)
-//        activity.finish()
+        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, null, 0, null, activity)
+        activity.finish()
 
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
-        activity.showDialog()
-        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
+//        activity.showDialog()
+//        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
     }
 
     private fun print(text: String) {

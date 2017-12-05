@@ -208,13 +208,13 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         text = activity.reviewText.text.toString()
 
 //        // 테스트
-//        memoryData.memorySave("0", title, date, null, lat, lon, nation, text, null, 1, null, activity)
-//        activity.finish()
+        memoryData.memorySave("0", title, date, null, lat, lon, nation, text, null, 1, null, activity)
+        activity.finish()
 
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
-        activity.showDialog()
-        memoryData.memorySave("0",title, date, "", lat, lon, nation, text, uploadFile, 1, requestReviewCallback, activity)
+//        activity.showDialog()
+//        memoryData.memorySave("0",title, date, "", lat, lon, nation, text, uploadFile, 1, requestReviewCallback, activity)
 
     }
 }
