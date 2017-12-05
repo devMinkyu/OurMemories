@@ -1,57 +1,53 @@
 package com.kotlin.ourmemories.view.memorylist
 
+import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import com.kotlin.ourmemories.DB.DBManagerNation
 import com.kotlin.ourmemories.R
+import kotlinx.android.synthetic.main.fragment_memorylist.*
 
 /**
  * Created by kimmingyu on 2017. 11. 5..
  */
 
 class MemoryListFragment : Fragment() , View.OnClickListener {
+    private lateinit var spruceAnimator : Animator
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fragment_memorylist, container, false)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
-        var recycleListView = view.findViewById(R.id.nation_list) as RecyclerView
-        recycleListView.layoutManager = LinearLayoutManager(activity)
-
-        DBManagerNation.init(activity)
-        //DBManagerNation.defaultAddNation()
-
-        var adapter = NationAdapter(activity, DBManagerNation.getNationAllWithCursor())
-        adapter.setOnItemClickListener(this)
-        recycleListView.adapter = adapter
-
+        //val img_kor = view.findViewById(R.id.img_btn_kor) as ImageButton
+        img_btn_kor.setOnClickListener {
+            val intent = Intent(context, MemoryListActivity::class.java)
+            intent.putExtra("nationName", "대한민국")
+            startActivity(intent)
+        }
+        img_btn_jpn.setOnClickListener {
+            val intent = Intent(context, MemoryListActivity::class.java)
+            intent.putExtra("nationName", "일본")
+            startActivity(intent)
+        }
+        img_btn_usa.setOnClickListener {
+            val intent = Intent(context, MemoryListActivity::class.java)
+            intent.putExtra("nationName", "미국")
+            startActivity(intent)
+        }
 
 
     }
+
 
     override fun onStop() {
         super.onStop()
-        DBManagerNation.close()
     }
 
     override fun onClick(v: View?) {
-        val tv : TextView = v?.findViewById(R.id.tv_tag) as TextView
-        val tvName : TextView = v?.findViewById(R.id.tv_name) as TextView
 
-        //context.toast(tv.text.toString() + ", " + tvName.text.toString() + " Clicked")
-
-        val intent = Intent(context, MemoryListActivity::class.java)
-        intent.putExtra("nationName", tvName.text.toString())
-        startActivity(intent)
     }
 }
