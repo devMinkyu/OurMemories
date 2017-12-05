@@ -101,7 +101,7 @@ def profile():
     is_user = user.find_one({"id" : userId})
 
     if is_user != None:
-        isSuccess = "true"
+        isSuccess = 'true'
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(is_user['id'],is_user['userName'],is_user['email'],is_user['profile'],"1")))
 
         # image collection에 있는 id값을 가져온다.
@@ -118,7 +118,7 @@ def profile():
             sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), (isSuccess, user_object)))
 
     else:
-        isSuccess = "false"
+        isSuccess = 'false'
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(0,0,0,0,"0")))
         sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), (isSuccess, user_object)))
 
@@ -239,12 +239,12 @@ def multyData():
     for doc in info:
         if doc['memoryTitle'] == memoryTitle:
             mId = str(doc['_id'])
-            isSuccess = "true"
+            isSuccess = 'true'
             # print(mId)
             break
 
-    if isSuccess != "true":
-        isSuccess = "false"
+    if isSuccess != 'true':
+        isSuccess = 'false'
 
 
     sendToAndroid = dict(zip(('isSuccess', 'id'), (isSuccess, mId)))
@@ -257,6 +257,7 @@ def multyData():
 @app.route('/memory/view', methods=['GET', 'POST'])
 def memoryView():
     string_id = request.form['id']
+    print(string_id)
 
     # image collection에 있는 id값을 가져온다.
     memoryId = images.find_one({"_id" : ObjectId(string_id)})
