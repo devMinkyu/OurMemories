@@ -68,7 +68,7 @@ object DBManagerMemory {
     // 추억 추가
     fun addMemory(memoryData: MemoryData) {
         val cv = ContentValues()
-        //cv.put(MemoryData.MemoryTable._ID, memoryData.id)
+        cv.put(MemoryData.MemoryTable._ID, memoryData.id)
         cv.put(MemoryData.MemoryTable.TITLE, memoryData.title)
         cv.put(MemoryData.MemoryTable.LATITUDE, memoryData.latitude)
         cv.put(MemoryData.MemoryTable.LONGITUDE, memoryData.longitude)

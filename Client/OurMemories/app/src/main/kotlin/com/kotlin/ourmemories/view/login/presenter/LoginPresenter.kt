@@ -61,6 +61,7 @@ class LoginPresenter: LoginContract.Presenter{
     // 네트워크 콜백받는 부분
     private val requestloginCallback:Callback = object :Callback{
         override fun onFailure(call: Call?, e: IOException?) {
+            Log.d("hoho", "에러")
             // 네트워크 에러
             activity.runOnUiThread {
                 activity.hideDialog()
@@ -71,11 +72,14 @@ class LoginPresenter: LoginContract.Presenter{
         }
 
         override fun onResponse(call: Call?, response: Response?) {
+            Log.d("hoho", "ㄷㅈㄷ")
             val responseData = response?.body()!!.string()
+            Log.d("hoho", responseData)
             val loginRequest:UserLogin = Gson().fromJson(responseData, UserLogin::class.java)
 
             val isSuccess = loginRequest.isSuccess
 
+            Log.d("hoho", isSuccess)
             when(isSuccess){
                 "true/insert"->{
                     activity.runOnUiThread {
@@ -161,6 +165,7 @@ class LoginPresenter: LoginContract.Presenter{
     }
 
     fun userSave(loginRequest:UserLogin){
+        Log.d("hoho", "들어온다")
         activity.hideDialog()
         // 공유저장소에 저장전 한번 초기화 시켜준다
         PManager.setUserId("")
@@ -182,7 +187,9 @@ class LoginPresenter: LoginContract.Presenter{
         if(loginRequest.userLoginMemoryResult != null) {
             DBManagerMemory.init(activity.applicationContext)
             val item = arrayOfNulls<MemoryData>(loginRequest.userLoginMemoryResult.size)
+            Log.d("hoho", item.size.toString())
             for (i in 0 until loginRequest.userLoginMemoryResult.size) {
+                Log.d("hoho", loginRequest.userLoginMemoryResult[i].memoryTitle)
                 item[i] = MemoryData(loginRequest.userLoginMemoryResult[i]._id, loginRequest.userLoginMemoryResult[i].memoryTitle, loginRequest.userLoginMemoryResult[i].memoryLatitude.toDouble(),
                         loginRequest.userLoginMemoryResult[i].memoryLongitude.toDouble(), loginRequest.userLoginMemoryResult[i].memoryNation, loginRequest.userLoginMemoryResult[i].memoryFromDate,
                         loginRequest.userLoginMemoryResult[i].memoryToDate, loginRequest.userLoginMemoryResult[i].memoryClassification.toInt())

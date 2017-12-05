@@ -83,7 +83,6 @@ class LoginActivity : AppCompatActivity(){
 
     override fun onResume() {
         super.onResume()
-        hideDialog()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

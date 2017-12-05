@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.data.source.login
 
+import android.util.Log
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.login.LoginActivity
@@ -13,6 +14,7 @@ object LoginRemoteDataSource: LoginSource {
             // network 설정
             NManager.init()
             val client = NManager.getClinet()
+        Log.d("hoho", "서버 들어온다")
 
             // post 방식
             var builder = HttpUrl.Builder()
