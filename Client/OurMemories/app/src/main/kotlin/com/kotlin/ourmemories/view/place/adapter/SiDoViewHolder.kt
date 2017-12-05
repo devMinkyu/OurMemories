@@ -1,4 +1,4 @@
-package com.kotlin.ourmemories.view.place.expand
+package com.kotlin.ourmemories.view.place.adapter
 
 /**
  * Created by hee on 2017-11-28.
@@ -6,7 +6,6 @@ package com.kotlin.ourmemories.view.place.expand
 import android.view.View
 import android.view.animation.Animation.RELATIVE_TO_SELF
 import android.view.animation.RotateAnimation
-import com.kotlin.ourmemories.view.place.SiDo
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.list_item_sido.view.*

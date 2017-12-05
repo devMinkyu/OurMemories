@@ -80,7 +80,7 @@ object MemoryLocalDataSource : MemorySource {
                                 // 추출하고 현재시간이랑 비교후 조건에 맞는 데이터만 추출한다
                                 when {
                                     ((fromTime < currentTime) and (toTime > currentTime)) -> {
-                                        item[i] = Memory("0", cursor.getString(1))
+                                        item[i] = Memory(cursor.getString(0), cursor.getString(1))
                                         //item[i] = Memory(cursor.getString(0), cursor.getString(1))
                                         items.add(item[i]!!)
                                     }
@@ -105,7 +105,7 @@ object MemoryLocalDataSource : MemorySource {
                         val distance = distanceResult(lat,lon,cursor)
 
                         if (distance.toInt() <= 100) {
-                            item[i] = Memory("0", cursor.getString(1))
+                            item[i] = Memory(cursor.getString(0), cursor.getString(1))
                             //item[i] = Memory(cursor.getString(0), cursor.getString(1))
                             items.add(item[i]!!)
                         }

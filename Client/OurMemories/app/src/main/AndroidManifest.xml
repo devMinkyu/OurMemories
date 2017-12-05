@@ -38,7 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.place.detail.RecomActivity"/>
+        <activity android:name="com.kotlin.ourmemories.view.detail.RecomActivity"/>
         <activity
             android:name=".view.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

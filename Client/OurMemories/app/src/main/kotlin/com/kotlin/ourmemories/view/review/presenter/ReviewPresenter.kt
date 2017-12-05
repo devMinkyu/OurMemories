@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.util.Log
 import android.widget.EditText
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -79,7 +80,9 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
             activity.runOnUiThread {
                 activity.hideDialog()
                 val responseData = response?.body()!!.string()
+                Log.d("hoho", responseData)
                 val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
+
 
                 val isSuccess = memoryRequest.isSuccess
                 // 서버 디비에 저장된 후 로컬 디비 저장
@@ -208,13 +211,13 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         text = activity.reviewText.text.toString()
 
 //        // 테스트
-        memoryData.memorySave("0", title, date, null, lat, lon, nation, text, null, 1, null, activity)
-        activity.finish()
+//        memoryData.memorySave("0", title, date, null, lat, lon, nation, text, null, 1, null, activity)
+//        activity.finish()
 
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
-//        activity.showDialog()
-//        memoryData.memorySave("0",title, date, "", lat, lon, nation, text, uploadFile, 1, requestReviewCallback, activity)
+        activity.showDialog()
+        memoryData.memorySave("0",title, date, "", lat, lon, nation, text, uploadFile, 1, requestReviewCallback, activity)
 
     }
 }
