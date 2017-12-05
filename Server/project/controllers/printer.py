@@ -270,7 +270,6 @@ def memoryView():
         isSuccess = "true"
         media = memoryId['imageURL']
         text = memoryId['text']
-        break
     else:
         isSuccess = "false"
 
