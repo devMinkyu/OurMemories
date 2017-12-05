@@ -101,26 +101,26 @@ def profile():
     is_user = user.find_one({"id" : userId})
 
     if is_user != None:
+        isSuccess = "true"
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(is_user['id'],is_user['userName'],is_user['email'],is_user['profile'],"1")))
-        sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), ("true", user_object)))
 
         # image collection에 있는 id값을 가져온다.
+        memoryId = images.find({"userId" : userId})
         memoryArray = [] # 메모리 배열
-        memoryId = images.find_one({"userId" : is_user})
         if memoryId != None:
-            memories = images.find({"userId" : memoryId})
-            for docs in memories:
+            for docs in memoryId:
                 # memory 데이터를 JSON으로
                 memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
                 memoryArray.append(memory_object)
-                lastSendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), ('true', user_object, memoryArray) ))
-                print(jsonify(lastSendToAndroid))
+            print(memoryArray)
+            sendToAndroid = dict(zip(('isSuccess', 'userProfileResult', 'userProfileMemoryResult'), (isSuccess, user_object, memoryArray) ))
+        else:
+            sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), (isSuccess, user_object)))
 
-                return jsonify(lastSendToAndroid)
-
-    else :
+    else:
+        isSuccess = "false"
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(0,0,0,0,"0")))
-        sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), ("false", user_object)))
+        sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), (isSuccess, user_object)))
 
     return jsonify(sendToAndroid)
 
