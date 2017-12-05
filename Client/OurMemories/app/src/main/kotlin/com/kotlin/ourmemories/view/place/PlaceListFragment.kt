@@ -13,7 +13,7 @@ import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.place.AddressBook.makeAddress
 import com.kotlin.ourmemories.view.place.detail.RecomActivity
 import com.kotlin.ourmemories.view.place.expand.SiDoAdapter
-import kotlinx.android.synthetic.main.activity_expand.*
+import kotlinx.android.synthetic.main.fragment_place_list.*
 
 
 /**
@@ -23,7 +23,7 @@ class PlaceListFragment : Fragment(), View.OnClickListener{
     lateinit var adapter: SiDoAdapter
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.activity_expand, container, false)
+            inflater?.inflate(R.layout.fragment_place_list, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

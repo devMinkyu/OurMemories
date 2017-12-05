@@ -11,16 +11,13 @@ class SiGunGu : Parcelable {
     var name: String? = null
         private set
 
-
     constructor(name: String) {
         this.name = name
-
     }
 
     protected constructor(`in`: Parcel) {
         name = `in`.readString()
     }
-
 
     override fun equals(o: Any?): Boolean {
         if (this === o) return true
@@ -29,7 +26,6 @@ class SiGunGu : Parcelable {
         val siGunGu = o as SiGunGu?
 
         return if (name != null) name == siGunGu!!.name else siGunGu!!.name == null
-
     }
 
     override fun hashCode(): Int {

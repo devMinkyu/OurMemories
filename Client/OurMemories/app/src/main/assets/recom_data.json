@@ -1,7 +1,12 @@
 {
 "data":[
-		{"name":"강남구"},
-		{"name":"강동구"},
-		{"name":"강서구"}
+		{"name":"강남구",
+          "storename1":"강남구 커피집",
+          "storeaddress1":"강남구 무슨동 215-549",
+          "storename2":"강남구 공원",
+          "storeaddress2":"강남구 무슨동 19-15",
+          "storename3":"강남구 맛집",
+          "storeaddress3":"강남구 무슨동 1999-124"}
+
 	]
 }

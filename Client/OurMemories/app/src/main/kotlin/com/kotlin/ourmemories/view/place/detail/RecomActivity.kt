@@ -17,21 +17,19 @@ class RecomActivity : AppCompatActivity() {
         val EXTRA_SIGUNGU_NAME = "sigungu_name"
     }
 
-    var coltitle:Array<String> ?= null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val nation = intent.getStringExtra(EXTRA_SIGUNGU_NAME)
+        val sigungu = intent.getStringExtra(EXTRA_SIGUNGU_NAME)
         setContentView(R.layout.activity_recom)
-        val data: RecomData? = getDataFromName(nation)
+        val data: RecomData? = getDataFromName(sigungu)
         initView(data)
     }
 
     private fun getDataFromName(selected:String): RecomData?
     {
-        val gson:Gson = GsonBuilder().create()
-        val inputStream:InputStream = assets.open("recom_data.json")
-        val reader:InputStreamReader = InputStreamReader(inputStream)
+        val gson: Gson = GsonBuilder().create()
+        val inputStream: InputStream = assets.open("recom_data.json")
+        val reader: InputStreamReader = InputStreamReader(inputStream)
         val recomData = gson.fromJson(reader, GsonData::class.java)
 
         for(data in recomData.data)
@@ -41,11 +39,17 @@ class RecomActivity : AppCompatActivity() {
                 return data
             }
         }
-
         return null
     }
+
     private fun initView(data: RecomData?)
     {
-        txt_name.text = data?.name
+        place_name1.text = data?.storename1
+        place_address1.text = data?.storeaddress1
+        place_name2.text = data?.storename2
+        place_address2.text = data?.storeaddress2
+        place_name3.text = data?.storename3
+        place_address3.text = data?.storeaddress3
+
     }
 }
