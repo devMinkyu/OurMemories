@@ -9,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.gson.Gson
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.place.AddressBook.makeAddress
 import com.kotlin.ourmemories.view.place.detail.RecomActivity
 import com.kotlin.ourmemories.view.place.expand.SiDoAdapter
+import com.kotlin.ourmemories.view.place.presenter.AdministrativeDistrict
 import kotlinx.android.synthetic.main.fragment_place_list.*
 
 
@@ -37,7 +39,6 @@ class PlaceListFragment : Fragment(), View.OnClickListener{
         if (animator is DefaultItemAnimator) {
             (animator as DefaultItemAnimator).setSupportsChangeAnimations(false)
         }
-
         adapter = SiDoAdapter(makeAddress())
         recycler_view.setLayoutManager(layoutManager)
         recycler_view.setAdapter(adapter)
