@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 SENDING_IMAGE_PATH = 'http://13.124.79.162:8000/'
 UPLOAD_FOLDER = '/home/ec2-user/OurMemories/Server/uploadFolder' # 아마존 컴퓨터에 이미지 저장되는 경로
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mp4'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
