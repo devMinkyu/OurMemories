@@ -56,7 +56,7 @@ object DBManagerMemory {
                             MemoryData.MemoryTable.CLASSIFICATION),
                     "from_date Like ?", arrayOf(day+"%"), null, null, MemoryData.MemoryTable._ID)
 
-    fun getMemoriesNationWithCursor(nationName: String) : Cursor =
+    fun getMemoriesNationWithCursor(nationName: String) : Cursor? =
             mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
                     arrayOf(MemoryData.MemoryTable._ID,
                             MemoryData.MemoryTable.TITLE,

@@ -2,7 +2,6 @@ package com.kotlin.ourmemories.view.memorylist
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -18,13 +17,13 @@ import com.kotlin.ourmemories.manager.MyApplication.Companion.context
 import com.willowtreeapps.spruce.Spruce
 import com.willowtreeapps.spruce.animation.DefaultAnimations
 import com.willowtreeapps.spruce.sort.DefaultSort
+import kotlinx.android.synthetic.main.activity_memory_list.*
 import org.jetbrains.anko.toast
 
 class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var spruceAnimator : Animator
-    private lateinit var recycleListView : RecyclerView
-    fun init(context: Context = this){
-        DBManagerMemory.init(context)
+    init {
+        DBManagerMemory.init(this)
     }
     var nationName : String
     init {
@@ -41,14 +40,13 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
 
 
         //엑티비티에 리사이클 뷰 달아주는 로직
-        recycleListView = findViewById(R.id.timecapsule_list) as RecyclerView
-        recycleListView.layoutManager = LinearLayoutManager(this)
+        timecapsule_list.layoutManager = LinearLayoutManager(this)
 
         //애니메이션
         val linearLayoutManager = object : LinearLayoutManager(context) {
             override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
                 super.onLayoutChildren(recycler, state)
-                initSpruce(recycleListView)
+                initSpruce(timecapsule_list)
             }
         }
 
@@ -56,10 +54,13 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         //DBManagerMemory.defaultAddTimeCapesule()
 
         //리사이클 뷰에 DB내용 넣어주는 로직
-        var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesNationWithCursor(nationName))
-        recycleListView.adapter = adapter
         //애니메이션 셋팅
-        recycleListView.layoutManager = linearLayoutManager
+        timecapsule_list.layoutManager = linearLayoutManager
+        val cursor = DBManagerMemory.getMemoriesNationWithCursor(nationName)
+        if(cursor?.count != 0){
+            var adapter = TimeCapsuleAdapter(this, cursor!!)
+            timecapsule_list.adapter = adapter
+        }
 
 
 
@@ -69,24 +70,33 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         val rb_all = v?.findViewById(R.id.rb_all) as RadioButton
         if (rb_all.isChecked) {
             toast(rb_all.text.toString())
-            var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesNationWithCursor(nationName))
-            recycleListView.adapter = adapter
+            val cursor = DBManagerMemory.getMemoriesNationWithCursor(nationName)
+            if(cursor?.count != 0){
+                var adapter = TimeCapsuleAdapter(this, cursor!!)
+                timecapsule_list.adapter = adapter
+            }
         }
     }
     fun isCheckTimecapsule (v: View?) {
         val rb_timecapsule = v?.findViewById(R.id.rb_timecapsule) as RadioButton
         if (rb_timecapsule.isChecked) {
             toast(rb_timecapsule.text.toString())
-            var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesclassificationWithCursor(0))
-            recycleListView.adapter = adapter
+            val cursor = DBManagerMemory.getMemoriesclassificationWithCursor(0)
+            if(cursor?.count != 0){
+                var adapter = TimeCapsuleAdapter(this, cursor!!)
+                timecapsule_list.adapter = adapter
+            }
         }
     }
     fun isCheckReview (v: View?) {
         val rb_reView = v?.findViewById(R.id.rb_review) as RadioButton
         if (rb_reView.isChecked) {
             toast(rb_reView.text.toString())
-            var adapter = TimeCapsuleAdapter(this, DBManagerMemory.getMemoriesclassificationWithCursor(1))
-            recycleListView.adapter = adapter
+            val cursor = DBManagerMemory.getMemoriesclassificationWithCursor(1)
+            if(cursor?.count != 0){
+                var adapter = TimeCapsuleAdapter(this, cursor!!)
+                timecapsule_list.adapter = adapter
+            }
         }
     }
     private fun initSpruce(recycleListView : RecyclerView) {

@@ -1,7 +1,6 @@
 package com.kotlin.ourmemories.view.memorylist
 
 import android.content.Intent
-import android.database.Cursor
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -51,15 +50,16 @@ class MemoryListMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
     //모든 메모리 지도에 마커 생성
     fun viewAllMemoryInMap(){
-        var cursor: Cursor = DBManagerMemory.getMemoriesNationWithCursor(nationName)
-
-        //지도에 마커 생성
-        if (cursor.moveToFirst()) {
-            for (n in 0..cursor.columnCount - 1) {
-                val spot = LatLng(cursor.getString(2).toDouble(), cursor.getString(3).toDouble())
-                mMap.addMarker(MarkerOptions().position(spot).title(cursor.getString(1)))
-                cursor.moveToNext()
+        var cursor = DBManagerMemory.getMemoriesNationWithCursor(nationName)
+        if(cursor?.count!=0){
+            if (cursor!!.moveToFirst()) {
+                for (n in 0..cursor.columnCount - 1) {
+                    val spot = LatLng(cursor.getString(2).toDouble(), cursor.getString(3).toDouble())
+                    mMap.addMarker(MarkerOptions().position(spot).title(cursor.getString(1)))
+                    cursor.moveToNext()
+                }
             }
+
         }
     }
 
