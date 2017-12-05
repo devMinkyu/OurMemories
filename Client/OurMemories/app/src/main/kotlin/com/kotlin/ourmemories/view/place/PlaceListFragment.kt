@@ -40,18 +40,18 @@ class PlaceListFragment : Fragment(), View.OnClickListener{
         if (animator is DefaultItemAnimator) {
             (animator as DefaultItemAnimator).setSupportsChangeAnimations(false)
         }
-        val inputStream = InputStreamReader(activity.assets.open("korea_administrative_district"))
-        val admin: AdministrativeDistrict = Gson().fromJson(inputStream, AdministrativeDistrict::class.java)
-
-        Log.d("hoho", admin.data[0])
-        adapter = SiDoAdapter(makeAddress())
-        recycler_view.setLayoutManager(layoutManager)
-        recycler_view.setAdapter(adapter)
-        adapter.setOnclickListener(this)
+//        val inputStream = InputStreamReader(activity.assets.open("korea_administrative_district"))
+//        val admin: AdministrativeDistrict = Gson().fromJson(inputStream, AdministrativeDistrict::class.java)
+//
+//        Log.d("hoho", admin.data[0])
+//        adapter = SiDoAdapter(makeAddress())
+//        recycler_view.setLayoutManager(layoutManager)
+//        recycler_view.setAdapter(adapter)
+//        adapter.setOnclickListener(this)
     }
 
     override fun onClick(v: View?) {
-        val textView: TextView = v?.findViewById(R.id.list_item_sigungu_name) as TextView
+        val textView: TextView = v?.findViewById<View>(R.id.list_item_sigungu_name) as TextView
         val name = textView.text.toString()
 
         val intent = Intent(context, RecomActivity::class.java)
@@ -66,7 +66,7 @@ class PlaceListFragment : Fragment(), View.OnClickListener{
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        adapter.onRestoreInstanceState(savedInstanceState)
+        //adapter.onRestoreInstanceState(savedInstanceState)
     }
 
 
