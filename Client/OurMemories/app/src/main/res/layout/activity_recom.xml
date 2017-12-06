@@ -41,7 +41,7 @@
                         android:layout_height="40dp"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/nb_icon1" />
+                        />
 
                     <LinearLayout
                         android:orientation="vertical"
@@ -68,7 +68,6 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:src="@drawable/coffee"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/img_flag"/>
@@ -116,7 +115,7 @@
                         android:layout_height="40dp"
                         android:id="@+id/imageView_2"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/nb_icon2" />
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -143,7 +142,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:src="@drawable/park"
+
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -189,7 +188,7 @@
                         android:layout_height="40dp"
                         android:id="@+id/imageView"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/nb_icon3" />
+                         />
 
                     <LinearLayout
                         android:orientation="vertical"
@@ -216,7 +215,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:src="@drawable/foodstore"
+
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
