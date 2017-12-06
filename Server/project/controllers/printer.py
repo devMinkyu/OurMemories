@@ -266,11 +266,11 @@ def memoryView():
     if memoryId != None:
         # memories = images.find({"_id" : ObjectId(string_id)})
         # for docs in memories:
-        isSuccess = "true"
+        isSuccess = 'true'
         media = memoryId['media']
         text = memoryId['text']
     else:
-        isSuccess = "false"
+        isSuccess = 'false'
 
     memoryItemResult = dict(zip( ('mediaMemory', 'textMemory'), (media, text) ))
     memoryItem = dict(zip( ('isSuccess', 'memoryItemResult'), (isSuccess, memoryItemResult) ))
@@ -304,7 +304,7 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-@app.route('/recom')
+@app.route('/recom/review', methods=['GET', 'POST'])
 def recommand():
     siDo = request.form['siDo'] # 광역시/도
     siGunGu = request.form['siGunGu'] # 구/시/군
@@ -325,7 +325,7 @@ def recommand():
     else:
         isSuccess = 'true'
         sendToAndroid = dict(zip( ('isSuccess', 'reviewMemoryResult'), (isSuccess, reviewMemoryArray) ))
-        
+
     return jsonify(sendToAndroid)
 
 
