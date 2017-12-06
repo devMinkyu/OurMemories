@@ -68,7 +68,7 @@
                         android:layout_toEndOf="@+id/pinAnimation"
                         android:background="@color/transparent"
                         android:padding="@dimen/memory_5size"
-                        android:text="내가 남겨둔 추억을 찾으로 가보세요."
+                        android:text="내가 남겨둔 추억을 찾으러 가보세요."
                         android:textSize="@dimen/font_title_Large_ize" />
                 </RelativeLayout>
 
@@ -87,18 +87,30 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/memory_5size" />
+                    android:layout_margin="@dimen/memory_5size" >
 
+                    <FrameLayout
+                        android:id="@+id/enrollimage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/pencil1"/>
+                    </FrameLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/memoryViewContents"
-                    android:layout_margin="@dimen/memory_5size"
-                    android:background="@color/transparent"
-                    android:padding="@dimen/memory_5size"
-                    android:text="@string/memory_title"
-                    android:textSize="@dimen/font_title_small_size" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/enrollimage"
+                        android:layout_margin="@dimen/memory_5size"
+                        android:background="@color/transparent"
+                        android:padding="@dimen/memory_5size"
+                        android:text="나의 추억을 새겨보세요."
+                        android:textSize="@dimen/font_title_medium_size" />
+
+                </RelativeLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -134,8 +146,6 @@
                             app:lottie_fileName="bouncy_mapmaker.json"
                             app:lottie_loop="true"/>
                     </FrameLayout>
-
-
 
                     <TextView
                         android:layout_width="wrap_content"
