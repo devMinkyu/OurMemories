@@ -306,21 +306,37 @@ def uploaded_file(filename):
 
 @app.route('/recom')
 def recommand():
-    sido = request.form['siDo'] # 광역시/도
+    siDo = request.form['siDo'] # 광역시/도
     siGunGu = request.form['siGunGu'] # 구/시/군
 
-    isIt = images.find({$contains:{"memoryClassification" : "1" ,"memoryAddress" : sido, "memoryAddress" : siGunGU}})
+    reviewMemoryArray = []
 
-    reviewMemoryArray = [] # 메모리 배열
+    first = images.find({"memoryClassification" : "1"})
+    for docs in first:
+        second = docs['memoryAddress']
+        if siDo in second:
+            if siGunGu in second:
+                memory_object = dict(zip(('media', 'title', 'contents', 'address'), (docs['media'], docs['memoryTitle'], docs['text'], docs['memoryAddress']) ))
+                reviewMemoryArray.append(memory_object)
 
-    if isIt != None:
-        isSuccess = 'true'
-        for docs in isIt
-            memory_object = dict(zip(('media', 'title', 'contents', 'address'), (docs['media'], docs['memoryTitle'], docs['text'], docs['memoryAddress']) ))
-            reviewMemoryArray.append(memory_object)
-        sendToAndroid = dict(zip( ('isSucce', 'reviewMemoryResult'), (isSuccess, reviewMemoryArray) ))
+    if reviewMemoryArray == None:
+        isSuccess = 'false'
+        sendToAndroid = dict(zip( ('isSuccess', 'reviewMemoryResult'), (isSuccess, None) ))
     else:
-        isSuccess 'false'
-        sendToAndroid = dict(zip( ('isSucce', 'reviewMemoryResult'), (isSuccess, "Null") ))
-
+        isSuccess = 'true'
+        sendToAndroid = dict(zip( ('isSuccess', 'reviewMemoryResult'), (isSuccess, reviewMemoryArray) ))
+        
     return jsonify(sendToAndroid)
+
+
+    # if isIt != None:
+    #     isSuccess = 'true'
+    #     for docs in isIt
+    #         memory_object = dict(zip(('media', 'title', 'contents', 'address'), (docs['media'], docs['memoryTitle'], docs['text'], docs['memoryAddress']) ))
+    #         reviewMemoryArray.append(memory_object)
+    #     sendToAndroid = dict(zip( ('isSucce', 'reviewMemoryResult'), (isSuccess, reviewMemoryArray) ))
+    # else:
+    #     isSuccess 'false'
+    #     sendToAndroid = dict(zip( ('isSucce', 'reviewMemoryResult'), (isSuccess, "Null") ))
+    #
+    # return jsonify(sendToAndroid)
