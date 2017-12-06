@@ -5,21 +5,24 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.MediaController
+import android.widget.VideoView
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.MainActivity
-import com.kotlin.ourmemories.view.memorylist.MemoryListMapFragment
+import com.kotlin.ourmemories.view.memory.MemoryMapFragment
 import com.kotlin.ourmemories.view.review.presenter.ReviewContract
 import com.kotlin.ourmemories.view.review.presenter.ReviewPresenter
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
@@ -94,6 +97,10 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
             presenter.mGoogleApiClient = GoogleApiClient.Builder(applicationContext).addApi(LocationServices.API).build()
         }
         presenter.mGoogleApiClient!!.connect()
+
+        //맵뷰 시작
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.reviewMap) as MemoryMapFragment
+        mapFragment.getMapAsync(mapFragment)
     }
 
     override fun onStop() {
@@ -104,11 +111,11 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         super.onStop()
     }
 
-    override fun updateAddressView(address: String) {
+    override fun updateAddressView(address: String, lat: Double, lon: Double) {
         reviewMapRoot.visibility = View.VISIBLE
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.reviewMap) as MemoryListMapFragment
-        mapFragment.getMapAsync(mapFragment)
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.reviewMap) as MemoryMapFragment
         reviewLocation.setText(address)
+        mapFragment.moveToPositionAndAddMaker(lat,lon)
     }
 
     // 사진을 받아서 contents 에 사진을 추가

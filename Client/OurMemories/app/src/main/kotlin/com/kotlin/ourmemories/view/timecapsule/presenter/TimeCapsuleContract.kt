@@ -14,7 +14,7 @@ interface TimeCapsuleContract {
         fun updateDateView(year: Int, monthOfYear: Int, dayOfMonth: Int)
         fun updateFromTimeView(hourOfDay: Int, minute: Int)
         fun updateToTimeView(hourOfDay: Int, minute: Int)
-        fun updateAddressView(address: String)
+        fun updateAddressView(address: String, lat: Double, lon : Double)
         fun updateAlarmView(alarmMessage: String)
         fun updatePhotoView(uploadFile: File)
         fun updateVideoView(uploadFile: File)

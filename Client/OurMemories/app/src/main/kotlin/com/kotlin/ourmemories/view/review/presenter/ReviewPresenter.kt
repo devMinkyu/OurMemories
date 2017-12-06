@@ -9,18 +9,13 @@ import android.location.LocationManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.widget.EditText
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
-import com.kotlin.ourmemories.DB.DBManagerMemory
-import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.UserMemory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
-import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.unit.InputVaildation
-import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.review.ReviewActivity
 import kotlinx.android.synthetic.main.activity_review.*
 import okhttp3.Call
@@ -114,7 +109,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
                     lon = location!!.longitude
                     val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat,lon,2)
                     nation = address[0].countryName
-                    mView.updateAddressView(address[0].getAddressLine(0))
+                    mView.updateAddressView(address[0].getAddressLine(0), lat, lon)
                 } ?: activity.toast("why!!")
             }
         }

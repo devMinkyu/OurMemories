@@ -20,7 +20,6 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import com.kotlin.ourmemories.R
-import com.kotlin.ourmemories.data.jsondata.MemoryItem
 import com.kotlin.ourmemories.data.jsondata.UserMemory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
 import com.kotlin.ourmemories.unit.InputVaildation
@@ -211,7 +210,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     lon = location!!.longitude
                     val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
                     nation = address[0].countryName
-                    mView.updateAddressView(address[0].getAddressLine(0))
+                    mView.updateAddressView(address[0].getAddressLine(0), lat, lon)
                 } ?: activity.toast("why!!")
             }
         }
@@ -401,8 +400,12 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
 
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
+
 //        activity.showDialog()
 //        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
+
+        activity.showDialog()
+        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
     }
 
     private fun print(text: String) {

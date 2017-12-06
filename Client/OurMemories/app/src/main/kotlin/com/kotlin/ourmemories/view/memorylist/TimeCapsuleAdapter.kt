@@ -29,9 +29,9 @@ class TimeCapsuleAdapter (context:Context, cursor:Cursor) : CursorRecyclerViewAd
                     getFromLocation(cursor.getString(2).toDouble(), cursor.getString(3).toDouble(), 2)
             with(mView){
                 tv_content.text = cursor.getString(1)
-                tv_location.text = "("+cursor.getString(2) + ", " +cursor.getString(3)+")"
+                tv_location.text = address[0].getAddressLine(0).toString()
                 tv_latitude.text = cursor.getString(2)
-                tv_longitude.text = address[0].getAddressLine(0).toString()
+                tv_longitude.text = cursor.getString(3)
                 when(cursor.getString(5).toInt()){
                     0-> {tv_tag.setImageResource(R.drawable.timecapsule)}
                     1->{tv_tag.setImageResource(R.drawable.review)}
