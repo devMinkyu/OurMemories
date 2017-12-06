@@ -9,14 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.kotlin.ourmemories.R
-import com.kotlin.ourmemories.view.detail.RecomActivity
+import com.kotlin.ourmemories.view.MainActivity
+import com.kotlin.ourmemories.view.recom.RecomActivity
 import com.kotlin.ourmemories.view.place.adapter.SiDo
 import com.kotlin.ourmemories.view.place.adapter.SiDoAdapter
 import com.kotlin.ourmemories.view.place.presenter.PlaceContract
 import com.kotlin.ourmemories.view.place.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.fragment_place_list.*
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
 
 
 /**
@@ -24,8 +24,8 @@ import org.jetbrains.anko.toast
  */
 class PlaceListFragment : Fragment(), View.OnClickListener, PlaceContract.View{
     lateinit var adapter: SiDoAdapter
-
     lateinit var presenter: PlaceContract.Presenter
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fragment_place_list, container, false)
 
@@ -51,10 +51,10 @@ class PlaceListFragment : Fragment(), View.OnClickListener, PlaceContract.View{
     }
 
     override fun onClick(v: View?) {
-        val textView: TextView = v?.findViewById<View>(R.id.list_item_sigungu_name) as TextView
-        val name = textView.text.toString()
-        activity.toast(name)
-        activity.startActivity<RecomActivity>(RecomActivity.EXTRA_SIGUNGU_NAME to name)
+        val siGunGu: TextView = v?.findViewById<View>(R.id.list_item_sigungu_name) as TextView
+        val titName = adapter.groups[MainActivity.position].title
+        val subName = siGunGu.text.toString()
+        activity.startActivity<RecomActivity>(RecomActivity.EXTRA_SIGUNGU_NAME to subName, RecomActivity.EXTRA_SIDO_NAME to titName)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

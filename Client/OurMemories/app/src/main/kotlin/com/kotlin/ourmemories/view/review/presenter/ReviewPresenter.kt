@@ -65,6 +65,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
     lateinit var title: String
     lateinit var date: String
     lateinit var text: String
+    lateinit var address: String
 
     private val requestReviewCallback: Callback = object : Callback {
         override fun onFailure(call: Call?, e: IOException?) {
@@ -86,12 +87,12 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
 
                 val isSuccess = memoryRequest.isSuccess
                 // 서버 디비에 저장된 후 로컬 디비 저장
-                if(isSuccess == "true") {
-                    memoryData.memorySave(memoryRequest.id, title, date, "", lat, lon, nation, text, null, 1, null, activity)
+                if (isSuccess == "true") {
+                    memoryData.memorySave(memoryRequest.id, title, date, "", lat, lon, nation, address, text, null, 1, null, activity)
                     activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
                         yesButton { activity.finish() }
                     }.show()
-                }else if(isSuccess == "false"){
+                } else if (isSuccess == "false") {
 
                 }
             }
@@ -115,9 +116,10 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
                 location?.let {
                     lat = location!!.latitude
                     lon = location!!.longitude
-                    val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat,lon,2)
-                    nation = address[0].countryName
-                    mView.updateAddressView(address[0].getAddressLine(0))
+                    val geo = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
+                    nation = geo[0].countryName
+                    address = geo[0].getAddressLine(0)
+                    mView.updateAddressView(geo[0].getAddressLine(0))
                 } ?: activity.toast("why!!")
             }
         }
@@ -200,10 +202,10 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
     override fun saveMemory() {
         // 내용을 채웠는지 검사
         val inputValidation = InputVaildation(mContext)
-        if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_title), activity.reviewTitleEditText, activity.reviewTitleLayoutText)) return
-        if(!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.reviewLocation, activity.reviewLocationLayoutText)) return
+        if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_title), activity.reviewTitleEditText, activity.reviewTitleLayoutText)) return
+        if (!inputValidation.isInputFilled(mContext.resources.getString(R.string.error_message_location), activity.reviewLocation, activity.reviewLocationLayoutText)) return
         if (!inputValidation.isInputDate(mContext.resources.getString(R.string.error_message_text), activity.reviewText, activity.reviewTextLayoutText)) return
-        if(!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.reviewContents, activity.reviewContentsLayoutText)) return
+        if (!inputValidation.isInputContents(mContext.resources.getString(R.string.error_message_contents), activity.reviewContents, activity.reviewContentsLayoutText)) return
         if (!inputValidation.isSameTitle(mContext.resources.getString(R.string.error_message_same_title), activity.reviewTitleEditText, activity.reviewTitleLayoutText)) return
 
         date = activity.reviewDateText.text.toString()
@@ -217,7 +219,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         // 로컬 디비전에 서버 디비에 우선 저장
         // 텍스트일 경우와 사진,동영상일 경우
         activity.showDialog()
-        memoryData.memorySave("0",title, date, "", lat, lon, nation, text, uploadFile, 1, requestReviewCallback, activity)
+        memoryData.memorySave("0", title, date, "", lat, lon, address, nation, text, uploadFile, 1, requestReviewCallback, activity)
 
     }
 }

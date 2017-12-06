@@ -3,9 +3,12 @@ package com.kotlin.ourmemories.view.place.adapter
 /**
  * Created by hee on 2017-11-28.
  */
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation.RELATIVE_TO_SELF
 import android.view.animation.RotateAnimation
+import com.kotlin.ourmemories.view.MainActivity
+import com.kotlin.ourmemories.view.PlaceListFragment
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.list_item_sido.view.*
@@ -19,6 +22,7 @@ class SiDoViewHolder(itemView: View) : GroupViewHolder(itemView) {
 
     override fun expand() {
         animateExpand()
+        MainActivity.position = position
     }
 
     override fun collapse() {

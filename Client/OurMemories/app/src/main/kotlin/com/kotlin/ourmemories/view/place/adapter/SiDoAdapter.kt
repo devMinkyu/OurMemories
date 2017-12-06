@@ -19,14 +19,14 @@ class SiDoAdapter(groups: List<ExpandableGroup<*>>) : ExpandableRecyclerViewAdap
                 .inflate(R.layout.list_item_sigungu, parent, false))
 
 
+    override fun onBindGroupViewHolder(holder: SiDoViewHolder, flatPosition: Int, group: ExpandableGroup<*>) {
+        holder.setGenreTitle(group)
+    }
+
     override fun onBindChildViewHolder(holder: SiGunGuViewHolder, flatPosition: Int, group: ExpandableGroup<*>, childIndex: Int) {
         val siGunGu = (group as SiDo).items[childIndex]
         holder.setSiGunGuName(siGunGu.name!!)
         holder.itemView.setOnClickListener(onItemClick)
-    }
-
-    override fun onBindGroupViewHolder(holder: SiDoViewHolder, flatPosition: Int, group: ExpandableGroup<*>) {
-        holder.setGenreTitle(group)
     }
     fun setOnclickListener(l:View.OnClickListener){
         onItemClick = l

@@ -45,9 +45,6 @@ class MemoryViewActivity : AppCompatActivity(), MemoryViewContract.View {
                 memoryViewPhoto.scaleType = ImageView.ScaleType.FIT_START
                 memoryViewPhoto.adjustViewBounds = true
 
-//                NManager.init()
-//                val picasso = NManager.gatPicasso()
-
                 Picasso.with(this)
                         .load(media)
                         .transform(CropSquareTransformation())

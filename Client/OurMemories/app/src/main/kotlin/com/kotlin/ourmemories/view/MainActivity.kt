@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     companion object {
         val CANARO_EXTRA_BOLD_PATH = "fonts/canaro_extra_bold.otf"
+        var position = 0
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

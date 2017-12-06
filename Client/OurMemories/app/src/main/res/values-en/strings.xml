@@ -37,6 +37,7 @@
     <string name="error_message_network">Check your connection(Network error)</string>
     <string name="error_message_same_title">The same title exists.</string>
     <string name="error_message_memory">The memories do not exist or do not meet the conditions</string>
+    <string name="error_message_review">There are no reviews in that area.</string>
 
     <string name="success_message_memory">Successfully registered</string>
 

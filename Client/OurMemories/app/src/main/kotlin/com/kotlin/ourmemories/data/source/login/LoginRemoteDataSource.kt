@@ -21,7 +21,7 @@ object LoginRemoteDataSource: LoginSource {
 
             builder.scheme("http")
             builder.host(activity.resources.getString(R.string.server_domain))
-            builder.port(8000)
+            builder.port(activity.resources.getString(R.string.port_number).toInt())
             builder.addPathSegment("facebookLogin")
 
             // Body 설정

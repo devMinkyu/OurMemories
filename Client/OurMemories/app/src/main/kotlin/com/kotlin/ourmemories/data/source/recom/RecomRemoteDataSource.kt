@@ -1,19 +1,19 @@
-package com.kotlin.ourmemories.data.source.autologin
+package com.kotlin.ourmemories.data.source.recom
 
+import android.support.v7.app.AppCompatActivity
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.manager.networkmanager.NManager
-import com.kotlin.ourmemories.view.splash.SplashActivity
 import okhttp3.*
 
 /**
- * Created by kimmingyu on 2017. 11. 3..
+ * Created by kimmingyu on 2017. 12. 6..
  */
-// 서버로 접속하여 데이터를 가져오고 callback변수로 반환해주는 곳
-object AutoLoginRemoteDataSource : AutoLoginSource {
-    override fun getProfile(userId: String, requestProfileCallback: Callback, activity: SplashActivity) {
-        // 네트워크 설정
+object RecomRemoteDataSource:RecomSource {
+    init {
         NManager.init()
+    }
 
+    override fun getRemoteReview(siDo: String, siGunGu: String, requestRecomCallback: Callback, activity: AppCompatActivity) {
         val client = NManager.getClinet()
 
         // POST방식의 프로토콜 사용
@@ -22,11 +22,11 @@ object AutoLoginRemoteDataSource : AutoLoginSource {
         builder.scheme("http")
         builder.host(activity.resources.getString(R.string.server_domain))
         builder.port(activity.resources.getString(R.string.port_number).toInt())
-        builder.addPathSegment("profile")
-
+        builder.addPathSegment("recom")
 
         // Body 설정
-        val formBuilder = FormBody.Builder().add("userId", userId)
+        val formBuilder = FormBody.Builder().add("siDo", siDo)
+        formBuilder.add("siGunGu", siGunGu)
 
         // RequestBody 설정(파일 설정 시 Multipart로 설정)
         val body: RequestBody = formBuilder.build()
@@ -39,6 +39,6 @@ object AutoLoginRemoteDataSource : AutoLoginSource {
                 .build()
 
         // 비동기 방식(enqueue)으로 Callback 구현
-        client!!.newCall(request).enqueue(requestProfileCallback)
+        client!!.newCall(request).enqueue(requestRecomCallback)
     }
 }

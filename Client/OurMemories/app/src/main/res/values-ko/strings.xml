@@ -37,6 +37,7 @@
     <string name="error_message_network">요청에러 (네트워크 상태를 점검해주세요)</string>
     <string name="error_message_same_title">같은 제목이 존재하고 있습니다.</string>
     <string name="error_message_memory">메모리들이 존재하지 않거나, 조건에 맞지 않습니다.</string>
+    <string name="error_message_review">그 지역의 리뷰들이 존재하지 않습니다.</string>
 
     <string name="success_message_memory">성공적으로 등록되었습니다.</string>
 

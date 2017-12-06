@@ -22,7 +22,7 @@ object MemoryRemoteDataSource:MemorySource {
         PManager.init()
     }
 
-    override fun memorySave(id:String, title: String, fromDate: String, toDate: String?, lat: Double, lon: Double, nation: String, text:String, uploadFile: File?, classification: Int, requestMemoryCallback: Callback?, activity: AppCompatActivity) {
+    override fun memorySave(id:String, title: String, fromDate: String, toDate: String?, lat: Double, lon: Double, address:String, nation: String, text:String, uploadFile: File?, classification: Int, requestMemoryCallback: Callback?, activity: AppCompatActivity) {
         // 네트워크 설정
         val client = NManager.getClinet()
 
@@ -31,7 +31,7 @@ object MemoryRemoteDataSource:MemorySource {
 
         builder.scheme("http")
         builder.host(activity.resources.getString(R.string.server_domain))
-        builder.port(8000)
+        builder.port(activity.resources.getString(R.string.port_number).toInt())
         builder.addPathSegment("memory")
 
 
@@ -44,6 +44,7 @@ object MemoryRemoteDataSource:MemorySource {
                 .addFormDataPart("memoryToDate", toDate)
                 .addFormDataPart("memoryLatitude", lat.toString())
                 .addFormDataPart("memoryLongitude", lon.toString())
+                .addFormDataPart("memoryAddress", address)
                 .addFormDataPart("memoryNation", nation)
                 .addFormDataPart("memoryClassification", classification.toString())
                 .addFormDataPart("text", text)
@@ -90,7 +91,7 @@ object MemoryRemoteDataSource:MemorySource {
 
         builder.scheme("http")
         builder.host(activity.resources.getString(R.string.server_domain))
-        builder.port(8000)
+        builder.port(activity.resources.getString(R.string.port_number).toInt())
         builder.addPathSegment("memory")
         builder.addPathSegment("view")
 

@@ -23,7 +23,7 @@ object DBManagerMemory {
 
     val SQL_DELETE_TIMECAPSULE_ENTRIES = "drop table if exists " + MemoryData.MemoryTable.TABLE_NAME
     fun deleteTable(db: SQLiteDatabase) {
-        db.execSQL(SQL_DELETE_TIMECAPSULE_ENTRIES)
+        mDBHandler?.writableDatabase!!.delete(MemoryData.MemoryTable.TABLE_NAME)
     }
 
         // 디비에 있는 내용 다 가져오기

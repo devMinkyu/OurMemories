@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">OurMemories</string>
     <string name="server_domain">13.124.79.162</string>
+    <string name="port_number">8000</string>
     <!--페이스북 키-->
     <string name="facebook_app_id">147688489311870</string>
     <string name="fb_login_protocol_scheme">fb147688489311870</string>
