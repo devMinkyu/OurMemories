@@ -6,3 +6,4 @@ Mongokit
 flask_wtf
 flask_oauth
 flask_session
+pyfcm

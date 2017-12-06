@@ -11,6 +11,7 @@ from flask_oauth import OAuth, OAuthException
 from flask_session import Session
 from werkzeug import secure_filename
 import os
+from pyfcm import FCMNotification
 
 # from project.models import *
 
@@ -18,9 +19,13 @@ from project import *
 
 # api = Api(app)
 
-# test DB
-# db = connection.facebook
-# user = db.user
+# FCM
+push_service = FCMNotification(api_key="AAAAAiopj3U:APA91bHxO3y1N07nxc9UxwvmRVIjMYcRD-9-rnVVskyWboT7YC-3LQAHJOXksrOrpFTeSNWthR8s_0JJwS1vyJyF5Wvl-XdBic_PjZiD78BBdz_blGoS3Z9AYT1BR1nTXVskIVNOl0X6")
+# egistration_id = "<device registration_id>"
+# message_title = "Uber update"
+# message_body = "Hi john, your customized news for today is ready"
+# result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
+# print result
 
 # android DB
 db = connection.OurMemories # DB 선택
@@ -37,8 +42,8 @@ def index():
 # android의 access token으로 페이스북 정보 가져오기 / Json 형식으로 Android로 넘기기
 @app.route('/facebookLogin', methods=['GET', 'POST'])
 def login():
-    accessToken = request.form['accessToken']
-    # print(accessToken) # 토큰을 받았는지 test
+    accessToken = request.form['accessToken'] # 페이스북 액세스토큰 받기
+    token = request.foem['token'] # FCM 토큰 받기
 
     session['oauth_token'] = (accessToken, '')
 
@@ -60,7 +65,7 @@ def login():
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
         # isSuccess와 userLoginResult를 Json으로
         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-        user.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken})
+        user.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken, 'FCMtoken' : token})
     # 로그인 할때 유저 아이디가 있는 경우
     elif is_user != None:
         # isSuccess
@@ -69,7 +74,13 @@ def login():
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
         # isSuccess와 userLoginResult를 Json으로
         # sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-        user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken})
+        user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken, 'FCMtoekn' : token})
+
+        egistration_id = "token"
+        message_title = "Uber update"
+        message_body = "Hi john, your customized news for today is ready"
+        result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
+        print result
 
         # image collection에 있는 id값을 가져온다.
         memoryId = images.find({"userId" : user_id})
@@ -100,7 +111,10 @@ def profile():
     userId = request.form['userId']
     is_user = user.find_one({"id" : userId})
 
+    token = request.form['token'] # FCM token 받기
+
     if is_user != None:
+        user.update({'id' : userId}, {'FCMtoekn' : token})
         isSuccess = 'true'
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(is_user['id'],is_user['userName'],is_user['email'],is_user['profile'],"1")))
 
@@ -249,7 +263,7 @@ def multyData():
 
 
     sendToAndroid = dict(zip(('isSuccess', 'id'), (isSuccess, mId)))
-    print(jsonify(sendToAndroid))
+    # print(jsonify(sendToAndroid))
 
     return jsonify(sendToAndroid)
 
@@ -304,6 +318,7 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
+# 안드로이드에서 recommend를 요청했을 경우
 @app.route('/recom/review', methods=['GET', 'POST'])
 def recommand():
     siDo = request.form['siDo'] # 광역시/도
@@ -327,16 +342,3 @@ def recommand():
         sendToAndroid = dict(zip( ('isSuccess', 'reviewMemoryResult'), (isSuccess, reviewMemoryArray) ))
 
     return jsonify(sendToAndroid)
-
-
-    # if isIt != None:
-    #     isSuccess = 'true'
-    #     for docs in isIt
-    #         memory_object = dict(zip(('media', 'title', 'contents', 'address'), (docs['media'], docs['memoryTitle'], docs['text'], docs['memoryAddress']) ))
-    #         reviewMemoryArray.append(memory_object)
-    #     sendToAndroid = dict(zip( ('isSucce', 'reviewMemoryResult'), (isSuccess, reviewMemoryArray) ))
-    # else:
-    #     isSuccess 'false'
-    #     sendToAndroid = dict(zip( ('isSucce', 'reviewMemoryResult'), (isSuccess, "Null") ))
-    #
-    # return jsonify(sendToAndroid)
