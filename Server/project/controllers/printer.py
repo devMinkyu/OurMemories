@@ -79,7 +79,7 @@ def login():
                 # memory 데이터를 JSON으로
                 memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
                 memoryArray.append(memory_object)
-            print(memoryArray)
+            # print(memoryArray)
             sendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), (isSuccess, user_object, memoryArray) ))
         else:
             sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
@@ -112,7 +112,7 @@ def profile():
                 # memory 데이터를 JSON으로
                 memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
                 memoryArray.append(memory_object)
-            print(memoryArray)
+            # print(memoryArray)
             sendToAndroid = dict(zip(('isSuccess', 'userProfileResult', 'userProfileMemoryResult'), (isSuccess, user_object, memoryArray) ))
         else:
             sendToAndroid = dict(zip(('isSuccess', 'userProfileResult'), (isSuccess, user_object)))
@@ -215,6 +215,7 @@ def multyData():
     memoryNation = request.form['memoryNation']
     memoryClassification = request.form['memoryClassification']
     text = request.form['text']
+    address = request.form['memoryAddress']
 
     # memory 데이터를 JSON으로
     # memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
@@ -233,7 +234,7 @@ def multyData():
     # print(path)
 
     # 정보들 DB에 저장
-    images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text, 'media' : path})
+    images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text, 'media' : path, 'memoryAddress' : address})
 
     info = images.find({"userId" : userId})
     for doc in info:
@@ -261,7 +262,7 @@ def memoryView():
 
     # image collection에 있는 id값을 가져온다.
     memoryId = images.find_one({"_id" : ObjectId(string_id)})
-    print(memoryId)
+    # print(memoryId)
     if memoryId != None:
         # memories = images.find({"_id" : ObjectId(string_id)})
         # for docs in memories:
@@ -301,3 +302,25 @@ def memoryView():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+@app.route('/recom')
+def recommand():
+    sido = request.form['siDo'] # 광역시/도
+    siGunGu = request.form['siGunGu'] # 구/시/군
+
+    isIt = images.find({$contains:{"memoryClassification" : "1" ,"memoryAddress" : sido, "memoryAddress" : siGunGU}})
+
+    reviewMemoryArray = [] # 메모리 배열
+
+    if isIt != None:
+        isSuccess = 'true'
+        for docs in isIt
+            memory_object = dict(zip(('media', 'title', 'contents', 'address'), (docs['media'], docs['memoryTitle'], docs['text'], docs['memoryAddress']) ))
+            reviewMemoryArray.append(memory_object)
+        sendToAndroid = dict(zip( ('isSucce', 'reviewMemoryResult'), (isSuccess, reviewMemoryArray) ))
+    else:
+        isSuccess 'false'
+        sendToAndroid = dict(zip( ('isSucce', 'reviewMemoryResult'), (isSuccess, "Null") ))
+
+    return jsonify(sendToAndroid)
