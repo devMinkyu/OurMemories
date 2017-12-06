@@ -43,7 +43,7 @@ def index():
 @app.route('/facebookLogin', methods=['GET', 'POST'])
 def login():
     accessToken = request.form['accessToken'] # 페이스북 액세스토큰 받기
-    token = request.foem['token'] # FCM 토큰 받기
+    token = request.form['token'] # FCM 토큰 받기
 
     session['oauth_token'] = (accessToken, '')
 
@@ -76,7 +76,7 @@ def login():
         # sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
         user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken, 'FCMtoekn' : token})
 
-        egistration_id = "token"
+        registration_id = token
         message_title = "Uber update"
         message_body = "Hi john, your customized news for today is ready"
         result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
@@ -88,7 +88,7 @@ def login():
         if memoryId != None:
             for docs in memoryId:
                 # memory 데이터를 JSON으로
-                memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
+                memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(str(docs['_id']), docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
                 memoryArray.append(memory_object)
             # print(memoryArray)
             sendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), (isSuccess, user_object, memoryArray) ))
@@ -114,7 +114,9 @@ def profile():
     token = request.form['token'] # FCM token 받기
 
     if is_user != None:
-        user.update({'id' : userId}, {'FCMtoekn' : token})
+        userData = user.find()
+        for docs in userData:
+            user.update({'id' : userId}, {'id' : userId, 'userName' : docs['userName'], 'email' : docs['email'], 'profile' : docs['profile'], 'accessToken' : docs['accessToken'], 'FCMtoekn' : token})
         isSuccess = 'true'
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(is_user['id'],is_user['userName'],is_user['email'],is_user['profile'],"1")))
 
@@ -124,7 +126,7 @@ def profile():
         if memoryId != None:
             for docs in memoryId:
                 # memory 데이터를 JSON으로
-                memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(docs['userId'], docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
+                memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(str(docs['_id']), docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
                 memoryArray.append(memory_object)
             # print(memoryArray)
             sendToAndroid = dict(zip(('isSuccess', 'userProfileResult', 'userProfileMemoryResult'), (isSuccess, user_object, memoryArray) ))
