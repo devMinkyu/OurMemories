@@ -10,7 +10,7 @@ import okhttp3.*
  * Created by kimmingyu on 2017. 11. 4..
  */
 object LoginRemoteDataSource: LoginSource {
-    override fun loginServer(accessToken:String, requestloginCallback: Callback, activity: LoginActivity) {
+    override fun loginServer(accessToken:String, token:String, requestloginCallback: Callback, activity: LoginActivity) {
             // network 설정
             NManager.init()
             val client = NManager.getClinet()
@@ -27,6 +27,7 @@ object LoginRemoteDataSource: LoginSource {
             // Body 설정
             val formBuilder = FormBody.Builder().add("accessToken", accessToken)
             formBuilder.add("userId", accessToken)
+            formBuilder.add("token", token)
 
             // RequestBody 설정(파일 설정 시 Multipart로 설정)
             val body: RequestBody = formBuilder.build()

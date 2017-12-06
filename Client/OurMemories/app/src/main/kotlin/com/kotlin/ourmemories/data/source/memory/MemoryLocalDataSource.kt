@@ -21,13 +21,13 @@ import java.util.*
 // 로컬 디비에 저장
 object MemoryLocalDataSource : MemorySource {
     lateinit override var memoryPinPresenter: MemoryPinPresenter
-    lateinit var mContext:Context
+    lateinit var mContext: Context
     fun init(context: Context) {
         mContext = context
         DBManagerMemory.init(context)
     }
 
-    override fun memorySave(id: String, title: String, fromDate: String, toDate: String?, lat: Double, lon: Double,  address:String, nation: String, text: String, uploadFile: File?, classification: Int, requestMemoryCallback: Callback?, activity: AppCompatActivity) {
+    override fun memorySave(id: String, title: String, fromDate: String, toDate: String?, lat: Double, lon: Double, address: String, nation: String, text: String, uploadFile: File?, classification: Int, requestMemoryCallback: Callback?, activity: AppCompatActivity) {
         val memory = MemoryData(id, title, lat, lon, nation, fromDate, toDate, classification)
         DBManagerMemory.addMemory(memory)
         DBManagerMemory.close()
@@ -35,17 +35,18 @@ object MemoryLocalDataSource : MemorySource {
 
     // 내부 디비에서 받아온 정보와 비교후 유저에게 존재하면 알려줘서 선택 후 서버로 보내게 한다
     override fun getLocalMemory(classification: Int, lat: Double, lon: Double) {
+        DBManagerMemory.init(mContext)
         val items: ArrayList<Memory> = ArrayList()
         when (classification) {
             0 -> { // timeCapsule
                 val calendar = Calendar.getInstance()
                 val dBDateFormat = mContext.resources.getString(R.string.date_format)
-                val date = String.format(dBDateFormat,calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH))
+                val date = String.format(dBDateFormat, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
                 val cursor = DBManagerMemory.getMemoryDayWithCursor(date)
                 cursor.moveToFirst()
 
-                if(cursor.count != 0){
-                    if(cursor.getInt(7) == classification) {
+                if (cursor.count != 0) {
+                    if (cursor.getInt(7) == classification) {
                         val amFormat = mContext.resources.getString(R.string.am_format)
                         val pmFormat = mContext.resources.getString(R.string.pm_format)
 
@@ -102,7 +103,7 @@ object MemoryLocalDataSource : MemorySource {
                 if (cursor.count != 0) {
                     val item = arrayOfNulls<Memory>(cursor.count)
                     for (i in 0 until cursor.count) {
-                        val distance = distanceResult(lat,lon,cursor)
+                        val distance = distanceResult(lat, lon, cursor)
 
                         if (distance.toInt() <= 100) {
                             item[i] = Memory(cursor.getString(0), cursor.getString(1))
@@ -115,11 +116,13 @@ object MemoryLocalDataSource : MemorySource {
                 cursor.close()
             }
         }
-        if(items.size == 0){
+        if (items.size == 0) {
             memoryPinPresenter.userChooseDialog(null)
+            DBManagerMemory.close()
             return
-        }else {
+        } else {
             memoryPinPresenter.userChooseDialog(items)
+            DBManagerMemory.close()
             return
         }
     }
@@ -127,7 +130,7 @@ object MemoryLocalDataSource : MemorySource {
     override fun getRemoteMemory(id: String, requestMemoryCallback: Callback, activity: AppCompatActivity) {}
 }
 
-fun distanceResult(lat:Double, lon:Double, cursor: Cursor):Float{
+fun distanceResult(lat: Double, lon: Double, cursor: Cursor): Float {
     val currentLocation = Location("current")
     val cursorLocation = Location("cursor")
     val mLat = cursor.getDouble(2)
@@ -141,14 +144,15 @@ fun distanceResult(lat:Double, lon:Double, cursor: Cursor):Float{
     return currentLocation.distanceTo(cursorLocation)
 }
 
-fun extractHour(format:String, date:String):Int{
+fun extractHour(format: String, date: String): Int {
     val index = date.indexOf(format)
     val index2 = date.indexOf(":")
-    return date.substring(index+3, index2).toInt()
+    return date.substring(index + 3, index2).toInt()
 }
-fun extractMinute(date:String):Int{
+
+fun extractMinute(date: String): Int {
     val index = date.indexOf(":")
-    return date.substring(index+1).toInt()
+    return date.substring(index + 1).toInt()
 }
 
 // 데이터 클래스

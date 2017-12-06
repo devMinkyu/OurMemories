@@ -21,10 +21,6 @@
         <item name="android:windowBackground">@drawable/ll_face_logo</item>
     </style>
 
-    <style name="AppTheme.Placeholder">
-        <item name="android:windowBackground">@drawable/ll_toolbar_placeholder</item>
-    </style>
-
     <!--버튼 테마-->
     <style name="Button" parent="Theme.AppCompat">
         <item name="colorControlHighlight">@color/indigo_500</item>

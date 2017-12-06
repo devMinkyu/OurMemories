@@ -22,6 +22,8 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GooglePlayServicesUtil
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
@@ -54,7 +56,8 @@ class LoginPresenter: LoginContract.Presenter{
     lateinit override var loginData: LoginRepository
 
     lateinit var accessToken:String
-    lateinit var registerId:String
+    var token:String? = null
+
     init {
         PManager.init()
     }
@@ -72,6 +75,7 @@ class LoginPresenter: LoginContract.Presenter{
 
         override fun onResponse(call: Call?, response: Response?) {
             val responseData = response?.body()!!.string()
+            Log.d("hoho", responseData)
             val loginRequest:UserLogin = Gson().fromJson(responseData, UserLogin::class.java)
 
             val isSuccess = loginRequest.isSuccess
@@ -129,29 +133,41 @@ class LoginPresenter: LoginContract.Presenter{
         mLoginManager.defaultAudience = DefaultAudience.FRIENDS
         mLoginManager.loginBehavior = LoginBehavior.NATIVE_WITH_FALLBACK
 
-        // 콜백 등록
-        mLoginManager.registerCallback(callbackManager, object :FacebookCallback<LoginResult>{
-            override fun onSuccess(result: LoginResult?) {
-                val facebookAccessToken:AccessToken = AccessToken.getCurrentAccessToken()
+        //FirebaseMessaging.getInstance().subscribeToTopic("news")
+        token = FirebaseInstanceId.getInstance().token
 
-                accessToken = facebookAccessToken.token
+        if (token != null) {
+            PManager.setUserFcmRegId(token!!)
+            // 콜백 등록
+            mLoginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult?) {
+                    val facebookAccessToken: AccessToken = AccessToken.getCurrentAccessToken()
 
-                Log.d("LoginToken", "facebook token: ${accessToken}")
+                    accessToken = facebookAccessToken.token
 
-                loginData.loginServer(accessToken,requestloginCallback,activity)
+                    Log.d("LoginToken", "facebook token: ${accessToken}")
+                    Log.d("LoginToken", "facebook token: ${PManager.getUserFcmRegId()}")
 
-                val parameters = Bundle()
-                parameters.putString("fields", "id,name,email")
-            }
+                    loginData.loginServer(accessToken, PManager.getUserFcmRegId(), requestloginCallback, activity)
 
-            override fun onCancel() {
-            }
+                    val parameters = Bundle()
+                    parameters.putString("fields", "id,name,email")
+                }
 
-            override fun onError(error: FacebookException?) {
-            }
-        })
+                override fun onCancel() {
+                }
 
-        mLoginManager.logInWithReadPermissions(activity, Arrays.asList("email"))
+                override fun onError(error: FacebookException?) {
+                }
+            })
+
+            mLoginManager.logInWithReadPermissions(activity, Arrays.asList("email"))
+        }else{
+            activity.hideDialog()
+            activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
+                yesButton { mLoginManager.logOut() }
+            }.show()
+        }
     }
 
     // 로그인 되어있는지 검사
@@ -161,7 +177,6 @@ class LoginPresenter: LoginContract.Presenter{
     }
 
     fun userSave(loginRequest:UserLogin){
-        Log.d("hoho", "들어온다")
         activity.hideDialog()
         // 공유저장소에 저장전 한번 초기화 시켜준다
         PManager.setUserId("")
@@ -188,10 +203,12 @@ class LoginPresenter: LoginContract.Presenter{
                         loginRequest.userLoginMemoryResult[i].memoryLongitude.toDouble(), loginRequest.userLoginMemoryResult[i].memoryNation, loginRequest.userLoginMemoryResult[i].memoryFromDate,
                         loginRequest.userLoginMemoryResult[i].memoryToDate, loginRequest.userLoginMemoryResult[i].memoryClassification.toInt())
             }
-            //DBManagerMemory.deleteTable()
+            DBManagerMemory.deleteTable()
             (0 until item.size).forEach { i ->
+                Log.d("hoho", item[i].toString())
                 DBManagerMemory.addMemory(item[i]!!)
             }
+            DBManagerMemory.close()
         }
     }
 

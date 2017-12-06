@@ -3,6 +3,7 @@ package com.kotlin.ourmemories.view.splash.presenter
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
@@ -25,6 +26,8 @@ import java.io.IOException
 class SplashPresenter: SplashContract.Presenter {
     lateinit override var profileData: AutoLoginRepository
     lateinit override var activity:SplashActivity
+
+    var token:String? = null
 
     override val mHandler: Handler by lazy {
         Handler(Looper.getMainLooper())
@@ -72,6 +75,7 @@ class SplashPresenter: SplashContract.Presenter {
                         PManager.setUserEmail(profileRequest.userProfileResult.userEmail)
                         PManager.setUserId(profileRequest.userProfileResult.userId)
                         PManager.setUserIsLogin(profileRequest.userProfileResult.authLogin)
+                        PManager.setUserFcmRegId(token!!)
 
                         // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
                         if(profileRequest.userProfileMemoryResult != null) {
@@ -82,10 +86,13 @@ class SplashPresenter: SplashContract.Presenter {
                                         profileRequest.userProfileMemoryResult[i].memoryLongitude.toDouble(), profileRequest.userProfileMemoryResult[i].memoryNation, profileRequest.userProfileMemoryResult[i].memoryFromDate,
                                         profileRequest.userProfileMemoryResult[i].memoryToDate, profileRequest.userProfileMemoryResult[i].memoryClassification.toInt())
                             }
+                            DBManagerMemory.deleteTable()
                             (0 until item.size).forEach { i ->
+                                Log.d("hoho", item[i].toString())
                                 DBManagerMemory.addMemory(item[i]!!)
                             }
                         }
+                        DBManagerMemory.close()
                         activity.startActivity<MainActivity>()
                         activity.finish()
                     } else if(loginAuth == "0") // 로그아웃한 경우
@@ -121,7 +128,14 @@ class SplashPresenter: SplashContract.Presenter {
                         loginPageIntent()
                     }
                     "1"-> {
-                        profileData.getProfile(userId, requestProfileCallback, activity)
+                        token = FirebaseInstanceId.getInstance().token
+                        if (token == null){
+                            activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
+                                yesButton { activity.finish() }
+                            }.show()
+                        }else {
+                            profileData.getProfile(userId, token!!, requestProfileCallback, activity)
+                        }
                     }
                     else-> {
                         loginPageIntent()

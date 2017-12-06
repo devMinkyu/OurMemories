@@ -79,7 +79,6 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
 
         override fun onResponse(call: Call?, response: Response?) {
             activity.runOnUiThread {
-                activity.hideDialog()
                 val responseData = response?.body()!!.string()
                 Log.d("hoho", responseData)
                 val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
@@ -89,7 +88,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
                 // 서버 디비에 저장된 후 로컬 디비 저장
                 if (isSuccess == "true") {
                     memoryData.memorySave(memoryRequest.id, title, date, "", lat, lon, nation, address, text, null, 1, null, activity)
-                    activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
+                    activity.alert(activity.resources.getString(R.string.success_message_memory), "Review") {
                         yesButton { activity.finish() }
                     }.show()
                 } else if (isSuccess == "false") {
@@ -118,8 +117,8 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
                     lon = location!!.longitude
                     val geo = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
                     nation = geo[0].countryName
-                    address = geo[0].getAddressLine(0)
-                    mView.updateAddressView(geo[0].getAddressLine(0))
+                    address = geo[1].getAddressLine(0)
+                    mView.updateAddressView(address)
                 } ?: activity.toast("why!!")
             }
         }
@@ -213,7 +212,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         text = activity.reviewText.text.toString()
 
 //        // 테스트
-//        memoryData.memorySave("0", title, date, null, lat, lon, nation, text, null, 1, null, activity)
+//        memoryData.memorySave("0", title, date, null, lat, lon, nation, text, "0", null, 0,requestReviewCallback, activity)
 //        activity.finish()
 
         // 로컬 디비전에 서버 디비에 우선 저장

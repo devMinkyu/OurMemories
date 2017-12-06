@@ -3,6 +3,7 @@ package com.kotlin.ourmemories.view.memoryview
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -40,6 +41,7 @@ class MemoryViewActivity : AppCompatActivity(), MemoryViewContract.View {
         when {
             media.contains("jpg") -> {
                 val memoryViewPhoto = ImageView(this)
+                Log.d("hoho", media)
                 val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                 memoryViewPhoto.layoutParams = params
                 memoryViewPhoto.scaleType = ImageView.ScaleType.FIT_START

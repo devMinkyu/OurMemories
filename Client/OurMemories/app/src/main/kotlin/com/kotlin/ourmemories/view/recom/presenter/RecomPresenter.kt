@@ -1,5 +1,6 @@
 package com.kotlin.ourmemories.view.recom.presenter
 
+import android.util.Log
 import com.google.gson.Gson
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.ReComMemory
@@ -32,21 +33,18 @@ class RecomPresenter:RecomContract.Presenter {
 
         override fun onResponse(call: Call?, response: Response?) {
             val responseData = response?.body()!!.string()
+            Log.d("hoho", responseData)
             val recomRequest: ReComMemory = Gson().fromJson(responseData, ReComMemory::class.java)
+            activity.hideDialog()
 
             val isSuccess = recomRequest.isSuccess
             if(isSuccess == "true"){
-                if(recomRequest != null) {
-                    mView.updateView(recomRequest.reviewMemoryResult!!)
-                }
-                else{
-                    activity.hideDialog()
-                    activity.alert(activity.resources.getString(R.string.error_message_review), "Review") {
-                        yesButton { activity.finish() }
-                    }.show()
-                }
+                mView.updateView(recomRequest.reviewMemoryResult!!)
             }else if(isSuccess == "false"){
-
+                activity.hideDialog()
+                activity.alert(activity.resources.getString(R.string.error_message_review), "Review") {
+                    yesButton { activity.finish() }
+                }.show()
             }
         }
 

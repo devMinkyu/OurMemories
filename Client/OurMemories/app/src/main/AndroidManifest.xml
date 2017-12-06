@@ -38,7 +38,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.kotlin.ourmemories.view.recom.RecomActivity"/>
         <activity
             android:name=".view.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -59,7 +58,13 @@
         <activity
             android:name=".view.memoryview.MemoryViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-
+        <activity android:name=".view.memorylist.MemoryListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+        <activity android:name=".view.recom.RecomActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity android:name=".view.profile.ProfileActivity"/>
         <!-- facebook Login -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -104,8 +109,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".view.memorylist.MemoryListActivity" />
-        <activity android:name=".view.profile.ProfileActivity"></activity>
+
     </application>
 
 </manifest>

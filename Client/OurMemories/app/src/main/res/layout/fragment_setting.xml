@@ -29,17 +29,10 @@
     </android.support.v7.widget.Toolbar>
 
     <Button
-        android:id="@+id/profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/memory_20size"
-        android:text="@string/setting_profile"
-        android:layout_gravity="center"/>
-    <Button
         android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/memory_5size"
+        android:layout_marginTop="@dimen/memory_20size"
         android:text="@string/setting_logout"
         android:layout_gravity="center"/>
 

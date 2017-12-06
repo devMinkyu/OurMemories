@@ -3,13 +3,16 @@ package com.kotlin.ourmemories.view.recom
 /**
  * Created by hee on 2017-11-28.
  */
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.ReComMemoryResult
 import com.kotlin.ourmemories.data.source.recom.RecomRepository
+import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.recom.adapter.RecomAdapter
 import com.kotlin.ourmemories.view.recom.presenter.RecomContract
 import com.kotlin.ourmemories.view.recom.presenter.RecomPresenter
@@ -31,6 +34,10 @@ class RecomActivity : AppCompatActivity(),RecomContract.View {
         val sigungu = intent.getStringExtra(EXTRA_SIGUNGU_NAME)
         val sido = intent.getStringExtra(EXTRA_SIDO_NAME)
 
+
+        val canaroExtraBold = Typeface.createFromAsset(this.assets, MainActivity.CANARO_EXTRA_BOLD_PATH)
+        reComTitleText.typeface = canaroExtraBold
+
         presenter = RecomPresenter().apply {
             mView = this@RecomActivity
             activity = this@RecomActivity
@@ -38,6 +45,10 @@ class RecomActivity : AppCompatActivity(),RecomContract.View {
         }
 
         presenter.getReview(sido,sigungu)
+
+        reComBack.setOnClickListener {
+            finish()
+        }
 
         reComList.layoutManager = LinearLayoutManager(this)
     }
@@ -47,7 +58,9 @@ class RecomActivity : AppCompatActivity(),RecomContract.View {
         adapter = RecomAdapter(applicationContext,items)
         reComList.adapter = adapter
     }
-
+    fun showDialog() {
+        loading_recom.visibility = View.VISIBLE
+    }
     fun hideDialog() {
         loading_recom.visibility = View.INVISIBLE
     }

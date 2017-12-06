@@ -53,7 +53,7 @@ object PManager{
     }
     // FCM 토큰
     fun getUserFcmRegId():String = pManager?.mProfile!!.getString(PropertyManager.KEY_FCM_REG_ID,"")
-    fun getUserFcmRegId(userFcmRegId: String){
+    fun setUserFcmRegId(userFcmRegId: String){
         pManager?.mEditor!!.putString(PropertyManager.KEY_FCM_REG_ID, userFcmRegId)
         pManager?.mEditor!!.commit()
     }

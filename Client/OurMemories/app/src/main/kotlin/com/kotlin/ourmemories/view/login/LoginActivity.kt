@@ -76,9 +76,6 @@ class LoginActivity : AppCompatActivity(){
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
-
-        FirebaseMessaging.getInstance().subscribeToTopic("news")
-        FirebaseInstanceId.getInstance().token
     }
 
     override fun onResume() {

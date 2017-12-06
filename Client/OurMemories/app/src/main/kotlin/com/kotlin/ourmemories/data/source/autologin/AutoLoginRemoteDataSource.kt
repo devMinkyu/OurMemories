@@ -10,7 +10,7 @@ import okhttp3.*
  */
 // 서버로 접속하여 데이터를 가져오고 callback변수로 반환해주는 곳
 object AutoLoginRemoteDataSource : AutoLoginSource {
-    override fun getProfile(userId: String, requestProfileCallback: Callback, activity: SplashActivity) {
+    override fun getProfile(userId: String, token:String, requestProfileCallback: Callback, activity: SplashActivity) {
         // 네트워크 설정
         NManager.init()
 
@@ -27,6 +27,7 @@ object AutoLoginRemoteDataSource : AutoLoginSource {
 
         // Body 설정
         val formBuilder = FormBody.Builder().add("userId", userId)
+        formBuilder.add("token", token)
 
         // RequestBody 설정(파일 설정 시 Multipart로 설정)
         val body: RequestBody = formBuilder.build()

@@ -1,13 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/memory_35size"
+        android:layout_gravity="top"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:id="@+id/recomToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize">
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/reComBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_chevron_left_white_24dp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/reComTitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Recommend"
+                android:textSize="@dimen/font_title_Large_ize" />
+        </android.support.v7.widget.Toolbar>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reComList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recomToolbar"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading_recom"
@@ -17,4 +54,4 @@
         app:lottie_autoPlay="true"
         app:lottie_fileName="loading_animation.json"
         app:lottie_loop="true"/>
-</FrameLayout>
+</RelativeLayout>

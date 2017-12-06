@@ -32,8 +32,5 @@ class SettingFragment : Fragment() {
         logout.setOnClickListener {
             presenter.logOut()
         }
-        profile.setOnClickListener {
-            presenter.profile()
-        }
     }
 }

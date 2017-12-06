@@ -50,6 +50,7 @@ class MemoryListMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
     //모든 메모리 지도에 마커 생성
     fun viewAllMemoryInMap(){
+        DBManagerMemory.init(context)
         var cursor = DBManagerMemory.getMemoriesWithCursor(nationName)
         if(cursor?.count!=0){
             if (cursor!!.moveToFirst()) {
@@ -59,8 +60,8 @@ class MemoryListMapFragment : SupportMapFragment(), OnMapReadyCallback {
                     cursor.moveToNext()
                 }
             }
-
         }
+        DBManagerMemory.close()
     }
 
 

@@ -215,8 +215,8 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     lon = location!!.longitude
                     val geo = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
                     nation = geo[0].countryName
-                    address = geo[0].getAddressLine(0)
-                    mView.updateAddressView(geo[0].getAddressLine(0))
+                    address = geo[1].getAddressLine(0)
+                    mView.updateAddressView(address)
                 } ?: activity.toast("why!!")
             }
         }
@@ -401,7 +401,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         }
 
         // 테스트
-//        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, null, 0, null, activity)
+//        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, address, nation, text, null, 0, null, activity)
 //        activity.finish()
 
         // 로컬 디비전에 서버 디비에 우선 저장
