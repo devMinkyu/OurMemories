@@ -11,7 +11,7 @@ import java.io.File
  */
 interface ReviewContract {
     interface View {
-        fun updateAddressView(address: String)
+        fun updateAddressView(address: String, lat: Double, lon: Double)
         fun updatePhotoView(uploadFile: File)
         fun updateVideoView(uploadFile: File)
     }

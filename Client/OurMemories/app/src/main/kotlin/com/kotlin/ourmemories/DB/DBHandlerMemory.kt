@@ -57,11 +57,23 @@ object DBManagerMemory {
                                 MemoryData.MemoryTable.TITLE,
                                 MemoryData.MemoryTable.LATITUDE,
                                 MemoryData.MemoryTable.LONGITUDE,
+                                MemoryData.MemoryTable.NATION_NAME,
+                                MemoryData.MemoryTable.CLASSIFICATION,
                                 MemoryData.MemoryTable.FROM_DATE,
-                                MemoryData.MemoryTable.TO_DATE,
-                                MemoryData.MemoryTable.CLASSIFICATION),
+                                MemoryData.MemoryTable.TO_DATE),
                         "classification=?", arrayOf(clssification.toString()), null, null, MemoryData.MemoryTable._ID)
 
+    fun getMemoryNationAndClassWithCursor(nationName: String, clssification: Int): Cursor =
+            mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,
+                    arrayOf(MemoryData.MemoryTable._ID,
+                            MemoryData.MemoryTable.TITLE,
+                            MemoryData.MemoryTable.LATITUDE,
+                            MemoryData.MemoryTable.LONGITUDE,
+                            MemoryData.MemoryTable.NATION_NAME,
+                            MemoryData.MemoryTable.CLASSIFICATION,
+                            MemoryData.MemoryTable.FROM_DATE,
+                            MemoryData.MemoryTable.TO_DATE),
+                    MemoryData.MemoryTable.NATION_NAME + "=?" + " and " +MemoryData.MemoryTable.CLASSIFICATION+"=?", arrayOf(nationName, clssification.toString()), null, null, MemoryData.MemoryTable._ID)
 
         fun getMemoriesWithCursor(nationName: String): Cursor =
                 mDBHandler?.readableDatabase!!.query(MemoryData.MemoryTable.TABLE_NAME,

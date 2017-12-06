@@ -69,32 +69,29 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         if (rb_all.isChecked) {
             toast(rb_all.text.toString())
             val cursor = DBManagerMemory.getMemoriesWithCursor(nationName)
-            if(cursor?.count != 0){
-                var adapter = TimeCapsuleAdapter(this, cursor!!)
-                timecapsule_list.adapter = adapter
-            }
+
+            var adapter = TimeCapsuleAdapter(this, cursor!!)
+            timecapsule_list.adapter = adapter
         }
     }
     fun isCheckTimecapsule (v: View?) {
         val rb_timecapsule = v?.findViewById<View>(R.id.rb_timecapsule) as RadioButton
         if (rb_timecapsule.isChecked) {
             toast(rb_timecapsule.text.toString())
-            val cursor = DBManagerMemory.getMemoryClassificationWithCursor(0)
-            if(cursor?.count != 0){
-                var adapter = TimeCapsuleAdapter(this, cursor!!)
-                timecapsule_list.adapter = adapter
-            }
+            val cursor = DBManagerMemory.getMemoryNationAndClassWithCursor(nationName,0)
+
+            var adapter = TimeCapsuleAdapter(this, cursor!!)
+            timecapsule_list.adapter = adapter
         }
     }
     fun isCheckReview (v: View?) {
         val rb_reView = v?.findViewById<View>(R.id.rb_review) as RadioButton
         if (rb_reView.isChecked) {
             toast(rb_reView.text.toString())
-            val cursor = DBManagerMemory.getMemoryClassificationWithCursor(1)
-            if(cursor?.count != 0){
-                var adapter = TimeCapsuleAdapter(this, cursor!!)
-                timecapsule_list.adapter = adapter
-            }
+            val cursor = DBManagerMemory.getMemoryNationAndClassWithCursor(nationName,1)
+
+            var adapter = TimeCapsuleAdapter(this, cursor!!)
+            timecapsule_list.adapter = adapter
         }
     }
     private fun initSpruce(recycleListView : RecyclerView) {

@@ -53,11 +53,9 @@ class MemoryListMapFragment : SupportMapFragment(), OnMapReadyCallback {
         var cursor = DBManagerMemory.getMemoriesWithCursor(nationName)
         if(cursor?.count!=0){
             if (cursor!!.moveToFirst()) {
-                for (n in 0..cursor.columnCount - 1) {
-                    val spot = LatLng(cursor.getString(2).toDouble(), cursor.getString(3).toDouble())
-                    mMap.addMarker(MarkerOptions().position(spot).title(cursor.getString(1)))
-                    cursor.moveToNext()
-                }
+                val spot = LatLng(cursor.getString(2).toDouble(), cursor.getString(3).toDouble())
+                mMap.addMarker(MarkerOptions().position(spot).title(cursor.getString(1)))
+                cursor.moveToNext()
             }
 
         }

@@ -8,12 +8,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.MediaController
+import android.widget.VideoView
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.kotlin.ourmemories.R
@@ -137,6 +139,10 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
             presenter.mGoogleApiClient = GoogleApiClient.Builder(this).addApi(LocationServices.API).build()
         }
         presenter.mGoogleApiClient!!.connect()
+
+        //맵뷰 시작
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.timeCapsuleMap) as MemoryMapFragment
+        mapFragment.getMapAsync(mapFragment)
     }
 
     // 날짜 선택 뷰
@@ -178,11 +184,11 @@ class TimeCapsuleActivity : AppCompatActivity(), TimeCapsuleContract.View {
         }
     }
 
-    override fun updateAddressView(address: String) {
+    override fun updateAddressView(address: String, lat: Double, lon: Double) {
         timeCapsuleMapRoot.visibility = View.VISIBLE
         val mapFragment = supportFragmentManager.findFragmentById(R.id.timeCapsuleMap) as MemoryMapFragment
-        mapFragment.getMapAsync(mapFragment)
         timeCapsuleLocation.setText(address)
+        mapFragment.moveToPositionAndAddMaker(lat, lon)
     }
 
     override fun updateAlarmView(alarmMessage: String) {
