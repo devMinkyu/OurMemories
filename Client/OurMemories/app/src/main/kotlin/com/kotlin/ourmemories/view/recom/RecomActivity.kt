@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.ReComMemoryResult
 import com.kotlin.ourmemories.data.source.recom.RecomRepository
@@ -55,13 +56,15 @@ class RecomActivity : AppCompatActivity(),RecomContract.View, View.OnClickListen
 
     override fun updateView(items: ArrayList<ReComMemoryResult>) {
         hideDialog()
-        adapter = RecomAdapter(applicationContext,items)
+        adapter = RecomAdapter(items, this)
         reComList.adapter = adapter
         adapter.setOnItemClickListener(this)
     }
 
     // 지도 보여주는 부분
-    override fun onClick(p0: View?) {
+    override fun onClick(view: View?) {
+        // 한글 주소
+        val address = view?.findViewById<View>(R.id.reComAddress) as TextView
 
     }
     fun hideDialog() {

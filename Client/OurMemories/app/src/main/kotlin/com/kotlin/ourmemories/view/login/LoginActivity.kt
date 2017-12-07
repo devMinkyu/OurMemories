@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity(){
             activity = this@LoginActivity
             mLoginManager = LoginManager.getInstance()
             callbackManager = CallbackManager.Factory.create()
-            callback = LoginPresenter.SessionCallback()
+            callback = SessionCallback()
             loginData = LoginRepository()
         }
 

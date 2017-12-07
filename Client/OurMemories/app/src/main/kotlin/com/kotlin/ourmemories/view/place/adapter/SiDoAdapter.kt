@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kotlin.ourmemories.R
+import com.kotlin.ourmemories.view.place.adapter.data.SiDo
+import com.kotlin.ourmemories.view.place.adapter.viewholder.SiDoViewHolder
+import com.kotlin.ourmemories.view.place.adapter.viewholder.SiGunGuViewHolder
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 
@@ -14,9 +17,9 @@ class SiDoAdapter(groups: List<ExpandableGroup<*>>) : ExpandableRecyclerViewAdap
 
     private var onItemClick:View.OnClickListener? = null
     override fun onCreateGroupViewHolder(parent: ViewGroup, viewType: Int): SiDoViewHolder = SiDoViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_sido, parent, false))
+            .inflate(R.layout.list_item_sido, parent, false))
     override fun onCreateChildViewHolder(parent: ViewGroup, viewType: Int): SiGunGuViewHolder = SiGunGuViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_sigungu, parent, false))
+            .inflate(R.layout.list_item_sigungu, parent, false))
 
 
     override fun onBindGroupViewHolder(holder: SiDoViewHolder, flatPosition: Int, group: ExpandableGroup<*>) {

@@ -4,8 +4,8 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import com.google.gson.Gson
 import com.kotlin.ourmemories.data.jsondata.AdministrativeDistrict
-import com.kotlin.ourmemories.view.place.adapter.SiDo
-import com.kotlin.ourmemories.view.place.adapter.SiGunGu
+import com.kotlin.ourmemories.view.place.adapter.data.SiDo
+import com.kotlin.ourmemories.view.place.adapter.data.SiGunGu
 import java.io.InputStreamReader
 
 /**

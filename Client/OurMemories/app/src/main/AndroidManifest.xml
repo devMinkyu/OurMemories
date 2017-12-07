@@ -12,6 +12,8 @@
     <!-- 화면이 꺼져있어도 알림이나 진동이나 기타 이벤트 처 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine

@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.MainActivity
 import com.kotlin.ourmemories.view.recom.RecomActivity
-import com.kotlin.ourmemories.view.place.adapter.SiDo
+import com.kotlin.ourmemories.view.place.adapter.data.SiDo
 import com.kotlin.ourmemories.view.place.adapter.SiDoAdapter
 import com.kotlin.ourmemories.view.place.presenter.PlaceContract
 import com.kotlin.ourmemories.view.place.presenter.PlacePresenter

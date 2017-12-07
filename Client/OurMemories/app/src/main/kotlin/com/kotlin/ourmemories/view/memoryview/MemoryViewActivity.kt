@@ -41,7 +41,6 @@ class MemoryViewActivity : AppCompatActivity(), MemoryViewContract.View {
         when {
             media.contains("jpg") -> {
                 val memoryViewPhoto = ImageView(this)
-                Log.d("hoho", media)
                 val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                 memoryViewPhoto.layoutParams = params
                 memoryViewPhoto.scaleType = ImageView.ScaleType.FIT_START
