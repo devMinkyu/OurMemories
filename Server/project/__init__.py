@@ -10,6 +10,9 @@ from flask_session import Session
 FACEBOOK_APP_ID = '147688489311870'
 FACEBOOK_APP_SECRET = '19210ee5aceec1dee4d2521028da935d'
 
+KAKAO_APP_ID = 'a8623df628f6faabd914e50828a0d799'
+KAKAO_APP_SECRET = 'abcdefgh'
+
 # app = Flask('project')
 app = Flask(__name__)
 
@@ -35,6 +38,18 @@ facebook = oauth.remote_app(
     access_token_url='/oauth/access_token',
     access_token_method='GET',
     authorize_url='https://www.facebook.com/dialog/oauth'
+)
+
+kakao = oauth.remote_app(
+    'kakao',
+    base_url='https://kauth.kakao.com',
+    request_token_params={'scope': 'user:email'},
+    request_token_url=None,
+    access_token_method='POST',
+    access_token_url='https://kauth.kakao.com/oauth/token',
+    authorize_url='https://kauth.kakao.com/oauth/authorize',
+    consumer_key=KAKAO_APP_ID,
+    consumer_secret=KAKAO_APP_SECRET
 )
 
 # configuration

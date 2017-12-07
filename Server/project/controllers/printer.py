@@ -34,8 +34,7 @@ images = db.image # image collection 선택
 
 @app.route('/')
 def index():
-    print(SENDING_IMAGE_PATH)
-    return redirect(url_for('login'))
+    return redirect(url_for('dlogin'))
 
 
 # android의 access token으로 페이스북 정보 가져오기 / Json 형식으로 Android로 넘기기
@@ -208,10 +207,44 @@ def profile():
 #     #     (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
 
 
+@app.route('/kakaoLogin')
+def dlogin():
+    callback = url_for(
+        'kakao_oauth_callback',
+        next=request.args.get('next') or request.referrer or None,
+        _external=True
+    )
+    print(callback)
+    return kakao.authorize(callback=callback)
+
+
+@app.route('/oauth/kakao/callback')
+@kakao.authorized_handler
+def kakao_oauth_callback(resp):
+    print('df')
+    # resp = kakao.authorized_response()
+    if resp is None:
+        print('개썅')
+        return 'Access denied: reason=%s error=%s' % (
+            request.args['error'],
+            request.args['error+description']
+        )
+    print('fdfd')
+    session['kakao_token'] = (resp['oauth_token'], '')
+    me = kakao.get('user')
+    print(me)
+    return jsonify(me.data)
+
+
 # 웹에서 페이스북 토큰 받는 부분
 @facebook.tokengetter
 def get_facebook_oauth_token():
     return session.get('oauth_token')
+
+
+@kakao.tokengetter
+def get_kakao_token(token=None):
+    return session.get('kakao_token')
 
 
 # OurMemories 추억에서 입력한 값 DB에 저장
@@ -347,10 +380,13 @@ def recommand():
 def alarm():
     userId = request.form['userId']
     is_user = user.find_one({"id" : userId})
+    _id = request.form['_id']
 
     if is_user != None:
         token = is_user['FCMtoken']
+        forAlarm = images.find_one({'_id' : ObjectId(_id)})
+        fromDate = froAlarm['memoryFromDate']
         registration_id = token
-        message_title = "보이니??"
-        message_body = "그렇다면 우리는 테스트에 통과한것이여."
+        message_title = 'Time Capsule'
+        message_body = fromDate.encode('utf-8') + '부터 타임캡슐을 확인할 수 있습니다 .'
         result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
