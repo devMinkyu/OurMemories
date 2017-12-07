@@ -73,7 +73,7 @@ def login():
         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
         # isSuccess와 userLoginResult를 Json으로
         # sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-        user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken, 'FCMtoekn' : token})
+        user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken, 'FCMtoken' : token})
 
         registration_id = token
         message_title = "Uber update"
@@ -113,11 +113,9 @@ def profile():
     token = request.form['token'] # FCM token 받기
 
     if is_user != None:
-        userData = user.find()
-        for docs in userData:
-            user.update({'id' : userId}, {'id' : userId, 'userName' : docs['userName'], 'email' : docs['email'], 'profile' : docs['profile'], 'accessToken' : docs['accessToken'], 'FCMtoekn' : token})
+        user.update({'id' : userId}, {'id' : userId, 'userName' : is_user['userName'], 'email' : is_user['email'], 'profile' : is_user['profile'], 'accessToken' : is_user['accessToken'], 'FCMtoken' : token})
         isSuccess = 'true'
-        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(is_user['id'],is_user['userName'],is_user['email'],is_user['profile'],"1")))
+        user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl', 'authLogin'),(is_user['id'], is_user['userName'], is_user['email'], is_user['profile'], "1")))
 
         # image collection에 있는 id값을 가져온다.
         memoryId = images.find({"userId" : userId})
@@ -356,5 +354,3 @@ def alarm():
         message_title = "보이니??"
         message_body = "그렇다면 우리는 테스트에 통과한것이여."
         result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
-        print result
-        print(result)
