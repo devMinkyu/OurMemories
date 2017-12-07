@@ -31,7 +31,6 @@ push_service = FCMNotification(api_key="AAAAAiopj3U:APA91bHxO3y1N07nxc9UxwvmRVIj
 db = connection.OurMemories # DB 선택
 user = db.users # collection 선택
 images = db.image # image collection 선택
-url = db.imageURL
 
 @app.route('/')
 def index():
@@ -344,3 +343,18 @@ def recommand():
         sendToAndroid = dict(zip( ('isSuccess', 'reviewMemoryResult'), (isSuccess, reviewMemoryArray) ))
 
     return jsonify(sendToAndroid)
+
+
+@app.route('/alarm', methods=['GET', 'POST'])
+def alarm():
+    userId = request.form['userId']
+    is_user = user.find_one({"id" : userId})
+
+    if is_user != None:
+        token = is_user['FCMtoken']
+        registration_id = token
+        message_title = "보이니??"
+        message_body = "그렇다면 우리는 테스트에 통과한것이여."
+        result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
+        print result
+        print(result)
