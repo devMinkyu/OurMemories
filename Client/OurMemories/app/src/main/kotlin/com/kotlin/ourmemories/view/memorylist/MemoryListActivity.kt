@@ -13,7 +13,7 @@ import android.widget.TextView
 import com.google.android.gms.maps.model.LatLng
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.R
-import com.kotlin.ourmemories.manager.MyApplication.Companion.context
+import com.kotlin.ourmemories.manager.GlobalApplication.Companion.context
 import com.willowtreeapps.spruce.Spruce
 import com.willowtreeapps.spruce.animation.DefaultAnimations
 import com.willowtreeapps.spruce.sort.DefaultSort

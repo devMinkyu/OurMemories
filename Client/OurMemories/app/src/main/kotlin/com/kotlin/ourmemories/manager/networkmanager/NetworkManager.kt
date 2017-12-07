@@ -5,7 +5,7 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.jakewharton.picasso.OkHttp3Downloader
-import com.kotlin.ourmemories.manager.MyApplication
+import com.kotlin.ourmemories.manager.GlobalApplication
 import com.squareup.picasso.Picasso
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -34,7 +34,7 @@ class NetworkManager {
 
     init {
         val builder = OkHttpClient.Builder()
-        val context = MyApplication.context
+        val context = GlobalApplication.context
 
         // 영속적 쿠키 설정
         val cookieJar: ClearableCookieJar = PersistentCookieJar(SetCookieCache(),SharedPrefsCookiePersistor(context))

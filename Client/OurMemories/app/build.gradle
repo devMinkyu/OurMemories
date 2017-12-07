@@ -70,6 +70,8 @@ dependencies {
     implementation 'org.jetbrains.anko:anko-commons:0.10.1'
     //리사이클 뷰 디자인
     compile 'com.willowtreeapps.spruce:spruce-android:1.0.1'
+    //카카오톡 로그인
+    compile group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
 }
 repositories {
     mavenCentral()

@@ -14,11 +14,13 @@ interface LoginContract {
         var activity:LoginActivity
         var mLoginManager: LoginManager
         var callbackManager: CallbackManager
+        var callback:LoginPresenter.SessionCallback
         var mRegistrationBroadcastReceiver:BroadcastReceiver
         var loginData: LoginRepository
 
         fun animation()
         fun facebookLogin()
+        fun kakaoLogin()
         fun checkPlayServices(): Boolean
         fun isLogin(): Boolean
     }

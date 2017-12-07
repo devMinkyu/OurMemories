@@ -7,5 +7,6 @@ import okhttp3.Callback
  * Created by kimmingyu on 2017. 11. 4..
  */
 interface LoginSource {
-    fun loginServer(accessToken:String, token:String, requestloginCallback:Callback, activity: LoginActivity)
+    fun facebookLoginServer(accessToken:String, token:String, requestloginCallback:Callback, activity: LoginActivity)
+    fun kakaoLoginServer(accessToken:String, token:String, requestloginCallback:Callback, activity: LoginActivity)
 }

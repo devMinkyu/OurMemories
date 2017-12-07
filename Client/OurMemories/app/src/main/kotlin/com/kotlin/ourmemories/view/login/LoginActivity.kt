@@ -14,12 +14,8 @@ import com.kotlin.ourmemories.view.login.presenter.LoginContract
 import com.kotlin.ourmemories.view.login.presenter.LoginPresenter
 import kotlinx.android.synthetic.main.activity_login.*
 import android.graphics.Typeface
-import android.util.Log
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.messaging.FirebaseMessaging
+import com.kakao.auth.Session
 import com.kotlin.ourmemories.data.source.login.LoginRepository
-import com.kotlin.ourmemories.service.fcm.MyFirebaseInstanceIDService
-import com.kotlin.ourmemories.service.fcm.MyFirebaseMessagingService
 import com.kotlin.ourmemories.view.MainActivity
 
 
@@ -32,6 +28,7 @@ class LoginActivity : AppCompatActivity(){
     companion object {
 
         val START_DELAY = 300
+
         val ANIM_TIME_DURATION = 1000
         val ITEM_DELAY = 300
         val PLAY_SERVICES_RESOLUTION_REQUEST = 9000
@@ -54,6 +51,7 @@ class LoginActivity : AppCompatActivity(){
             activity = this@LoginActivity
             mLoginManager = LoginManager.getInstance()
             callbackManager = CallbackManager.Factory.create()
+            callback = LoginPresenter.SessionCallback()
             loginData = LoginRepository()
         }
 
@@ -73,13 +71,26 @@ class LoginActivity : AppCompatActivity(){
 
         // 카카오톡 로그인 버튼 눌렀을 때(우선 메인 액티비티로 가는 버튼
         kakao_login_button.setOnClickListener{
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            if(presenter.isLogin()){
+                Toast.makeText(this, "이미 로그인 되어있습니다. 로그아웃 해주세요", Toast.LENGTH_SHORT).show()
+                presenter.mLoginManager.logOut()
+                finish()
+            }else{
+                showDialog()
+                presenter.kakaoLogin()
+            }
+//            startActivity(Intent(this, MainActivity::class.java))
+//            finish()
         }
     }
-
     override fun onResume() {
         super.onResume()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Session.getCurrentSession().removeCallback(presenter.callback)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -91,13 +102,18 @@ class LoginActivity : AppCompatActivity(){
     // facebook Login 인증에 대한 결과를 받아오는 곳
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         // 등록이 되어 있어야지 정상적으로 onSuccess에서 정보를 받을 수 있다
-        presenter.callbackManager.onActivityResult(requestCode, resultCode, data)
+        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)){
+            return
+        }else{
+            presenter.callbackManager.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     fun showDialog() { animation_view.visibility = View.VISIBLE }
     fun hideDialog() { animation_view.visibility = View.INVISIBLE }
+
+
 }
 
 

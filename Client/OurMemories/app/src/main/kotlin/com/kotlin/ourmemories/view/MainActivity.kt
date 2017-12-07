@@ -3,13 +3,13 @@ package com.kotlin.ourmemories.view
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.view.memory.MemoryFragment
 import com.kotlin.ourmemories.view.memorypin.MemoryPinFragment
 import com.kotlin.ourmemories.view.memorylist.MemoryListFragment
 import com.kotlin.ourmemories.view.setting.SettingFragment
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -60,4 +60,5 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
     }
+
 }

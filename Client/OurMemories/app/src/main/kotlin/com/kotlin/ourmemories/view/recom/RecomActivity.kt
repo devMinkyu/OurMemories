@@ -60,6 +60,7 @@ class RecomActivity : AppCompatActivity(),RecomContract.View, View.OnClickListen
         adapter.setOnItemClickListener(this)
     }
 
+    // 지도 보여주는 부분
     override fun onClick(p0: View?) {
 
     }

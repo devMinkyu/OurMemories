@@ -8,7 +8,11 @@ import okhttp3.Callback
  */
 class LoginRepository: LoginSource {
     private val loginRemoteDataSource = LoginRemoteDataSource
-    override fun loginServer(accessToken: String, token:String, requestloginCallback: Callback, activity: LoginActivity) {
-        loginRemoteDataSource.loginServer(accessToken, token, requestloginCallback, activity)
+    override fun facebookLoginServer(accessToken: String, token:String, requestloginCallback: Callback, activity: LoginActivity) {
+        loginRemoteDataSource.facebookLoginServer(accessToken, token, requestloginCallback, activity)
+    }
+
+    override fun kakaoLoginServer(accessToken: String, token: String, requestloginCallback: Callback, activity: LoginActivity) {
+        loginRemoteDataSource.kakaoLoginServer(accessToken, token, requestloginCallback, activity)
     }
 }
