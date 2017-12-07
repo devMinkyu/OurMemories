@@ -29,6 +29,8 @@ import com.kakao.auth.*
 import com.kakao.auth.authorization.authcode.KakaoWebViewActivity
 import com.kakao.auth.network.response.AccessTokenInfoResponse
 import com.kakao.network.ErrorResult
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.kakao.util.exception.KakaoException
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
@@ -45,6 +47,7 @@ import okhttp3.Response
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startService
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.yesButton
 import java.io.IOException
 import java.util.*
@@ -168,7 +171,10 @@ class LoginPresenter: LoginContract.Presenter{
         }else{
             activity.hideDialog()
             activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
-                yesButton { mLoginManager.logOut() }
+                yesButton {
+                    PManager.setUserIsLogin("0")
+                    mLoginManager.logOut()
+                }
             }.show()
         }
     }
@@ -178,13 +184,23 @@ class LoginPresenter: LoginContract.Presenter{
         token = FirebaseInstanceId.getInstance().token
         if (token != null) {
             PManager.setUserFcmRegId(token!!)
+            Log.d("hoho", "들어옴")
 
             Session.getCurrentSession().addCallback(callback)
-            Session.getCurrentSession().checkAndImplicitOpen()
+            //Session.getCurrentSession().checkAndImplicitOpen()
+            com.kakao.auth.Session.getCurrentSession().open(AuthType.KAKAO_LOGIN_ALL, activity)
         }else{
             activity.hideDialog()
             activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
-                yesButton { mLoginManager.logOut() }
+                yesButton {
+                    PManager.setUserIsLogin("0")
+                    UserManagement.requestLogout(object : LogoutResponseCallback(){
+                        override fun onCompleteLogout() {
+                            activity.startActivity<LoginActivity>()
+                            activity.finish()
+                        }
+                    })
+                }
             }.show()
         }
     }
@@ -195,6 +211,7 @@ class LoginPresenter: LoginContract.Presenter{
 
         override fun onSessionOpened() {
             kakaoAccessToken = Session.getCurrentSession().accessToken
+            Log.d("hoho", kakaoAccessToken)
             loginData.kakaoLoginServer(kakaoAccessToken!!, PManager.getUserFcmRegId(), requestloginCallback, activity)
         }
     }
