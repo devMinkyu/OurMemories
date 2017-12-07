@@ -3,6 +3,7 @@ package com.kotlin.ourmemories.view.memoryview
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -44,9 +45,6 @@ class MemoryViewActivity : AppCompatActivity(), MemoryViewContract.View {
                 memoryViewPhoto.layoutParams = params
                 memoryViewPhoto.scaleType = ImageView.ScaleType.FIT_START
                 memoryViewPhoto.adjustViewBounds = true
-
-//                NManager.init()
-//                val picasso = NManager.gatPicasso()
 
                 Picasso.with(this)
                         .load(media)

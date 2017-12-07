@@ -1,4 +1,4 @@
-package com.kotlin.ourmemories.view.place
+package com.kotlin.ourmemories.view.place.adapter.data
 
 /**
  * Created by hee on 2017-11-28.

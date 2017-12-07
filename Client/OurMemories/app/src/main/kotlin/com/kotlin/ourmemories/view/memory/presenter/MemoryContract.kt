@@ -15,5 +15,6 @@ interface MemoryContract {
 
         fun intentActivity(activity: AppCompatActivity)
         fun loadMemory(date:String)
+        fun existMemory()
     }
 }

@@ -1,4 +1,4 @@
-package com.kotlin.ourmemories.view.place.expand
+package com.kotlin.ourmemories.view.place.adapter.viewholder
 
 /**
  * Created by hee on 2017-11-28.

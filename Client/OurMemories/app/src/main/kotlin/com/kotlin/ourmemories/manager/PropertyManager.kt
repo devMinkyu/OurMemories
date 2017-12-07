@@ -51,9 +51,15 @@ object PManager{
         pManager?.mEditor!!.putString(PropertyManager.KEY_FACEBOOK_ID, userFacebookId)
         pManager?.mEditor!!.commit()
     }
+    // 카카오톡 토큰
+    fun getUserKakaoId():String = pManager?.mProfile!!.getString(PropertyManager.KEY_KAKAO_ID,"")
+    fun setUserKakaoId(userKakaoId: String){
+        pManager?.mEditor!!.putString(PropertyManager.KEY_KAKAO_ID, userKakaoId)
+        pManager?.mEditor!!.commit()
+    }
     // FCM 토큰
     fun getUserFcmRegId():String = pManager?.mProfile!!.getString(PropertyManager.KEY_FCM_REG_ID,"")
-    fun getUserFcmRegId(userFcmRegId: String){
+    fun setUserFcmRegId(userFcmRegId: String){
         pManager?.mEditor!!.putString(PropertyManager.KEY_FCM_REG_ID, userFcmRegId)
         pManager?.mEditor!!.commit()
     }
@@ -78,13 +84,14 @@ class PropertyManager {
 
         // SNS 토큰
         val KEY_FACEBOOK_ID = "facebookId"
+        val KEY_KAKAO_ID = "kakaoId"
         val KEY_FCM_REG_ID = "fcmToken"
         val ALARM_BADGE_NUMBER = "alarmBadgeNumber"
 
         //FCM알람관련 뱃지카운터.//
         var badgeNumber = 0
     }
-    val context:Context = MyApplication.context
+    val context:Context = GlobalApplication.context
     val mProfile: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(context)
     }

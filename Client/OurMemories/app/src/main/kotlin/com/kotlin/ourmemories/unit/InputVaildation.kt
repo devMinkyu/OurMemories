@@ -56,11 +56,13 @@ class InputVaildation(context:Context) {
             for (title in 0 until cursor.count) {
                 if (mTitle == cursor.getString(1)) {
                     textInputLayout.error = message
+                    DBManagerMemory.close()
                     return false
                 }
                 cursor.moveToNext()
             }
         }
+        DBManagerMemory.close()
         return true
     }
 

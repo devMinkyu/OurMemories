@@ -11,7 +11,7 @@ import okhttp3.Callback
 class AutoLoginRepository : AutoLoginSource {
     private val profileRemoteDataSource = AutoLoginRemoteDataSource
 
-    override fun getProfile(userId: String, requestProfileCallback: Callback, activity: SplashActivity) {
-        profileRemoteDataSource.getProfile(userId,requestProfileCallback,activity)
+    override fun getProfile(userId: String, token:String, requestProfileCallback: Callback, activity: SplashActivity) {
+        profileRemoteDataSource.getProfile(userId,token,requestProfileCallback,activity)
     }
 }

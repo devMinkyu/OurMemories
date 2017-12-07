@@ -22,7 +22,14 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GooglePlayServicesUtil
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
+import com.kakao.auth.*
+import com.kakao.auth.authorization.authcode.KakaoWebViewActivity
+import com.kakao.auth.network.response.AccessTokenInfoResponse
+import com.kakao.network.ErrorResult
+import com.kakao.util.exception.KakaoException
 import com.kotlin.ourmemories.DB.DBManagerMemory
 import com.kotlin.ourmemories.DB.MemoryData
 import com.kotlin.ourmemories.R
@@ -53,8 +60,11 @@ class LoginPresenter: LoginContract.Presenter{
     lateinit override var callbackManager: CallbackManager
     lateinit override var loginData: LoginRepository
 
-    lateinit var accessToken:String
-    lateinit var registerId:String
+    lateinit override var callback:SessionCallback
+    var fbAccessToken:String? = null
+    var kakaoAccessToken:String? = null
+    var token:String? = null
+
     init {
         PManager.init()
     }
@@ -129,29 +139,64 @@ class LoginPresenter: LoginContract.Presenter{
         mLoginManager.defaultAudience = DefaultAudience.FRIENDS
         mLoginManager.loginBehavior = LoginBehavior.NATIVE_WITH_FALLBACK
 
-        // 콜백 등록
-        mLoginManager.registerCallback(callbackManager, object :FacebookCallback<LoginResult>{
-            override fun onSuccess(result: LoginResult?) {
-                val facebookAccessToken:AccessToken = AccessToken.getCurrentAccessToken()
+        token = FirebaseInstanceId.getInstance().token
 
-                accessToken = facebookAccessToken.token
+        if (token != null) {
+            PManager.setUserFcmRegId(token!!)
+            // 콜백 등록
+            mLoginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult?) {
+                    val facebookAccessToken: AccessToken = AccessToken.getCurrentAccessToken()
 
-                Log.d("LoginToken", "facebook token: ${accessToken}")
+                    fbAccessToken = facebookAccessToken.token
 
-                loginData.loginServer(accessToken,requestloginCallback,activity)
 
-                val parameters = Bundle()
-                parameters.putString("fields", "id,name,email")
-            }
+                    loginData.facebookLoginServer(fbAccessToken!!, PManager.getUserFcmRegId(), requestloginCallback, activity)
 
-            override fun onCancel() {
-            }
+                    val parameters = Bundle()
+                    parameters.putString("fields", "id,name,email")
+                }
 
-            override fun onError(error: FacebookException?) {
-            }
-        })
+                override fun onCancel() {
+                }
 
-        mLoginManager.logInWithReadPermissions(activity, Arrays.asList("email"))
+                override fun onError(error: FacebookException?) {
+                }
+            })
+
+            mLoginManager.logInWithReadPermissions(activity, Arrays.asList("email"))
+        }else{
+            activity.hideDialog()
+            activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
+                yesButton { mLoginManager.logOut() }
+            }.show()
+        }
+    }
+
+    // 카카오톡 로그인
+    override fun kakaoLogin() {
+        token = FirebaseInstanceId.getInstance().token
+        if (token != null) {
+            PManager.setUserFcmRegId(token!!)
+
+            Session.getCurrentSession().addCallback(callback)
+            Session.getCurrentSession().checkAndImplicitOpen()
+        }else{
+            activity.hideDialog()
+            activity.alert(activity.resources.getString(R.string.error_message_network), "Login"){
+                yesButton { mLoginManager.logOut() }
+            }.show()
+        }
+    }
+
+    inner class SessionCallback:ISessionCallback{
+        override fun onSessionOpenFailed(exception: KakaoException?) {
+        }
+
+        override fun onSessionOpened() {
+            kakaoAccessToken = Session.getCurrentSession().accessToken
+            loginData.kakaoLoginServer(kakaoAccessToken!!, PManager.getUserFcmRegId(), requestloginCallback, activity)
+        }
     }
 
     // 로그인 되어있는지 검사
@@ -161,13 +206,13 @@ class LoginPresenter: LoginContract.Presenter{
     }
 
     fun userSave(loginRequest:UserLogin){
-        Log.d("hoho", "들어온다")
         activity.hideDialog()
         // 공유저장소에 저장전 한번 초기화 시켜준다
         PManager.setUserId("")
         PManager.setUserEmail("")
         PManager.setUserName("")
         PManager.setUserFacebookId("")
+        PManager.setUserKakaoId("")
         PManager.setUserProfileImageUrl("")
         PManager.setUserIsLogin("0")
 
@@ -175,9 +220,14 @@ class LoginPresenter: LoginContract.Presenter{
         PManager.setUserId(loginRequest.userLoginResult.userId)
         PManager.setUserEmail(loginRequest.userLoginResult.userEmail)
         PManager.setUserName(loginRequest.userLoginResult.userName)
-        PManager.setUserFacebookId(accessToken)
         PManager.setUserProfileImageUrl(loginRequest.userLoginResult.userProfileImageUrl)
         PManager.setUserIsLogin("1")
+
+        if(fbAccessToken !=null){
+            PManager.setUserFacebookId(fbAccessToken!!)
+        }else{
+            PManager.setUserKakaoId(kakaoAccessToken!!)
+        }
 
         // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
         if(loginRequest.userLoginMemoryResult != null) {
@@ -188,13 +238,14 @@ class LoginPresenter: LoginContract.Presenter{
                         loginRequest.userLoginMemoryResult[i].memoryLongitude.toDouble(), loginRequest.userLoginMemoryResult[i].memoryNation, loginRequest.userLoginMemoryResult[i].memoryFromDate,
                         loginRequest.userLoginMemoryResult[i].memoryToDate, loginRequest.userLoginMemoryResult[i].memoryClassification.toInt())
             }
-            //DBManagerMemory.deleteTable()
+            DBManagerMemory.deleteTable()
             (0 until item.size).forEach { i ->
+                Log.d("hoho", item[i].toString())
                 DBManagerMemory.addMemory(item[i]!!)
             }
+            DBManagerMemory.close()
         }
     }
-
     // 애니메이션
     override fun animation() {
         ViewCompat.animate(activity.img_logo).translationY((-250).toFloat()).setStartDelay((LoginActivity.START_DELAY).toLong()).setDuration((LoginActivity.ANIM_TIME_DURATION).toLong()).setInterpolator (

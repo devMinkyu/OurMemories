@@ -22,23 +22,24 @@ class MyFirebaseMessagingService : com.google.firebase.messaging.FirebaseMessagi
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        val title = remoteMessage?.data!!["title"]
-        val message = remoteMessage?.data!!["message"]
-
-        sendNotification(title, message)
-
+        if (remoteMessage?.data?.size!! > 0) {
+            sendNotification(remoteMessage?.data?.get("message"))
+        }
+        if (remoteMessage.notification != null) {
+            sendNotification(remoteMessage?.notification?.body)
+        }
         // 배지 등록
         setAlarmBadge()
     }
 
-    private fun sendNotification(title: String?, message: String?) {
+    private fun sendNotification(message: String?) {
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this).setSmallIcon(R.mipmap.ourmemory_logo)
-                .setContentTitle(title)
+                .setContentTitle("OurMemories")
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

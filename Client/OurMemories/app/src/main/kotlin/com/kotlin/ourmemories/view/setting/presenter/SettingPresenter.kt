@@ -2,7 +2,8 @@ package com.kotlin.ourmemories.view.setting.presenter
 
 import android.content.Context
 import android.support.v4.app.Fragment
-import com.kotlin.ourmemories.view.profile.ProfileActivity
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.kotlin.ourmemories.manager.PManager
 import com.kotlin.ourmemories.view.login.LoginActivity
 import org.jetbrains.anko.support.v4.startActivity
@@ -18,12 +19,19 @@ class SettingPresenter:SettingContract.Presenter {
     }
 
     override fun logOut() {
-        PManager.setUserIsLogin("0")
-        fragment.startActivity<LoginActivity>()
-        fragment.activity.finish()
-    }
-
-    override fun profile() {
-        fragment.startActivity<ProfileActivity>()
+        if(PManager.getUserKakaoId() != ""){
+            PManager.setUserIsLogin("0")
+            fragment.startActivity<LoginActivity>()
+            fragment.activity.finish()
+        }else{
+            PManager.setUserIsLogin("0")
+            PManager.setUserKakaoId("")
+            UserManagement.requestLogout(object : LogoutResponseCallback(){
+                override fun onCompleteLogout() {
+                    fragment.startActivity<LoginActivity>()
+                    fragment.activity.finish()
+                }
+            })
+        }
     }
 }

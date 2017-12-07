@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
@@ -84,6 +85,8 @@ class MemoryFragment : Fragment(), MemoryContract.View, OnDateSelectedListener, 
         calendarView.setOnDateChangedListener(this)
 
         dayMemoryList.layoutManager = LinearLayoutManager(context)
+
+        //presenter.existMemory()
     }
 
     override fun onStart() {
@@ -143,6 +146,16 @@ class SundayDecorator : DayViewDecorator {
 
     override fun decorate(view: DayViewFacade?) {
         view?.addSpan(ForegroundColorSpan(Color.RED))
+    }
+
+}
+
+// 특정 날짜
+class EventDecorator(color:Int, calendarDay: CalendarDay) : DayViewDecorator {
+    val date = calendarDay
+    override fun shouldDecorate(day: CalendarDay?): Boolean = (date != null) and (day!! == date)
+    override fun decorate(view: DayViewFacade) {
+        view.addSpan(ForegroundColorSpan(Color.GREEN))
     }
 
 }

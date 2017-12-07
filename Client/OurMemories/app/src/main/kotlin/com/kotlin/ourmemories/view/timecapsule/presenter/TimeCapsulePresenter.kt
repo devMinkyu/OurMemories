@@ -16,6 +16,7 @@ import android.location.LocationManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.util.Log
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
@@ -75,6 +76,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     lateinit var text: String
     lateinit var fromDate: String
     lateinit var toDate: String
+    lateinit var address: String
 
     init {
         mYear = calendar.get(Calendar.YEAR)
@@ -98,14 +100,16 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             activity.runOnUiThread {
                 activity.hideDialog()
                 val responseData = response?.body()!!.string()
+
                 val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
 
                 val isSuccess = memoryRequest.isSuccess
                 // 서버 디비에 저장된 후 로컬 디비 저장
                 if (isSuccess == "true") {
-                    memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation, text, null, 0, null, activity)
+                    memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation,address, text, null, 0, null, activity)
                     // 알람 설정
                     val intent = Intent("com.kotlin.ourmemories.ALARM_START")
+                    intent.putExtra("_id", memoryRequest.id)
                     val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
                     val mAlarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                     mAlarmManager.set(
@@ -208,9 +212,10 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                 location?.let {
                     lat = location!!.latitude
                     lon = location!!.longitude
-                    val address = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
-                    nation = address[0].countryName
-                    mView.updateAddressView(address[0].getAddressLine(0), lat, lon)
+                    val geo = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
+                    nation = geo[0].countryName
+                    address = geo[1].getAddressLine(0)
+                    mView.updateAddressView(address,lat,lon)
                 } ?: activity.toast("why!!")
             }
         }
@@ -395,17 +400,12 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         }
 
         // 테스트
-        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, null, 0, null, activity)
-        activity.finish()
+//        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, address, nation, text, null, 0, null, activity)
+//        activity.finish()
 
         // 로컬 디비전에 서버 디비에 우선 저장
-        // 텍스트일 경우와 사진,동영상일 경우
-
-//        activity.showDialog()
-//        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
-
         activity.showDialog()
-        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
+        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, address, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
     }
 
     private fun print(text: String) {

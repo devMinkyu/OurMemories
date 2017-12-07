@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">OurMemories</string>
     <string name="server_domain">13.124.79.162</string>
+    <string name="port_number">8000</string>
     <!--페이스북 키-->
     <string name="facebook_app_id">147688489311870</string>
     <string name="fb_login_protocol_scheme">fb147688489311870</string>
+    <!--카카오톡 키-->
+    <string name="kakao_app_key">efdfb0c69d6dd29cd6e3c675cda0975a</string>
 
     <!--FCM Key-->
     <string name="server_api_key">AIzaSyDncJCwVCIbJ1hSo37HvZrFx58Dc2E5hD4</string>

@@ -19,8 +19,6 @@ class HomeFragment: Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         homeContainer.adapter = pagerAdapter(childFragmentManager)
-        homeContainer.currentItem = 1
+        homeContainer.currentItem = 0
     }
-
-
 }

@@ -12,6 +12,5 @@ interface SettingContract {
         var mContext:Context
 
         fun logOut()
-        fun profile()
     }
 }
