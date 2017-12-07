@@ -64,7 +64,6 @@
         <activity android:name=".view.recom.RecomActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".view.profile.ProfileActivity"/>
         <!-- facebook Login -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

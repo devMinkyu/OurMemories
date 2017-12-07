@@ -18,15 +18,15 @@ import com.kotlin.ourmemories.view.recom.presenter.RecomContract
 import com.kotlin.ourmemories.view.recom.presenter.RecomPresenter
 import kotlinx.android.synthetic.main.activity_recom.*
 
-class RecomActivity : AppCompatActivity(),RecomContract.View {
+class RecomActivity : AppCompatActivity(),RecomContract.View, View.OnClickListener {
     companion object {
+
         val EXTRA_SIGUNGU_NAME = "sigungu_name"
         val EXTRA_SIDO_NAME = "sido_name"
     }
-
     lateinit var presenter:RecomContract.Presenter
-    lateinit var adapter:RecomAdapter
 
+    lateinit var adapter:RecomAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recom)
@@ -57,9 +57,11 @@ class RecomActivity : AppCompatActivity(),RecomContract.View {
         hideDialog()
         adapter = RecomAdapter(applicationContext,items)
         reComList.adapter = adapter
+        adapter.setOnItemClickListener(this)
     }
-    fun showDialog() {
-        loading_recom.visibility = View.VISIBLE
+
+    override fun onClick(p0: View?) {
+
     }
     fun hideDialog() {
         loading_recom.visibility = View.INVISIBLE

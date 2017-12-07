@@ -14,7 +14,6 @@ object LoginRemoteDataSource: LoginSource {
             // network 설정
             NManager.init()
             val client = NManager.getClinet()
-        Log.d("hoho", "서버 들어온다")
 
             // post 방식
             var builder = HttpUrl.Builder()

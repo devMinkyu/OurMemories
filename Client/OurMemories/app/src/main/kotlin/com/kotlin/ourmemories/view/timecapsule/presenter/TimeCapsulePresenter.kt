@@ -101,7 +101,6 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             activity.runOnUiThread {
                 activity.hideDialog()
                 val responseData = response?.body()!!.string()
-                Log.d("hoho", responseData)
 
                 val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
 
@@ -111,6 +110,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation,address, text, null, 0, null, activity)
                     // 알람 설정
                     val intent = Intent("com.kotlin.ourmemories.ALARM_START")
+                    intent.putExtra("_id", memoryRequest.id)
                     val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
                     val mAlarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                     mAlarmManager.set(

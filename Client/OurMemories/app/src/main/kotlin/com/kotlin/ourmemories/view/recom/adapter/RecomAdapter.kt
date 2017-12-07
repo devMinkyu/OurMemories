@@ -10,6 +10,7 @@ import com.kotlin.ourmemories.data.jsondata.ReComMemoryResult
  * Created by kimmingyu on 2017. 12. 6..
  */
 class RecomAdapter(context: Context, items:List<ReComMemoryResult>):RecyclerView.Adapter<RecomViewHolder>() {
+    private var onItemClick: View.OnClickListener? = null
     private val mContext = context
     private val mItems = items
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecomViewHolder = RecomViewHolder(parent)
@@ -17,7 +18,12 @@ class RecomAdapter(context: Context, items:List<ReComMemoryResult>):RecyclerView
     override fun onBindViewHolder(holder: RecomViewHolder?, position: Int) {
         val item = mItems.get(position)
         holder?.bindView(mContext, item)
+        holder?.itemView!!.setOnClickListener(onItemClick)
     }
 
     override fun getItemCount(): Int = mItems.size
+
+    fun setOnItemClickListener(l:View.OnClickListener){
+        onItemClick = l
+    }
 }
