@@ -76,6 +76,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     lateinit var text: String
     lateinit var fromDate: String
     lateinit var toDate: String
+    lateinit var detailAddress: String
     lateinit var address: String
 
     init {
@@ -106,7 +107,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                 val isSuccess = memoryRequest.isSuccess
                 // 서버 디비에 저장된 후 로컬 디비 저장
                 if (isSuccess == "true") {
-                    memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation,address, text, null, 0, null, activity)
+                    memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation, detailAddress, address, text, null, 0, null, activity)
                     // 알람 설정
                     val intent = Intent("com.kotlin.ourmemories.ALARM_START")
                     intent.putExtra("_id", memoryRequest.id)
@@ -214,8 +215,9 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     lon = location!!.longitude
                     val geo = Geocoder(mContext, Locale.KOREAN).getFromLocation(lat, lon, 2)
                     nation = geo[0].countryName
+                    detailAddress = geo[0].getAddressLine(0)
                     address = geo[1].getAddressLine(0)
-                    mView.updateAddressView(address,lat,lon)
+                    mView.updateAddressView(detailAddress, lat, lon)
                 } ?: activity.toast("why!!")
             }
         }
@@ -405,7 +407,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
 
         // 로컬 디비전에 서버 디비에 우선 저장
         activity.showDialog()
-        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, address, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
+        memoryData.memorySave("0", title, fromDate, toDate, lat, lon, detailAddress, address, nation, text, uploadFile, 0, requestTimeCapsuleCallback, activity)
     }
 
     private fun print(text: String) {

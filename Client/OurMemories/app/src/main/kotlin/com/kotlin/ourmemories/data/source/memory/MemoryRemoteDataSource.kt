@@ -15,14 +15,15 @@ import java.io.File
  * Created by kimmingyu on 2017. 11. 24..
  */
 // 서버랑 연동하여 서버 디비에 저장
-object MemoryRemoteDataSource:MemorySource {
+object MemoryRemoteDataSource : MemorySource {
     lateinit override var memoryPinPresenter: MemoryPinPresenter
+
     init {
         NManager.init()
         PManager.init()
     }
 
-    override fun memorySave(id:String, title: String, fromDate: String, toDate: String?, lat: Double, lon: Double, address:String, nation: String, text:String, uploadFile: File?, classification: Int, requestMemoryCallback: Callback?, activity: AppCompatActivity) {
+    override fun memorySave(id: String, title: String, fromDate: String, toDate: String?, lat: Double, lon: Double, detailAddress: String, address: String, nation: String, text: String, uploadFile: File?, classification: Int, requestMemoryCallback: Callback?, activity: AppCompatActivity) {
         // 네트워크 설정
         val client = NManager.getClinet()
 
@@ -44,19 +45,20 @@ object MemoryRemoteDataSource:MemorySource {
                 .addFormDataPart("memoryToDate", toDate)
                 .addFormDataPart("memoryLatitude", lat.toString())
                 .addFormDataPart("memoryLongitude", lon.toString())
+                .addFormDataPart("memoryDetailAddress", detailAddress)
                 .addFormDataPart("memoryAddress", address)
                 .addFormDataPart("memoryNation", nation)
                 .addFormDataPart("memoryClassification", classification.toString())
                 .addFormDataPart("text", text)
 
         // 사진,동영상 선택 여부
-        when{
-            uploadFile.toString().contains("jpg")->{
+        when {
+            uploadFile.toString().contains("jpg") -> {
                 //파일 전송을 위한 설정.//
                 val mediaType = MediaType.parse("image/jpeg")
                 multipartBuilder.addFormDataPart("uploadFile", uploadFile!!.name, RequestBody.create(mediaType, uploadFile))
             }
-            uploadFile.toString().contains("mp4")->{
+            uploadFile.toString().contains("mp4") -> {
                 //파일 전송을 위한 설정.//
                 val mediaType = MediaType.parse("video/mp4")
 //                    val mediaType = MediaType.parse("video/mpeg")
@@ -80,7 +82,7 @@ object MemoryRemoteDataSource:MemorySource {
 
     }
 
-    override fun getLocalMemory(classification: Int, lat:Double, lon:Double) {
+    override fun getLocalMemory(classification: Int, lat: Double, lon: Double) {
     }
 
     override fun getRemoteMemory(id: String, requestMemoryCallback: Callback, activity: AppCompatActivity) { // 네트워크 설정

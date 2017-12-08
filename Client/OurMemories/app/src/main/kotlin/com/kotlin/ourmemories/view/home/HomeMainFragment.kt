@@ -24,7 +24,6 @@ class HomeMainFragment : Fragment() {
         // 폰트 변경
         val canaroExtraBold = Typeface.createFromAsset(activity.assets, MainActivity.CANARO_EXTRA_BOLD_PATH)
         titleText.typeface = canaroExtraBold
-        pinText.typeface = canaroExtraBold
 
         val main = activity as MainActivity
         mainPin.setOnClickListener {

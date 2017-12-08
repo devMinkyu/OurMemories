@@ -1,29 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="top"
+        android:background="@color/colorPrimary" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/top"
         android:orientation="vertical">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/memoryListToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:contentInsetStart="0dp">
 
+            <TextView
+                android:id="@+id/memoryListTitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="MemoryList"
+                android:textSize="@dimen/font_title_Large_ize" />
+        </android.support.v7.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="70dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="@dimen/memory_15size"
+            android:layout_marginTop="@dimen/memory_15size"
             android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/img_btn_kor"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:layout_weight="1"
-                app:srcCompat="@mipmap/korea_img" />
+                android:layout_marginBottom="@dimen/memory_5size"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/img_btn_kor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="center"
+                    android:src="@mipmap/korea_img"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/korea"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_title_Large_ize" />
+            </FrameLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,21 +70,51 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/img_btn_usa"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleType="center"
-                    app:srcCompat="@mipmap/usa_img" />
+                    android:layout_marginRight="@dimen/memory_5size"
+                    android:layout_weight="1">
 
-                <ImageButton
-                    android:id="@+id/img_btn_jpn"
-                    android:layout_width="wrap_content"
+                    <ImageButton
+                        android:id="@+id/img_btn_usa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="center"
+                        android:src="@mipmap/usa_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/america"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_title_Large_ize" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleType="center"
-                    app:srcCompat="@mipmap/japen_img" />
+                    android:layout_marginBottom="@dimen/memory_5size"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/img_btn_jpn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="center"
+                        android:src="@mipmap/japen_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/japan"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_title_Large_ize" />
+                </FrameLayout>
+
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

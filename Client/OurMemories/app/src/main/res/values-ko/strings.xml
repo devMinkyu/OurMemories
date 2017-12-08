@@ -7,6 +7,10 @@
     <string name="bottom_memory_pin">추억장소</string>
     <string name="bottom_memory_list">추억목록</string>
     <string name="bottom_setting">설정</string>
+    
+    <string name="korea">대한민국</string>
+    <string name="japan">일본</string>
+    <string name="america">미국</string>
 
     <string name="memory_timecapsule">TimeCapsule</string>
     <string name="memory_review">Review</string>

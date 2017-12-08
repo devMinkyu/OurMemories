@@ -18,6 +18,8 @@ import com.kotlin.ourmemories.view.recom.adapter.RecomAdapter
 import com.kotlin.ourmemories.view.recom.presenter.RecomContract
 import com.kotlin.ourmemories.view.recom.presenter.RecomPresenter
 import kotlinx.android.synthetic.main.activity_recom.*
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class RecomActivity : AppCompatActivity(),RecomContract.View , View.OnClickListener{
     companion object {
@@ -61,11 +63,10 @@ class RecomActivity : AppCompatActivity(),RecomContract.View , View.OnClickListe
         adapter.setOnItemClickListener(this)
     }
 
-    override fun onClick(p0: View?) {
-        val address = findViewById<View>(R.id.reComAddress) as TextView
-        val recomMapIntent = Intent(this, RecomMapsActivity::class.java)
-        recomMapIntent.putExtra("address", address.text.toString())
-        startActivity(recomMapIntent)
+    override fun onClick(view: View?) {
+        val address = view?.findViewById<View>(R.id.reComAddress) as TextView
+        toast(address.text.toString())
+        startActivity<RecomMapsActivity>("address" to address.text.toString())
     }
 
 

@@ -8,6 +8,10 @@
     <string name="bottom_memory_list">MemoryList</string>
     <string name="bottom_setting">Setting</string>
 
+    <string name="korea">Korea</string>
+    <string name="japan">Japan</string>
+    <string name="america">USA</string>
+
     <string name="memory_timecapsule">TimeCapsule</string>
     <string name="memory_review">Review</string>
     <string name="memory_title">Title</string>

@@ -3,6 +3,7 @@ package com.kotlin.ourmemories.view.recom.adapter
 import android.content.Context
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -29,6 +30,7 @@ class RecomViewHolder(parent: ViewGroup?):RecyclerView.ViewHolder(LayoutInflater
                     photo.layoutParams = params
                     photo.scaleType = ImageView.ScaleType.FIT_START
                     photo.adjustViewBounds = true
+
 
                     Picasso.with(context)
                             .load(item.media)
