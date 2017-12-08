@@ -3,11 +3,11 @@ package com.kotlin.ourmemories.view.recom
 /**
  * Created by hee on 2017-11-28.
  */
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.kotlin.ourmemories.R
@@ -65,6 +65,9 @@ class RecomActivity : AppCompatActivity(),RecomContract.View, View.OnClickListen
     override fun onClick(view: View?) {
         // 한글 주소
         val address = view?.findViewById<View>(R.id.reComAddress) as TextView
+        val recomMapIntent = Intent(this, RecomMapsActivity::class.java)
+        recomMapIntent.putExtra("address", address.text.toString())
+        startActivity(recomMapIntent)
 
     }
     fun hideDialog() {

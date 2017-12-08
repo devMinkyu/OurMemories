@@ -12,4 +12,5 @@
     <string name="server_api_key">AIzaSyDncJCwVCIbJ1hSo37HvZrFx58Dc2E5hD4</string>
     <string name="sender_id">9297301365</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_recom_maps">Map</string>
 </resources>
