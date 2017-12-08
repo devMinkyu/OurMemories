@@ -10,15 +10,16 @@ import com.kotlin.ourmemories.view.recom.RecomActivity
 /**
  * Created by kimmingyu on 2017. 12. 6..
  */
-class RecomAdapter(items:List<ReComMemoryResult>, activity:RecomActivity):RecyclerView.Adapter<RecomViewHolder>() {
+class RecomAdapter(context: Context, items:List<ReComMemoryResult>, activity:RecomActivity):RecyclerView.Adapter<RecomViewHolder>() {
     private var onItemClick: View.OnClickListener? = null
+    private val mContext = context
     private val mItems = items
     private val mActivity = activity
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecomViewHolder = RecomViewHolder(parent)
 
     override fun onBindViewHolder(holder: RecomViewHolder?, position: Int) {
         val item = mItems.get(position)
-        holder?.bindView(mActivity, item)
+        holder?.bindView(mContext, mActivity, item)
         holder?.itemView!!.setOnClickListener(onItemClick)
     }
 

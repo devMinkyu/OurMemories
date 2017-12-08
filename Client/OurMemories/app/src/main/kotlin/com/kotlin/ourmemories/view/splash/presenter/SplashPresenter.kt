@@ -76,9 +76,9 @@ class SplashPresenter: SplashContract.Presenter {
                         PManager.setUserIsLogin(profileRequest.userProfileResult.authLogin)
                         PManager.setUserFcmRegId(token!!)
 
+                        DBManagerMemory.init(activity.applicationContext)
                         // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
                         if(profileRequest.userProfileMemoryResult != null) {
-                            DBManagerMemory.init(activity.applicationContext)
                             val item = arrayOfNulls<MemoryData>(profileRequest.userProfileMemoryResult.size)
                             for (i in 0 until profileRequest.userProfileMemoryResult.size) {
                                 item[i] = MemoryData(profileRequest.userProfileMemoryResult[i]._id, profileRequest.userProfileMemoryResult[i].memoryTitle, profileRequest.userProfileMemoryResult[i].memoryLatitude.toDouble(),
@@ -89,6 +89,10 @@ class SplashPresenter: SplashContract.Presenter {
                             (0 until item.size).forEach { i ->
                                 DBManagerMemory.addMemory(item[i]!!)
                             }
+                        }
+                        val cursor = DBManagerMemory.getMemoryAllWithCursor()
+                        if(cursor.count == 0){
+                            DBManagerMemory.deleteTable()
                         }
                         DBManagerMemory.close()
                         activity.startActivity<MainActivity>()

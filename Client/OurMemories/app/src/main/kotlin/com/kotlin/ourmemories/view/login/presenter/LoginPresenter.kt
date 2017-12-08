@@ -247,8 +247,8 @@ class LoginPresenter: LoginContract.Presenter{
         }
 
         // 넘어온 메모리애들을 풀어서 데이터 형식으로 만들어 준다음 내부 디비를 완전히 비우고, 다시 저장한다
+        DBManagerMemory.init(activity.applicationContext)
         if(loginRequest.userLoginMemoryResult != null) {
-            DBManagerMemory.init(activity.applicationContext)
             val item = arrayOfNulls<MemoryData>(loginRequest.userLoginMemoryResult.size)
             for (i in 0 until loginRequest.userLoginMemoryResult.size) {
                 item[i] = MemoryData(loginRequest.userLoginMemoryResult[i]._id, loginRequest.userLoginMemoryResult[i].memoryTitle, loginRequest.userLoginMemoryResult[i].memoryLatitude.toDouble(),
@@ -260,8 +260,12 @@ class LoginPresenter: LoginContract.Presenter{
                 Log.d("hoho", item[i].toString())
                 DBManagerMemory.addMemory(item[i]!!)
             }
-            DBManagerMemory.close()
         }
+        val cursor = DBManagerMemory.getMemoryAllWithCursor()
+        if(cursor.count == 0){
+            DBManagerMemory.deleteTable()
+        }
+        DBManagerMemory.close()
     }
     // 애니메이션
     override fun animation() {

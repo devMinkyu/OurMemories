@@ -20,24 +20,24 @@ import kotlinx.android.synthetic.main.item_card.view.*
  * Created by kimmingyu on 2017. 12. 6..
  */
 class RecomViewHolder(parent: ViewGroup?):RecyclerView.ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.item_card,parent,false)) {
-    fun bindView(activity: RecomActivity, item:ReComMemoryResult){
+    fun bindView(context: Context, activity: RecomActivity, item:ReComMemoryResult){
         with(itemView){
             when{
                 item.media.contains("jpg") -> {
-                    val photo = ImageView(activity)
+                    val photo = ImageView(context)
                     val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                     photo.layoutParams = params
                     photo.scaleType = ImageView.ScaleType.FIT_START
                     photo.adjustViewBounds = true
 
-                    Picasso.with(activity)
+                    Picasso.with(context)
                             .load(item.media)
                             .transform(CropSquareTransformation())
                             .into(photo)
                     reComMedia.addView(photo)
                 }
                 item.media.contains("mp4") -> {
-                    val video = VideoView(activity)
+                    val video = VideoView(context)
                     val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, this.resources.getDimension(R.dimen.video_height).toInt())
                     video.layoutParams = params
                     val controller = MediaController(activity)

@@ -56,7 +56,7 @@ class RecomActivity : AppCompatActivity(),RecomContract.View, View.OnClickListen
 
     override fun updateView(items: ArrayList<ReComMemoryResult>) {
         hideDialog()
-        adapter = RecomAdapter(items, this)
+        adapter = RecomAdapter(applicationContext, items, this)
         reComList.adapter = adapter
         adapter.setOnItemClickListener(this)
     }
