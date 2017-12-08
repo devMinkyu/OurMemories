@@ -49,6 +49,8 @@ class MemoryViewActivity : AppCompatActivity(), MemoryViewContract.View {
                 Picasso.with(this)
                         .load(media)
                         .transform(CropSquareTransformation())
+                        .placeholder(R.drawable.image_holder) // 다운로드 중 표시할 이미지
+                        .error(R.drawable.image_error)
                         .into(memoryViewPhoto)
                 memoryViewContents.addView(memoryViewPhoto)
             }

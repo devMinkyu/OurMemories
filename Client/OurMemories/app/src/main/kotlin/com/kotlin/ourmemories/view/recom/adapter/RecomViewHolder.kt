@@ -33,6 +33,8 @@ class RecomViewHolder(parent: ViewGroup?):RecyclerView.ViewHolder(LayoutInflater
                     Picasso.with(context)
                             .load(item.media)
                             .transform(CropSquareTransformation())
+                            .placeholder(R.drawable.image_holder) // 다운로드 중 표시할 이미지
+                            .error(R.drawable.image_error)
                             .into(photo)
                     reComMedia.addView(photo)
                 }

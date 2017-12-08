@@ -32,10 +32,9 @@ class MemoryViewPresenter : MemoryViewContract.Presenter {
         }
 
         override fun onResponse(call: Call?, response: Response?) {
+            val responseData = response?.body()!!.string()
+            val memoryItemRequest: MemoryItem = Gson().fromJson(responseData, MemoryItem::class.java)
             activity.runOnUiThread {
-                val responseData = response?.body()!!.string()
-                val memoryItemRequest: MemoryItem = Gson().fromJson(responseData, MemoryItem::class.java)
-
                 val isSuccess = memoryItemRequest.isSuccess
                 if(isSuccess == "true"){
                     mView.updateView(memoryItemRequest.memoryItemResult.mediaMemory, memoryItemRequest.memoryItemResult.textMemory)

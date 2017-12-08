@@ -24,7 +24,6 @@ class RecomPresenter:RecomContract.Presenter {
     private val requestRecomCallback: Callback = object : Callback {
         override fun onFailure(call: Call?, e: IOException?) {
             activity.runOnUiThread {
-                activity.hideDialog()
                 activity.alert(activity.resources.getString(R.string.error_message_network), "Review") {
                     yesButton { activity.finish() }
                 }.show()
@@ -35,16 +34,16 @@ class RecomPresenter:RecomContract.Presenter {
             val responseData = response?.body()!!.string()
             Log.d("hoho", responseData)
             val recomRequest: ReComMemory = Gson().fromJson(responseData, ReComMemory::class.java)
-            activity.hideDialog()
 
             val isSuccess = recomRequest.isSuccess
-            if(isSuccess == "true"){
-                mView.updateView(recomRequest.reviewMemoryResult!!)
-            }else if(isSuccess == "false"){
-                activity.hideDialog()
-                activity.alert(activity.resources.getString(R.string.error_message_review), "Review") {
-                    yesButton { activity.finish() }
-                }.show()
+            activity.runOnUiThread {
+                if(isSuccess == "true"){
+                    mView.updateView(recomRequest.reviewMemoryResult!!)
+                }else if(isSuccess == "false"){
+                    activity.alert(activity.resources.getString(R.string.error_message_review), "Review") {
+                        yesButton { activity.finish() }
+                    }.show()
+                }
             }
         }
 

@@ -59,6 +59,7 @@ class SplashPresenter: SplashContract.Presenter {
             //현재 보안을 위해서 우선은 공유저장소에 들어있는 값(현재 스마트폰의 저장 정보)과 서버에 저장되어 있는 값을 비교//
             //만약 다를 시 해커가 우회에서 들어올 수 있으므로 로그인 화면으로 이동하여 다시 정상적으로 토큰등을 발급받게 함.//
 
+            Log.d("hoho", responseData)
             val profileRequest: UserProfile = Gson().fromJson(responseData, UserProfile::class.java)
 
             val sUserId:String = profileRequest.userProfileResult.userId

@@ -129,6 +129,8 @@ class ReviewActivity : AppCompatActivity(), ReviewContract.View {
         NManager.init()
         val picasso = NManager.gatPicasso()
         picasso!!.load(uploadFile)
+                .placeholder(R.drawable.image_holder) // 다운로드 중 표시할 이미지
+                .error(R.drawable.image_error)
                 .transform(CropSquareTransformation())
                 .into(reviewPhoto)
         reviewContents.addView(reviewPhoto)

@@ -19,15 +19,16 @@ import com.kotlin.ourmemories.view.recom.presenter.RecomContract
 import com.kotlin.ourmemories.view.recom.presenter.RecomPresenter
 import kotlinx.android.synthetic.main.activity_recom.*
 
-class RecomActivity : AppCompatActivity(),RecomContract.View, View.OnClickListener {
+class RecomActivity : AppCompatActivity(),RecomContract.View , View.OnClickListener{
     companion object {
 
         val EXTRA_SIGUNGU_NAME = "sigungu_name"
+
         val EXTRA_SIDO_NAME = "sido_name"
     }
     lateinit var presenter:RecomContract.Presenter
-
     lateinit var adapter:RecomAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recom)
@@ -37,7 +38,7 @@ class RecomActivity : AppCompatActivity(),RecomContract.View, View.OnClickListen
 
 
         val canaroExtraBold = Typeface.createFromAsset(this.assets, MainActivity.CANARO_EXTRA_BOLD_PATH)
-        reComTitleText.typeface = canaroExtraBold
+        reComToolbarTitleText.typeface = canaroExtraBold
 
         presenter = RecomPresenter().apply {
             mView = this@RecomActivity
@@ -50,27 +51,26 @@ class RecomActivity : AppCompatActivity(),RecomContract.View, View.OnClickListen
         reComBack.setOnClickListener {
             finish()
         }
-
         reComList.layoutManager = LinearLayoutManager(this)
-    }
 
+
+    }
     override fun updateView(items: ArrayList<ReComMemoryResult>) {
-        hideDialog()
         adapter = RecomAdapter(applicationContext, items, this)
         reComList.adapter = adapter
         adapter.setOnItemClickListener(this)
     }
 
-    // 지도 보여주는 부분
-    override fun onClick(view: View?) {
-        // 한글 주소
-        val address = view?.findViewById<View>(R.id.reComAddress) as TextView
+    override fun onClick(p0: View?) {
+        val address = findViewById<View>(R.id.reComAddress) as TextView
         val recomMapIntent = Intent(this, RecomMapsActivity::class.java)
         recomMapIntent.putExtra("address", address.text.toString())
         startActivity(recomMapIntent)
+    }
 
-    }
-    fun hideDialog() {
-        loading_recom.visibility = View.INVISIBLE
-    }
+
+
+//    fun hideDialog() {
+//        loading_recom.visibility = View.INVISIBLE
+//    }
 }

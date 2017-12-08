@@ -31,7 +31,7 @@
                 android:src="@drawable/ic_chevron_left_white_24dp" />
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/reComTitleText"
+                android:id="@+id/reComToolbarTitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -46,12 +46,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/recomToolbar"/>
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/loading_recom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="loading_animation.json"
-        app:lottie_loop="true"/>
+    <!--<com.airbnb.lottie.LottieAnimationView-->
+        <!--android:id="@+id/loading_recom"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--app:lottie_autoPlay="true"-->
+        <!--app:lottie_fileName="loading_animation.json"-->
+        <!--app:lottie_loop="true"/>-->
 </RelativeLayout>
