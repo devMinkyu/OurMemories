@@ -20,10 +20,10 @@ import kotlinx.android.synthetic.main.item_card.view.*
 /**
  * Created by kimmingyu on 2017. 12. 6..
  */
-class RecomViewHolder(parent: ViewGroup?):RecyclerView.ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.item_card,parent,false)) {
-    fun bindView(context: Context, activity: RecomActivity, item:ReComMemoryResult){
-        with(itemView){
-            when{
+class RecomViewHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.item_card, parent, false)) {
+    fun bindView(context: Context, activity: RecomActivity, item: ReComMemoryResult) {
+        with(itemView) {
+            when {
                 item.media.contains("jpg") -> {
                     val photo = ImageView(context)
                     val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -56,5 +56,6 @@ class RecomViewHolder(parent: ViewGroup?):RecyclerView.ViewHolder(LayoutInflater
             reComText.text = item.contents
             reComAddress.text = item.address
         }
+
     }
 }

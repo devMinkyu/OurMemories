@@ -16,7 +16,7 @@ import java.io.IOException
 /**
  * Created by kimmingyu on 2017. 12. 6..
  */
-class RecomPresenter:RecomContract.Presenter {
+class RecomPresenter : RecomContract.Presenter {
     lateinit override var activity: RecomActivity
     lateinit override var memoryData: RecomRepository
     lateinit override var mView: RecomContract.View
@@ -24,6 +24,7 @@ class RecomPresenter:RecomContract.Presenter {
     private val requestRecomCallback: Callback = object : Callback {
         override fun onFailure(call: Call?, e: IOException?) {
             activity.runOnUiThread {
+                activity.hideDialog()
                 activity.alert(activity.resources.getString(R.string.error_message_network), "Review") {
                     yesButton { activity.finish() }
                 }.show()
@@ -36,10 +37,14 @@ class RecomPresenter:RecomContract.Presenter {
             val recomRequest: ReComMemory = Gson().fromJson(responseData, ReComMemory::class.java)
 
             val isSuccess = recomRequest.isSuccess
-            activity.runOnUiThread {
-                if(isSuccess == "true"){
+            if (isSuccess == "true") {
+                activity.runOnUiThread {
+                    activity.hideDialog()
                     mView.updateView(recomRequest.reviewMemoryResult!!)
-                }else if(isSuccess == "false"){
+                }
+            } else if (isSuccess == "false") {
+                activity.runOnUiThread {
+                    activity.hideDialog()
                     activity.alert(activity.resources.getString(R.string.error_message_review), "Review") {
                         yesButton { activity.finish() }
                     }.show()
@@ -48,7 +53,9 @@ class RecomPresenter:RecomContract.Presenter {
         }
 
     }
+
     override fun getReview(siDo: String, siGunGu: String) {
-        memoryData.getRemoteReview(siDo,siGunGu, requestRecomCallback, activity)
+        activity.showDialog()
+        memoryData.getRemoteReview(siDo, siGunGu, requestRecomCallback, activity)
     }
 }

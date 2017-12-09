@@ -75,7 +75,6 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
 
         override fun onResponse(call: Call?, response: Response?) {
             val responseData = response?.body()!!.string()
-            Log.d("hoho", responseData)
             val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
             val isSuccess = memoryRequest.isSuccess
             // 서버 디비에 저장된 후 로컬 디비 저장

@@ -69,9 +69,9 @@ class RecomActivity : AppCompatActivity(),RecomContract.View , View.OnClickListe
         startActivity<RecomMapsActivity>("address" to address.text.toString())
     }
 
+    fun showDialog() { loading_recom.visibility = View.VISIBLE }
 
-
-//    fun hideDialog() {
-//        loading_recom.visibility = View.INVISIBLE
-//    }
+    fun hideDialog() {
+        loading_recom.visibility = View.INVISIBLE
+    }
 }

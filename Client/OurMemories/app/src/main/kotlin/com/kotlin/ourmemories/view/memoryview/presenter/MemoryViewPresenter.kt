@@ -34,14 +34,19 @@ class MemoryViewPresenter : MemoryViewContract.Presenter {
         override fun onResponse(call: Call?, response: Response?) {
             val responseData = response?.body()!!.string()
             val memoryItemRequest: MemoryItem = Gson().fromJson(responseData, MemoryItem::class.java)
-            activity.runOnUiThread {
-                val isSuccess = memoryItemRequest.isSuccess
-                if(isSuccess == "true"){
+            val isSuccess = memoryItemRequest.isSuccess
+            if (isSuccess == "true") {
+                activity.runOnUiThread {
                     mView.updateView(memoryItemRequest.memoryItemResult.mediaMemory, memoryItemRequest.memoryItemResult.textMemory)
-                }else if(isSuccess == "false"){
-
+                }
+            } else if (isSuccess == "false") {
+                activity.runOnUiThread {
+                    activity.alert(activity.resources.getString(R.string.error_message_network), "MemoryView") {
+                        yesButton { activity.finish() }
+                    }.show()
                 }
             }
+
         }
     }
 
