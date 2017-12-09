@@ -90,12 +90,14 @@ class SplashPresenter: SplashContract.Presenter {
                             (0 until item.size).forEach { i ->
                                 DBManagerMemory.addMemory(item[i]!!)
                             }
+                            DBManagerMemory.close()
+                        }else{
+                            val cursor = DBManagerMemory.getMemoryAllWithCursor()
+                            if(cursor.count != 0){
+                                DBManagerMemory.deleteTable()
+                            }
+                            DBManagerMemory.close()
                         }
-                        val cursor = DBManagerMemory.getMemoryAllWithCursor()
-                        if(cursor.count == 0){
-                            DBManagerMemory.deleteTable()
-                        }
-                        DBManagerMemory.close()
                         activity.startActivity<MainActivity>()
                         activity.finish()
                     } else if(loginAuth == "0") // 로그아웃한 경우

@@ -260,12 +260,14 @@ class LoginPresenter: LoginContract.Presenter{
                 Log.d("hoho", item[i].toString())
                 DBManagerMemory.addMemory(item[i]!!)
             }
+            DBManagerMemory.close()
+        }else{
+            val cursor = DBManagerMemory.getMemoryAllWithCursor()
+            if(cursor.count != 0){
+                DBManagerMemory.deleteTable()
+            }
+            DBManagerMemory.close()
         }
-        val cursor = DBManagerMemory.getMemoryAllWithCursor()
-        if(cursor.count == 0){
-            DBManagerMemory.deleteTable()
-        }
-        DBManagerMemory.close()
     }
     // 애니메이션
     override fun animation() {
