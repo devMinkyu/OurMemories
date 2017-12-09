@@ -18,11 +18,14 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.api.ResultCallback
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.location.*
 import com.google.gson.Gson
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.UserMemory
 import com.kotlin.ourmemories.data.source.memory.MemoryRepository
+import com.kotlin.ourmemories.service.alarm.GeofenceTransitionsIntentService
 import com.kotlin.ourmemories.unit.InputVaildation
 import com.kotlin.ourmemories.view.timecapsule.TimeCapsuleActivity
 import kotlinx.android.synthetic.main.activity_timecapsule.*
@@ -36,12 +39,14 @@ import org.jetbrains.anko.yesButton
 import java.io.File
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by kimmingyu on 2017. 11. 14..
  */
-class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
+class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter, LocationListener, ResultCallback<Status> {
     companion object {
+
         val PICK_IMAGE: Int = 1010
         val PICK_VIDEO: Int = 1011
         val REQ_PERMISSON_IMAGE_PHOTO = 101
@@ -50,14 +55,14 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         val REQ_PERMISSON_CAMERA_VIDEO = 104
         val REQ_PERMISSON_LOCATION = 105
     }
-
     lateinit override var activity: TimeCapsuleActivity
+
     lateinit override var mView: TimeCapsuleContract.View
     override var mGoogleApiClient: GoogleApiClient? = null
     lateinit override var memoryData: MemoryRepository
-
-
     private val mContext = context
+
+
     lateinit var path: String
     private var uploadFile: File? = null
     private var mYear: Int
@@ -78,7 +83,6 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
     lateinit var toDate: String
     lateinit var detailAddress: String
     lateinit var address: String
-
     init {
         mYear = calendar.get(Calendar.YEAR)
         mMonth = calendar.get(Calendar.MONTH)
@@ -97,6 +101,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             }
         }
 
+        @SuppressLint("MissingPermission")
         override fun onResponse(call: Call?, response: Response?) {
             val responseData = response?.body()!!.string()
 
@@ -118,6 +123,33 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                             calendar.timeInMillis,
                             pendingIntent
                     )
+
+                    // Geofence
+                    val locreq = LocationRequest()
+                    locreq.interval = 5000
+                    locreq.fastestInterval = 4000
+                    locreq.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locreq, this@TimeCapsulePresenter)
+
+                    val mGeofenceList = ArrayList<Geofence>()
+                            mGeofenceList.add(Geofence.Builder().setRequestId(title)
+                            .setCircularRegion(lat,lon,100f)
+                            .setExpirationDuration(36000)
+                            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
+                            .build())
+
+                    Log.d("hoho", mGeofenceList.toString())
+                    val intentFence = Intent(activity, GeofenceTransitionsIntentService::class.java)
+                    intentFence.putExtra("_id", memoryRequest.id)
+                    val pendingIntentFence = PendingIntent.getService(mContext, 0, intentFence, PendingIntent.FLAG_UPDATE_CURRENT)
+
+                    val builder = GeofencingRequest.Builder()
+                    builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                    builder.addGeofence(mGeofenceList[0])
+                    val georeq: GeofencingRequest = builder.build()
+
+                    LocationServices.GeofencingApi.addGeofences(mGoogleApiClient, georeq, pendingIntentFence).setResultCallback(this@TimeCapsulePresenter)
+
                     activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
                         yesButton { activity.finish() }
                     }.show()
@@ -131,6 +163,11 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             }
         }
 
+    }
+
+    override fun onLocationChanged(p0: Location?) {}
+    override fun onResult(p0: Status) {
+        activity.toast("등록 됬")
     }
 
     // 날짜 처리하는 함수
@@ -347,6 +384,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         uri ?: return
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = activity.contentResolver.query(uri, projection, null, null, null)
+        Log.d("hoho", cursor.toString())
         if (cursor.moveToNext()) {
             path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
 
