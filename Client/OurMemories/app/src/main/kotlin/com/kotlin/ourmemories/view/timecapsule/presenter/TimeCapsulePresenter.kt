@@ -98,15 +98,15 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         }
 
         override fun onResponse(call: Call?, response: Response?) {
-            activity.runOnUiThread {
-                activity.hideDialog()
-                val responseData = response?.body()!!.string()
+            activity.hideDialog()
+            val responseData = response?.body()!!.string()
 
-                val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
+            val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
 
-                val isSuccess = memoryRequest.isSuccess
-                // 서버 디비에 저장된 후 로컬 디비 저장
-                if (isSuccess == "true") {
+            val isSuccess = memoryRequest.isSuccess
+            // 서버 디비에 저장된 후 로컬 디비 저장
+            if (isSuccess == "true") {
+                activity.runOnUiThread {
                     memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation, detailAddress, address, text, null, 0, null, activity)
                     // 알람 설정
                     val intent = Intent("com.kotlin.ourmemories.ALARM_START")
@@ -121,8 +121,13 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
                     activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
                         yesButton { activity.finish() }
                     }.show()
-                } else if (isSuccess == "false") {
-                    // 아직은 고려중
+                }
+            } else if (isSuccess == "false") {
+                activity.runOnUiThread {
+                    activity.hideDialog()
+                    activity.alert(activity.resources.getString(R.string.error_message_network), "TimeCapsule") {
+                        yesButton { activity.finish() }
+                    }.show()
                 }
             }
         }

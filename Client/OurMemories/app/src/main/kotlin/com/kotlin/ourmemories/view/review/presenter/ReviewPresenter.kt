@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.util.Log
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
@@ -73,20 +74,25 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
         }
 
         override fun onResponse(call: Call?, response: Response?) {
-            activity.runOnUiThread {
-                val responseData = response?.body()!!.string()
-                val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
-
-
-                val isSuccess = memoryRequest.isSuccess
-                // 서버 디비에 저장된 후 로컬 디비 저장
-                if (isSuccess == "true") {
+            val responseData = response?.body()!!.string()
+            Log.d("hoho", responseData)
+            val memoryRequest: UserMemory = Gson().fromJson(responseData, UserMemory::class.java)
+            val isSuccess = memoryRequest.isSuccess
+            // 서버 디비에 저장된 후 로컬 디비 저장
+            if (isSuccess == "true") {
+                activity.runOnUiThread {
+                    activity.hideDialog()
                     memoryData.memorySave(memoryRequest.id, title, date, "", lat, lon, nation, detailAddress, address, text, null, 1, null, activity)
                     activity.alert(activity.resources.getString(R.string.success_message_memory), "Review") {
                         yesButton { activity.finish() }
                     }.show()
-                } else if (isSuccess == "false") {
-
+                }
+            } else if (isSuccess == "false") {
+                activity.runOnUiThread {
+                    activity.hideDialog()
+                    activity.alert(activity.resources.getString(R.string.error_message_network), "Review") {
+                        yesButton { activity.finish() }
+                    }.show()
                 }
             }
         }
