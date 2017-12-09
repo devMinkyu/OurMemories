@@ -150,12 +150,11 @@ class SundayDecorator : DayViewDecorator {
 
 }
 
-// 특정 날짜
-class EventDecorator(color:Int, calendarDay: CalendarDay) : DayViewDecorator {
-    val date = calendarDay
-    override fun shouldDecorate(day: CalendarDay?): Boolean = (date != null) and (day!! == date)
-    override fun decorate(view: DayViewFacade) {
-        view.addSpan(ForegroundColorSpan(Color.GREEN))
-    }
-
-}
+//// 특정 날짜
+//class EventDecorator(color:Int, calendarDay: CalendarDay) : DayViewDecorator {
+//    val date = calendarDay
+//    override fun shouldDecorate(day: CalendarDay?): Boolean = (date != null) and (day!! == date)
+//    override fun decorate(view: DayViewFacade) {
+//        view.addSpan(ForegroundColorSpan(Color.GREEN))
+//    }
+//}
