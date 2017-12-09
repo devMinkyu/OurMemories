@@ -388,13 +388,13 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
         val amDBDATEFormat = activity.resources.getString(R.string.db_memory_am_format)
         val pmDBDATEFormat = activity.resources.getString(R.string.db_memory_pm_format)
         fromDate = when {
-            fromHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, fromHour, fromMinute)
+            fromHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, fromHour - 12, fromMinute)
             fromHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, fromHour, fromMinute)
             fromHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth + 1, mDay, fromHour, fromMinute)
             else -> "0"
         }
         toDate = when {
-            toHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, toHour, toMinute)
+            toHour > 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, toHour - 12, toMinute)
             toHour == 12 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, toHour, toMinute)
             toHour == 24 -> String.format(pmDBDATEFormat, mYear, mMonth + 1, mDay, 23, 59)
             toHour < 12 -> String.format(amDBDATEFormat, mYear, mMonth + 1, mDay, toHour, toMinute)
