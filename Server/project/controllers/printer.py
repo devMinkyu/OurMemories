@@ -86,7 +86,7 @@ def login():
         if memoryId != None:
             for docs in memoryId:
                 # memory 데이터를 JSON으로
-                memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(str(docs['_id']), docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
+                memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'), (str(docs['_id']), docs['memoryTitle'], docs['memoryFromDate'], docs['memoryToDate'], docs['memoryLatitude'], docs['memoryLongitude'], docs['memoryNation'], docs['memoryClassification'] )))
                 memoryArray.append(memory_object)
             # print(memoryArray)
             sendToAndroid = dict(zip(('isSuccess', 'userLoginResult', 'userLoginMemoryResult'), (isSuccess, user_object, memoryArray) ))
@@ -364,7 +364,7 @@ def recommand():
         second = docs['memoryAddress']
         if siDo in second:
             if siGunGu in second:
-                memory_object = dict(zip(('media', 'title', 'contents', 'memoryDetailAddress'), (docs['media'], docs['memoryTitle'], docs['text'], docs['memoryDetailAddress']) ))
+                memory_object = dict(zip(('media', 'title', 'contents', 'address'), (docs['media'], docs['memoryTitle'], docs['text'], docs['memoryDetailAddress']) ))
                 reviewMemoryArray.append(memory_object)
 
     if reviewMemoryArray == None:
