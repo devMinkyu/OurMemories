@@ -81,7 +81,7 @@ class ReviewPresenter(context: Context) : ReviewContract.Presenter {
             if (isSuccess == "true") {
                 activity.runOnUiThread {
                     activity.hideDialog()
-                    memoryData.memorySave(memoryRequest.id, title, date, "", lat, lon, nation, detailAddress, address, text, null, 1, null, activity)
+                    memoryData.memorySave(memoryRequest.id, title, date, "", lat, lon,  detailAddress, address, nation, text, null, 1, null, activity)
                     activity.alert(activity.resources.getString(R.string.success_message_memory), "Review") {
                         yesButton { activity.finish() }
                     }.show()

@@ -107,7 +107,7 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter {
             if (isSuccess == "true") {
                 activity.runOnUiThread {
                     activity.hideDialog()
-                    memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon, nation, detailAddress, address, text, null, 0, null, activity)
+                    memoryData.memorySave(memoryRequest.id, title, fromDate, toDate, lat, lon,  detailAddress, address, nation, text, null, 0, null, activity)
                     // 알람 설정
                     val intent = Intent("com.kotlin.ourmemories.ALARM_START")
                     intent.putExtra("_id", memoryRequest.id)

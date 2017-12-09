@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import android.widget.TextView
@@ -22,9 +23,7 @@ import org.jetbrains.anko.toast
 
 class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var spruceAnimator : Animator
-    init {
-        DBManagerMemory.init(this)
-    }
+    var adapter:TimeCapsuleAdapter? = null
     var nationName : String
     init {
         nationName = ""
@@ -36,7 +35,7 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_memory_list)
 
         //Fragment에서 넘겨받은 intent 받는 로직
-        val intent : Intent = getIntent()
+        val intent : Intent = intent
         nationName = intent.getStringExtra("nationName")
 
 
@@ -57,8 +56,9 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         //애니메이션 셋팅
         timecapsule_list.layoutManager = linearLayoutManager
         val cursor = DBManagerMemory.getMemoriesWithCursor(nationName)
+        cursor.moveToFirst()
         if(cursor?.count != 0){
-            var adapter = TimeCapsuleAdapter(this, cursor!!)
+            adapter = TimeCapsuleAdapter(this, cursor!!)
             timecapsule_list.adapter = adapter
         }
 
@@ -69,9 +69,15 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         if (rb_all.isChecked) {
             toast(rb_all.text.toString())
             val cursor = DBManagerMemory.getMemoriesWithCursor(nationName)
-
-            var adapter = TimeCapsuleAdapter(this, cursor!!)
-            timecapsule_list.adapter = adapter
+            if(cursor.count != 0){
+                if(adapter == null){
+                    adapter = TimeCapsuleAdapter(this, cursor!!)
+                    timecapsule_list.adapter = adapter
+                }else {
+                    adapter?.changeCursor(cursor)
+                    adapter?.notifyDataSetChanged()
+                }
+            }
         }
     }
     fun isCheckTimecapsule (v: View?) {
@@ -79,9 +85,15 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         if (rb_timecapsule.isChecked) {
             toast(rb_timecapsule.text.toString())
             val cursor = DBManagerMemory.getMemoryNationAndClassWithCursor(nationName,0)
-
-            var adapter = TimeCapsuleAdapter(this, cursor!!)
-            timecapsule_list.adapter = adapter
+            if(cursor.count != 0){
+                if(adapter == null){
+                    adapter = TimeCapsuleAdapter(this, cursor!!)
+                    timecapsule_list.adapter = adapter
+                }else {
+                    adapter?.changeCursor(cursor)
+                    adapter?.notifyDataSetChanged()
+                }
+            }
         }
     }
     fun isCheckReview (v: View?) {
@@ -89,9 +101,15 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
         if (rb_reView.isChecked) {
             toast(rb_reView.text.toString())
             val cursor = DBManagerMemory.getMemoryNationAndClassWithCursor(nationName,1)
-
-            var adapter = TimeCapsuleAdapter(this, cursor!!)
-            timecapsule_list.adapter = adapter
+            if(cursor.count != 0){
+                if(adapter == null){
+                    adapter = TimeCapsuleAdapter(this, cursor!!)
+                    timecapsule_list.adapter = adapter
+                }else {
+                    adapter?.changeCursor(cursor)
+                    adapter?.notifyDataSetChanged()
+                }
+            }
         }
     }
     private fun initSpruce(recycleListView : RecyclerView) {
@@ -112,7 +130,6 @@ class MemoryListActivity : AppCompatActivity(), View.OnClickListener {
     }
     override fun onStop() {
         super.onStop()
-
         DBManagerMemory.close()
     }
 
