@@ -262,6 +262,7 @@ def multyData():
     memoryClassification = request.form['memoryClassification']
     text = request.form['text']
     address = request.form['memoryAddress']
+    detailAddress = request.form['memoryDetailAddress']
 
     # memory 데이터를 JSON으로
     # memory_object = dict(zip(('_id', 'memoryTitle', 'memoryFromDate', 'memoryToDate', 'memoryLatitude', 'memoryLongitude', 'memoryNation', 'memoryClassification'),(user_id,name,email,picture)))
@@ -280,7 +281,7 @@ def multyData():
     # print(path)
 
     # 정보들 DB에 저장
-    images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text, 'media' : path, 'memoryAddress' : address})
+    images.insert({'userId' : userId, 'memoryTitle' : memoryTitle, 'memoryFromDate' : memoryFromDate, 'memoryToDate' : memoryToDate, 'memoryLatitude' : memoryLatitude, 'memoryLongitude' : memoryLongitude, 'memoryNation' : memoryNation, 'memoryClassification' : memoryClassification, 'text' : text, 'media' : path, 'memoryAddress' : address, 'memoryDetailAddress' : detailAddress })
 
     info = images.find({"userId" : userId})
     for doc in info:
@@ -363,7 +364,7 @@ def recommand():
         second = docs['memoryAddress']
         if siDo in second:
             if siGunGu in second:
-                memory_object = dict(zip(('media', 'title', 'contents', 'address'), (docs['media'], docs['memoryTitle'], docs['text'], docs['memoryAddress']) ))
+                memory_object = dict(zip(('media', 'title', 'contents', 'memoryDetailAddress'), (docs['media'], docs['memoryTitle'], docs['text'], docs['memoryDetailAddress']) ))
                 reviewMemoryArray.append(memory_object)
 
     if reviewMemoryArray == None:
