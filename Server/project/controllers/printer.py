@@ -34,7 +34,7 @@ images = db.image # image collection 선택
 
 @app.route('/')
 def index():
-    return redirect(url_for('dlogin'))
+    return redirect(url_for('klogin'))
 
 
 # android의 access token으로 페이스북 정보 가져오기 / Json 형식으로 Android로 넘기기
@@ -74,11 +74,11 @@ def login():
         # sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
         user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : accessToken, 'FCMtoken' : token})
 
-        registration_id = token
-        message_title = "Uber update"
-        message_body = "Hi john, your customized news for today is ready"
-        result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
-        print result
+        # registration_id = token
+        # message_title = "Uber update"
+        # message_body = "Hi john, your customized news for today is ready"
+        # result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
+        # print result
 
         # image collection에 있는 id값을 가져온다.
         memoryId = images.find({"userId" : user_id})
@@ -139,13 +139,13 @@ def profile():
 
 # 웹에서 페이스북 로그인을 위한
 # @app.route('/facebookLogin')
-# def login():
+# def flogin():
 #     callback = url_for(
 #         'facebook_authorized',
 #         next=request.args.get('next') or request.referrer or None,
 #         _external=True
 #     )
-#     # print(callback)
+#     print(callback)
 #     return facebook.authorize(callback=callback)
 
 
@@ -172,43 +172,12 @@ def profile():
 #     email = (me.data['email'])
 #     picture = (me.data['picture']['data']['url'])
 #
-#     # user Id가 DB에 있는지 확인
-#     is_user = user.find_one({"id" : user_id})
-#     if is_user == None:
-#         # isSuccess
-#         isSuccess = 'true/insert'
-#         # transform user data to json
-#         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
-#         # isSuccess와 userLoginResult를 Json으로
-#         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-#         user.insert({'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
-#     elif is_user != None:
-#         # isSuccess
-#         isSuccess = 'true/update'
-#         # transform user data to json
-#         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(user_id,name,email,picture)))
-#         # isSuccess와 userLoginResult를 Json으로
-#         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-#         user.update({'id' : user_id}, {'id' : user_id, 'userName' : name, 'email' : email, 'profile' : picture, 'accessToken' : resp['access_token']})
-#     else:
-#         # isSuccess
-#         isSuccess = 'false'
-#         # transform user data to json
-#         user_object = dict(zip(('userId', 'userName', 'userEmail', 'userProfileImageUrl'),(0,0,0,0)))
-#         # isSuccess와 userLoginResult를 Json으로
-#         sendToAndroid = dict(zip(('isSuccess', 'userLoginResult'), (isSuccess, user_object)))
-#     # for doc in is_user:
-#     #     print(doc['id'])
-#
-#     # print(sendToAndroid)
-#     return jsonify(sendToAndroid)
-#
-#     # return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
-#     #     (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
+#     return 'Logged in as id=%s name=%s email=%s picture=%s redirect=%s' % \
+#         (me.data['id'], me.data['name'], me.data['email'], me.data['picture'], request.args.get('next'))
 
 
 @app.route('/kakaoLogin')
-def dlogin():
+def klogin():
     callback = url_for(
         'kakao_oauth_callback',
         next=request.args.get('next') or request.referrer or None,
@@ -386,7 +355,7 @@ def alarm():
     if is_user != None:
         token = is_user['FCMtoken']
         forAlarm = images.find_one({'_id' : ObjectId(_id)})
-        fromDate = froAlarm['memoryFromDate']
+        fromDate = forAlarm['memoryFromDate']
         registration_id = token
         message_title = 'Time Capsule'
         message_body = fromDate.encode('utf-8') + '부터 타임캡슐을 확인할 수 있습니다 .'
