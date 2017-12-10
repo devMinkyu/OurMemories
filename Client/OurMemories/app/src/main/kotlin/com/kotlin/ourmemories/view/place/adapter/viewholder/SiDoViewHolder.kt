@@ -21,7 +21,6 @@ class SiDoViewHolder(itemView: View) : GroupViewHolder(itemView) {
 
     override fun expand() {
         animateExpand()
-        MainActivity.position = position
     }
 
     override fun collapse() {
