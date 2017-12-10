@@ -69,19 +69,19 @@ class LoginActivity : AppCompatActivity(){
             }
         }
 
-        // 카카오톡 로그인 버튼 눌렀을 때(우선 메인 액티비티로 가는 버튼
-        kakao_login_button.setOnClickListener{
-            if(presenter.isLogin()){
-                Toast.makeText(this, "이미 로그인 되어있습니다. 로그아웃 해주세요", Toast.LENGTH_SHORT).show()
-                presenter.mLoginManager.logOut()
-                finish()
-            }else{
-                showDialog()
-                presenter.kakaoLogin()
-            }
-//            startActivity(Intent(this, MainActivity::class.java))
-//            finish()
-        }
+//        // 카카오톡 로그인 버튼 눌렀을 때(우선 메인 액티비티로 가는 버튼
+//        kakao_login_button.setOnClickListener{
+//            if(presenter.isLogin()){
+//                Toast.makeText(this, "이미 로그인 되어있습니다. 로그아웃 해주세요", Toast.LENGTH_SHORT).show()
+//                presenter.mLoginManager.logOut()
+//                finish()
+//            }else{
+//                showDialog()
+//                presenter.kakaoLogin()
+//            }
+////            startActivity(Intent(this, MainActivity::class.java))
+////            finish()
+//        }
     }
     override fun onResume() {
         super.onResume()

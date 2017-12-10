@@ -125,30 +125,30 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter, Lo
                     )
 
                     // Geofence
-                    val locreq = LocationRequest()
-                    locreq.interval = 5000
-                    locreq.fastestInterval = 4000
-                    locreq.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locreq, this@TimeCapsulePresenter)
-
-                    val mGeofenceList = ArrayList<Geofence>()
-                            mGeofenceList.add(Geofence.Builder().setRequestId(title)
-                            .setCircularRegion(lat,lon,100f)
-                            .setExpirationDuration(36000)
-                            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
-                            .build())
-
-                    Log.d("hoho", mGeofenceList.toString())
-                    val intentFence = Intent(activity, GeofenceTransitionsIntentService::class.java)
-                    intentFence.putExtra("_id", memoryRequest.id)
-                    val pendingIntentFence = PendingIntent.getService(mContext, 0, intentFence, PendingIntent.FLAG_UPDATE_CURRENT)
-
-                    val builder = GeofencingRequest.Builder()
-                    builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                    builder.addGeofence(mGeofenceList[0])
-                    val georeq: GeofencingRequest = builder.build()
-
-                    LocationServices.GeofencingApi.addGeofences(mGoogleApiClient, georeq, pendingIntentFence).setResultCallback(this@TimeCapsulePresenter)
+//                    val locreq = LocationRequest()
+//                    locreq.interval = 5000
+//                    locreq.fastestInterval = 4000
+//                    locreq.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+//                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locreq, this@TimeCapsulePresenter)
+//
+//                    val mGeofenceList = ArrayList<Geofence>()
+//                            mGeofenceList.add(Geofence.Builder().setRequestId(title)
+//                            .setCircularRegion(lat,lon,100f)
+//                            .setExpirationDuration(36000)
+//                            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
+//                            .build())
+//
+//                    Log.d("hoho", mGeofenceList.toString())
+//                    val intentFence = Intent(activity, GeofenceTransitionsIntentService::class.java)
+//                    intentFence.putExtra("_id", memoryRequest.id)
+//                    val pendingIntentFence = PendingIntent.getService(mContext, 0, intentFence, PendingIntent.FLAG_UPDATE_CURRENT)
+//
+//                    val builder = GeofencingRequest.Builder()
+//                    builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+//                    builder.addGeofence(mGeofenceList[0])
+//                    val georeq: GeofencingRequest = builder.build()
+//
+//                    LocationServices.GeofencingApi.addGeofences(mGoogleApiClient, georeq, pendingIntentFence).setResultCallback(this@TimeCapsulePresenter)
 
                     activity.alert(activity.resources.getString(R.string.success_message_memory), "TimeCapsule") {
                         yesButton { activity.finish() }
