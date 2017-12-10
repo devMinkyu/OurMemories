@@ -11,6 +11,5 @@ import com.google.firebase.iid.FirebaseInstanceIdService
 class MyFirebaseInstanceIDService: FirebaseInstanceIdService() {
     override fun onTokenRefresh() {
         val token = FirebaseInstanceId.getInstance().token
-        Log.d("hoho", "간나 $token")
     }
 }

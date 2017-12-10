@@ -46,8 +46,10 @@ class MemoryViewActivity : AppCompatActivity(), MemoryViewContract.View {
                 memoryViewPhoto.scaleType = ImageView.ScaleType.FIT_START
                 memoryViewPhoto.adjustViewBounds = true
 
-                Picasso.with(this)
-                        .load(media)
+                NManager.init()
+                val picasso = NManager.gatPicasso()
+
+                picasso!!.load(media)
                         .transform(CropSquareTransformation())
                         .placeholder(R.drawable.image_holder) // 다운로드 중 표시할 이미지
                         .error(R.drawable.image_error)

@@ -12,8 +12,8 @@ import android.widget.MediaController
 import android.widget.VideoView
 import com.kotlin.ourmemories.R
 import com.kotlin.ourmemories.data.jsondata.ReComMemoryResult
+import com.kotlin.ourmemories.manager.networkmanager.NManager
 import com.kotlin.ourmemories.view.recom.RecomActivity
-import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropSquareTransformation
 import kotlinx.android.synthetic.main.item_card.view.*
 
@@ -31,14 +31,20 @@ class RecomViewHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(LayoutInflat
                     photo.scaleType = ImageView.ScaleType.FIT_START
                     photo.adjustViewBounds = true
 
+                    activity.runOnUiThread {
 
-                    Picasso.with(context)
-                            .load(item.media)
-                            .transform(CropSquareTransformation())
-                            .placeholder(R.drawable.image_holder) // 다운로드 중 표시할 이미지
-                            .error(R.drawable.image_error)
-                            .into(photo)
-                    reComMedia.addView(photo)
+                        NManager.init()
+                        val picasso = NManager.gatPicasso()
+
+                        Log.d("hoho", item.media)
+
+                        picasso!!.load(item.media)
+                                .rotate(90f)
+                                .placeholder(R.drawable.image_holder) // 다운로드 중 표시할 이미지
+                                .error(R.drawable.image_error)
+                                .into(photo)
+                        reComMedia.addView(photo)
+                    }
                 }
                 item.media.contains("mp4") -> {
                     val video = VideoView(context)
