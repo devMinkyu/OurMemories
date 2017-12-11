@@ -47,7 +47,11 @@ class PlaceListFragment : Fragment(), View.OnClickListener, PlaceContract.View{
         presenter.getCityDate()
 
         adapter.setOnGroupExpandCollapseListener(object : GroupExpandCollapseListener{
-            override fun onGroupCollapsed(group: ExpandableGroup<*>?) {}
+            override fun onGroupCollapsed(group: ExpandableGroup<*>?) {
+                if(openGroup == group){
+                    openGroup = null
+                }
+            }
             override fun onGroupExpanded(group: ExpandableGroup<*>?) { // 열려있는거
                 openGroup = if(openGroup == null){
                     group
@@ -56,7 +60,7 @@ class PlaceListFragment : Fragment(), View.OnClickListener, PlaceContract.View{
                     group
                 }
             }
-        })
+        }) 
 
     }
 
