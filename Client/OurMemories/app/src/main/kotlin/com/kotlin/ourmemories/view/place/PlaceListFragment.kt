@@ -60,7 +60,7 @@ class PlaceListFragment : Fragment(), View.OnClickListener, PlaceContract.View{
                     group
                 }
             }
-        }) 
+        })
 
     }
 

@@ -10,9 +10,12 @@ import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
+import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
@@ -37,7 +40,9 @@ import org.jetbrains.anko.selector
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.io.OutputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -384,7 +389,6 @@ class TimeCapsulePresenter(context: Context) : TimeCapsuleContract.Presenter, Lo
         uri ?: return
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = activity.contentResolver.query(uri, projection, null, null, null)
-        Log.d("hoho", cursor.toString())
         if (cursor.moveToNext()) {
             path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
 

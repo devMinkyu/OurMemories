@@ -91,11 +91,11 @@ class PropertyManager {
         //FCM알람관련 뱃지카운터.//
         var badgeNumber = 0
     }
-    val context:Context = GlobalApplication.context
-    val mProfile: SharedPreferences by lazy {
-        PreferenceManager.getDefaultSharedPreferences(context)
-    }
-    val mEditor:SharedPreferences.Editor by lazy {
+        val context:Context = GlobalApplication.context
+        val mProfile: SharedPreferences by lazy {
+            PreferenceManager.getDefaultSharedPreferences(context)
+        }
+        val mEditor:SharedPreferences.Editor by lazy {
         mProfile.edit()
     }
 }
