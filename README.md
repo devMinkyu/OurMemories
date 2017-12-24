@@ -32,5 +32,5 @@
 Developer
 * 김민규 Min Kyu Kim, minkyu9403@gmail.com
 * 허용성 Yong Sung Heo, flchddnpdl@gmail.com
-* 남윤환 
-* 양희원 
+* 남윤환 Yun Hwan Nam, nanyounan@naver.com 
+* 양희원 Hee Won Yang, lucya2@naver.com
