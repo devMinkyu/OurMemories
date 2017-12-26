@@ -13,9 +13,11 @@
 + MVP Pattern을 사용
 
 ##### web
++ 파이썬의 웹 프레임워크인 Flask 사용
 + MVC Pattern을 사용
 + OAuth 2.0: OAuth 2.0을 이용하여 페이스북 로그인으로 회원가입
-+ 
++ MongoDB를 통해 서버에 데이터 저장
++ uWSGI 및 NGINX 연동으로 Background에서 서버 항시 실행
 
 ### 앱 설명
 여러분의 추억, 기억속에만 남기실 건가요?
