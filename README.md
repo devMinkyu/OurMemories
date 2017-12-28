@@ -17,6 +17,7 @@
 + MVC Pattern을 사용
 + OAuth 2.0: OAuth 2.0을 이용하여 페이스북 로그인으로 회원가입
 + MongoDB를 통해 서버에 데이터 저장
++ MongoDB 데이터베이스를 객체 형태로 매핑하여 사용하게 해주는 MongoKit 라이브러리 
 + uWSGI 및 NGINX 연동으로 Background에서 서버 항시 실행
 
 ### 앱 설명
